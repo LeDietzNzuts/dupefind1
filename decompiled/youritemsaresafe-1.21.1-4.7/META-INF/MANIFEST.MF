@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Specification-Title: youritemsaresafe
+Specification-Vendor: Serilum
+Specification-Version: 1.0
+Implementation-Title: Forge
+Implementation-Version: 1.0
+Implementation-Vendor: Serilum
+Implementation-Timestamp: 2025-02-12T12:49:18+0100
+Timestamp: 1739360958692
+Built-On-Java: 21.0.6+8-LTS-188 (Oracle Corporation)
+Built-On-Minecraft: 1.21.1
+MixinConfigs: youritemsaresafe_forge.mixins.json
+

@@ -1,0 +1,7 @@
+noobanidus.mods.lootr.common.impl.command.BarrelCommandType
+noobanidus.mods.lootr.common.impl.command.ChestCommandType
+noobanidus.mods.lootr.common.impl.command.GravelCommandType
+noobanidus.mods.lootr.common.impl.command.PotCommandType
+noobanidus.mods.lootr.common.impl.command.SandCommandType
+noobanidus.mods.lootr.common.impl.command.ShulkerCommandType
+noobanidus.mods.lootr.common.impl.command.TrappedChestCommandType
