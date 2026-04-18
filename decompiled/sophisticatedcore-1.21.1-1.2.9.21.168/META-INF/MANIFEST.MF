@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Specification-Title: sophisticatedcore
+Specification-Vendor: p3pp3rf1y
+Specification-Version: 1
+Implementation-Title: SophisticatedCore
+Implementation-Version: 1.21.1-1.2.9.21.168
+Implementation-Vendor: p3pp3rf1y
+Implementation-Timestamp: 2025-12-17T16:24:07+0000
+Fabric-Jar-Type: classes
+Fabric-Loom-Mixin-Remap-Type: mixin
+Fabric-Gradle-Version: 8.12.1
+Fabric-Loom-Version: 1.10.5
+Fabric-Mixin-Compile-Extensions-Version: 0.6.0
+Fabric-Minecraft-Version: 1.21.1
+Fabric-Tiny-Remapper-Version: 0.11.1
+Fabric-Loader-Version: 0.16.9
+Fabric-Mixin-Version: 0.15.4+mixin.0.8.7
+Fabric-Mixin-Group: net.fabricmc
+Fabric-Mapping-Namespace: intermediary
+

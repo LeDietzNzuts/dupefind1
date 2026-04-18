@@ -1,0 +1,66 @@
+{
+  "mappings": {
+    "net/p3pp3rf1y/sophisticatedbackpacks/compat/litematica/mixin/MaterialListUtilsMixin": {
+      "getInventoryItemCounts": "Lfi/dy/masa/litematica/materials/MaterialListUtils;getInventoryItemCounts(Lnet/minecraft/class_1263;)Lit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/client/ItemInHandRendererMixin": {
+      "Lnet/minecraft/client/player/LocalPlayer;getAttackStrengthScale(F)F": "Lnet/minecraft/class_746;method_7261(F)F",
+      "tick": "Lnet/minecraft/class_759;method_3220()V"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/CreeperMixin": {
+      "Lnet/minecraft/world/level/Level;explode(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;": "Lnet/minecraft/class_1937;method_8437(Lnet/minecraft/class_1297;DDDFLnet/minecraft/class_1937$class_7867;)Lnet/minecraft/class_1927;",
+      "explodeCreeper": "Lnet/minecraft/class_1548;method_7006()V"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/EnderDragonMixin": {
+      "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z": "Lnet/minecraft/class_2680;method_26164(Lnet/minecraft/class_6862;)Z",
+      "checkWalls": "Lnet/minecraft/class_1510;method_6821(Lnet/minecraft/class_238;)Z"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/ExplosionDamageCalculatorMixin": {
+      "getBlockExplosionResistance": "Lnet/minecraft/class_5362;method_29555(Lnet/minecraft/class_1927;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_3610;)Ljava/util/Optional;"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/PiglinAiMixin": {
+      "isWearingGold": "Lnet/minecraft/class_4838;method_24719(Lnet/minecraft/class_1309;)Z"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/WitherBossMixin": {
+      "Lnet/minecraft/world/entity/boss/wither/WitherBoss;canDestroy(Lnet/minecraft/world/level/block/state/BlockState;)Z": "Lnet/minecraft/class_1528;method_6883(Lnet/minecraft/class_2680;)Z",
+      "customServerAiStep": "Lnet/minecraft/class_1528;method_5958()V"
+    },
+    "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/WitherSkullMixin": {
+      "Lnet/minecraft/world/entity/projectile/WitherSkull;isDangerous()Z": "Lnet/minecraft/class_1687;method_7503()Z",
+      "getBlockExplosionResistance": "Lnet/minecraft/class_1687;method_5774(Lnet/minecraft/class_1927;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_3610;F)F"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "net/p3pp3rf1y/sophisticatedbackpacks/compat/litematica/mixin/MaterialListUtilsMixin": {
+        "getInventoryItemCounts": "Lfi/dy/masa/litematica/materials/MaterialListUtils;getInventoryItemCounts(Lnet/minecraft/class_1263;)Lit/unimi/dsi/fastutil/objects/Object2IntOpenHashMap;"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/client/ItemInHandRendererMixin": {
+        "Lnet/minecraft/client/player/LocalPlayer;getAttackStrengthScale(F)F": "Lnet/minecraft/class_746;method_7261(F)F",
+        "tick": "Lnet/minecraft/class_759;method_3220()V"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/CreeperMixin": {
+        "Lnet/minecraft/world/level/Level;explode(Lnet/minecraft/world/entity/Entity;DDDFLnet/minecraft/world/level/Level$ExplosionInteraction;)Lnet/minecraft/world/level/Explosion;": "Lnet/minecraft/class_1937;method_8437(Lnet/minecraft/class_1297;DDDFLnet/minecraft/class_1937$class_7867;)Lnet/minecraft/class_1927;",
+        "explodeCreeper": "Lnet/minecraft/class_1548;method_7006()V"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/EnderDragonMixin": {
+        "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z": "Lnet/minecraft/class_2680;method_26164(Lnet/minecraft/class_6862;)Z",
+        "checkWalls": "Lnet/minecraft/class_1510;method_6821(Lnet/minecraft/class_238;)Z"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/ExplosionDamageCalculatorMixin": {
+        "getBlockExplosionResistance": "Lnet/minecraft/class_5362;method_29555(Lnet/minecraft/class_1927;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_3610;)Ljava/util/Optional;"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/PiglinAiMixin": {
+        "isWearingGold": "Lnet/minecraft/class_4838;method_24719(Lnet/minecraft/class_1309;)Z"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/WitherBossMixin": {
+        "Lnet/minecraft/world/entity/boss/wither/WitherBoss;canDestroy(Lnet/minecraft/world/level/block/state/BlockState;)Z": "Lnet/minecraft/class_1528;method_6883(Lnet/minecraft/class_2680;)Z",
+        "customServerAiStep": "Lnet/minecraft/class_1528;method_5958()V"
+      },
+      "net/p3pp3rf1y/sophisticatedbackpacks/mixin/common/WitherSkullMixin": {
+        "Lnet/minecraft/world/entity/projectile/WitherSkull;isDangerous()Z": "Lnet/minecraft/class_1687;method_7503()Z",
+        "getBlockExplosionResistance": "Lnet/minecraft/class_1687;method_5774(Lnet/minecraft/class_1927;Lnet/minecraft/class_1922;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_3610;F)F"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "required": true,
+  "package": "noobanidus.mods.lootr.common.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "accessor.AccessorMixinBaseContainerBlockEntity",
+    "accessor.AccessorMixinBlock",
+    "accessor.AccessorMixinBrushableBlockEntity",
+    "accessor.AccessorMixinChunkMap",
+    "accessor.AccessorMixinDimensionDataStorage",
+    "accessor.AccessorMixinFallingBlockEntity",
+    "accessor.AccessorMixinItemFrame",
+    "accessor.AccessorMixinLootTable",
+    "accessor.AccessorMixinMinecraftServer",
+    "brushing.MixinBrushItem",
+    "cat.MixinCatSitOnBlockGoal",
+    "chest_blocking.MixinChestBlock",
+    "elytra.MixinEndCityPieces$EndCityPiece",
+    "falling.MixinFallingBlockEntity",
+    "filter.MixinLootTable",
+    "lock.MixinBaseContainerBlockEntity",
+    "poi.MixinPoiType",
+    "poi.MixinPoiTypes",
+    "spawn.MixinServerGamePacketListenerImpl",
+    "structure_saving.MixinStructureTemplate",
+    "ticker.MixinBrushableBlockEntity",
+    "ticker.MixinLevelChunk",
+    "ticker.MixinRandomizableContainer",
+    "ticker.MixinStructureTemplate"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8",
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  }
+}

@@ -1,0 +1,20 @@
+accessWidener	v2	intermediary
+accessible	field	net/minecraft/class_4895	field_45497	Lorg/joml/Vector3f;
+accessible	field	net/minecraft/class_4895	field_42048	Lorg/joml/Quaternionf;
+accessible	field	net/minecraft/class_4895	field_42056	Ljava/util/List;
+accessible	field	net/minecraft/class_4895	field_42055	Lnet/minecraft/class_2561;
+accessible	field	net/minecraft/class_4895	field_42054	Lnet/minecraft/class_2561;
+accessible	method	net/minecraft/class_806	<init>	()V
+accessible	method	net/minecraft/class_918	method_23182	(Lnet/minecraft/class_1087;Lnet/minecraft/class_1799;IILnet/minecraft/class_4587;Lnet/minecraft/class_4588;)V
+accessible	field	net/minecraft/class_1542	field_7202	I
+extendable	method	net/minecraft/class_4861	method_48358	(I)Lnet/minecraft/class_1277;
+extendable	method	net/minecraft/class_4861	method_48354	(Lnet/minecraft/class_8047;)V
+extendable	method	net/minecraft/class_4861	method_48355	(Lnet/minecraft/class_8047;)V
+accessible	field	net/minecraft/class_4862	field_25386	Lnet/minecraft/class_8786;
+accessible	field	net/minecraft/class_8060	field_42032	Lnet/minecraft/class_1856;
+accessible	field	net/minecraft/class_8060	field_42031	Lnet/minecraft/class_1856;
+accessible	field	net/minecraft/class_8060	field_42033	Lnet/minecraft/class_1799;
+accessible	field	net/minecraft/class_8060	field_42030	Lnet/minecraft/class_1856;
+accessible	field	net/minecraft/class_1826	field_8914	Ljava/util/Map;
+accessible	field	net/minecraft/class_52	field_944	Ljava/util/List;
+accessible	field	net/minecraft/class_52	field_943	Ljava/util/List;

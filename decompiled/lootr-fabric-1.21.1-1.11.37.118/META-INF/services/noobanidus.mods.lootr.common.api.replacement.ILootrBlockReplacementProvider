@@ -1,0 +1,7 @@
+noobanidus.mods.lootr.common.impl.replacement.BarrelReplacementProvider
+noobanidus.mods.lootr.common.impl.replacement.ChestReplacementProvider
+noobanidus.mods.lootr.common.impl.replacement.GravelReplacementProvider
+noobanidus.mods.lootr.common.impl.replacement.PotReplacementProvider
+noobanidus.mods.lootr.common.impl.replacement.SandReplacementProvider
+noobanidus.mods.lootr.common.impl.replacement.ShulkerReplacementProvider
+noobanidus.mods.lootr.common.impl.replacement.TrappedChestReplacementProvider
