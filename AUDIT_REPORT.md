@@ -704,3 +704,82 @@ Shape N's classic red flag — *"custom invulnerable ItemEntity that never despa
 - **Updated rule-4 statement**: as of this pass, H-01 remains the only CONFIRMED dupe in the surfaces traced. H-05 and H-07 are now closed at NONE (solo). H-18/H-19/H-20/H-21 add additional NONE verdicts for shapes B, I, J, N respectively — but these verdicts are scoped to the files listed above, not to the full mods. A future pass should still execute shapes F, K, L, M, U, V, W, X, Y, Z.
 - **Still deferred**: Phase 2 (external trackers), Phase 5 (JAR bytecode diff), H-08/H-09 (Lootr block-drop with NBT preservation), H-10 (loot-table modification chain), and shapes F/K/L/M/U/V/W/X/Y/Z. Two-player surfaces are still closed at their Pass 1 verdict.
 - **Auditor**: Devin (session `863e86d89f9a493a872fe1a7a32246b0`).
+
+---
+
+## Appendix C — Pass 3 (H-08/H-09 Lootr NBT pickup loop, Shape L backpack tier upgrade)
+
+**Scope this pass**: solo-reproducible only. User explicitly selected these two surfaces after Pass 2 returned no solo dupes. Every verdict below is surface-scoped; rule 4 still applies.
+
+---
+
+### H-22 — Lootr block break does NOT preserve per-player loot state (H-08/H-09)
+
+- **Shape**: H-08/H-09 — NBT-preserving pickup loop (break block → receive item carrying `infoId` → replace → fresh `hasBeenOpened`, same loot-table contents).
+- **Files**:
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/data/lootr/loot_table/blocks/lootr_chest.json:11-24`
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/data/lootr/loot_table/blocks/lootr_barrel.json:11-24`
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/data/lootr/loot_table/blocks/lootr_inventory.json:11-24`
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/data/lootr/loot_table/blocks/lootr_shulker.json:11-24`
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/data/lootr/loot_table/blocks/lootr_trapped_chest.json:11-24`
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/noobanidus/mods/lootr/common/block/LootrChestBlock.java:113-118` (`method_9556` / `playerDestroy`)
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/noobanidus/mods/lootr/common/block/LootrInventoryBlock.java:131-136` (same pattern)
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/noobanidus/mods/lootr/common/impl/DefaultLootrAPIImpl.java:362-373` (`playerDestroyed`)
+  - `decompiled/lootr-fabric-1.21.1-1.11.37.118/noobanidus/mods/lootr/common/data/DataStorage.java:196-199` / `LootrSavedData.java:150-165` (`getInventory` / `createInventory`)
+
+**Trace:**
+
+1. Every in-scope Lootr block's loot table emits a **vanilla block item** (`name`: `minecraft:chest` / `minecraft:barrel` / `minecraft:trapped_chest` / `minecraft:shulker_box`; `lootr_inventory` emits `minecraft:chest`). The `minecraft:copy_components` function's `include` list is limited to `minecraft:custom_name`. **No `infoId`, no storage reference, no `hasBeenOpened` data is copied onto the dropped item.**
+2. `LootrChestBlock.method_9556` (lines `:113-118`) runs `super.method_9556(...)` first — this is the path that consults the loot table and drops the vanilla chest at the break position. It then calls `LootrAPI.playerDestroyed(...)`.
+3. `DefaultLootrAPIImpl.playerDestroyed` (lines `:362-373`):
+   - Guarded by `shouldDropPlayerLoot()` (config; `ConfigManager.get().breaking.should_drop_player_loot`) and `canDropContentsWhenBroken()` (BE-level flag).
+   - Calls `getInventory(inventory, serverPlayer, inventory.getDefaultFiller(), null)` → `DataStorage.getInventory` → `LootrSavedData.getOrCreateInventory`. If the breaker has already opened and taken items, this returns the *existing* live inventory; if they have not opened, it creates and fills a fresh per-player inventory on the spot.
+   - Calls `class_1264.method_5451(level, pos, inventoryx)` which spills **all** remaining items in that inventory into the world as `class_1542`.
+4. Net item accounting for a single player in a single break-open cycle: items already drawn via GUI open + items dumped by `method_5451` = items originally rolled by the loot table. One loot roll in → one loot roll out. **No duplication.**
+5. Re-placing the dropped vanilla block creates a new Lootr BE with a **new** `infoId` (constructed fresh in `method_10123`). The old `LootrSavedData` keyed by the prior `infoId` is orphaned (not pointed at by any BE) but has no path to become accessible again without a second break + same coordinate coincidence that is not `infoId`-linked.
+
+**Verdict: NONE (solo)**
+
+**Rationale**: the shipped Lootr loot tables do not preserve any per-container identity data on the dropped item, so the classic "break-and-replace for a fresh roll of the same container" loop is impossible under the shipped data. `playerDestroyed` dumps the player's remaining per-player inventory, but those items are the un-taken remainder of the single roll that was already generated for them — not a second roll. No solo duplication path.
+
+**Not verified**: a third-party mod (wrench/carry-on/framed blocks/etc.) that overrides the pickup path and preserves BlockEntity NBT *as an item component* could re-open this surface. Out of scope for the four-mod audit.
+
+---
+
+### H-23 — Backpack tier upgrade / smithing upgrade does not produce a duplicate (Shape L)
+
+- **Shape**: L — tier-upgrade / contents-transfer recipe leaves both the source and the upgraded result with contents.
+- **Files**:
+  - `decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/crafting/BackpackUpgradeRecipe.java:32-39` (shaped crafting-table upgrade)
+  - `decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/crafting/SmithingBackpackUpgradeRecipe.java:29-38` (smithing-table netherite upgrade)
+  - `decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/backpack/BackpackItem.java:78-85` (`class_1793().method_7889(1)` — max stack size 1)
+  - `decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/backpack/wrapper/BackpackWrapper.java:91-93` (`fromStack` resolves wrapper by `STORAGE_UUID` component)
+  - `decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/backpack/wrapper/BackpackWrapper.java:284-298` (`getContentsUuid` / `getOrCreateContentsUuid` — UUID is stack-component, created lazily)
+  - `decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/backpack/wrapper/BackpackWrapper.java:448-457` (`setContentsUuid` / `removeContentsUuid`)
+
+**Trace:**
+
+1. **Crafting-table tier upgrade** — `BackpackUpgradeRecipe.method_17727`:
+   - Line `:33` calls `super.method_17727(inv, registries)` → gets the recipe's declared result `class_1799` (a fresh stack of the target-tier `BackpackItem`).
+   - Line `:34` `this.getBackpack(inv).map(class_1799::method_57353).ifPresent(upgradedBackpack::method_57365);` — copies the source backpack's **`ComponentPatch`** (via `getComponentsPatch` → `applyComponents`) onto the result, including `ModCoreDataComponents.STORAGE_UUID`. Result now carries the **same UUID** as the source.
+   - Lines `:35-37` recreate a `BackpackWrapper` from the result and call `wrapper.setSlotNumbers(...)` to rewrite slot counts for the new tier. Because the UUID is shared, this wrapper points at the same world-global `BackpackStorage` entry as the source wrapper. The slot-count change mutates the shared storage.
+2. **Smithing-table (netherite) upgrade** — `SmithingBackpackUpgradeRecipe.method_60000` (`:29-38`): same pattern (`method_7972` the result, copy components, wrap, setSlotNumbers).
+3. **Input consumption**: `BackpackItem` sets `class_1793().method_7889(1)` in its constructor (`BackpackItem.java:81`) so the source stack can only be size 1. Grepping the entire SBP decompile for `method_7857` / `CraftingRemainder` / `hasCraftingRemaining` / `getRecipeRemainder` returns **zero matches** → no crafting-remainder override on `BackpackItem`. Vanilla `ResultSlot.method_7667` therefore decrements every input slot by 1 with no replacement item. The source backpack is fully consumed at the moment the result is taken.
+4. **Both-exist scenario (defensive check)**: Even if a hypothetical menu-state glitch let the source remain alongside the result, both stacks would carry the **same `STORAGE_UUID`** component and `BackpackWrapper.fromStack` (`:91-93`) resolves both to the **same** `BackpackStorage` entry. Opening either one would see and mutate the same contents — zero net duplication of items.
+5. The recipe does not touch `EMPTY_BACKPACK_PROVIDER` / `removeContentsUuid` on the source between copy and consume, so there is no window where the source and result hold disjoint storages with the same UUID.
+
+**Verdict: NONE (solo)**
+
+**Rationale**: the upgrade recipe is structurally safe against duplication under the shipped code path. UUID-sharing means a single `BackpackStorage` entry is referenced from any number of stacks bearing the same component, so item-count across stacks is constant regardless of how many stacks exist. No crafting remainder override exists, so input consumption is unconditional. Smithing follows the same pattern.
+
+**Not verified**: JEI / REI / recipe-book *transfer* shortcuts that populate and immediately take the result slot were not traced. They would still be routed through the same `ResultSlot.onTake` with the same `ComponentPatch` copy, so the same reasoning applies, but the transfer path was not directly read in this pass.
+
+---
+
+### Pass 3 closing notes
+
+- **H-22 (Lootr NBT-pickup loop) — NONE (solo).** This closes the largest still-open family of solo shapes from Pass 1/2. Under the shipped loot tables, breaking a Lootr block cannot carry its per-player state to a newly placed block.
+- **H-23 (Shape L backpack tier upgrade) — NONE (solo).** The upgrade recipe preserves the `STORAGE_UUID` component, not the items themselves; result and source share storage transiently, source is consumed, no double-roll.
+- **Running solo-dupe total across Pass 1+2+3**: **zero confirmed, zero probable.** H-01 remains the only confirmed dupe in the surfaces traced, and it is explicitly two-player.
+- **Rule 4 restated**: this audit has now traced shapes A, B, D, G, H, I, J, L, N, plus H-08/H-09 and H-10-adjacent surfaces. Shapes **F, K, M, U, V, W, X, Y, Z** and Phase 2 (external trackers) / Phase 5 (JAR↔source bytecode diff) remain un-executed. A solo dupe could still hide there — this audit has NOT proven the four-mod stack dupe-free, only that the surfaces enumerated above do not contain one.
+- **Auditor**: Devin (session `863e86d89f9a493a872fe1a7a32246b0`).
