@@ -991,3 +991,142 @@ H-01 remains the only confirmed dupe in the surfaces traced, and it is two-playe
 
 **Rule 4 restated**: Phase 2 narrowed the un-traced surface but did not empty it. Shapes **F, M, U, V, W, X, Y, Z**, Phase 5 (JAR↔source bytecode diff), and H-25/H-26/H-28 code-trace remain un-executed.
 
+---
+
+## Appendix F — Pass 5 (H-26 code trace: Inception save-dirty propagation)
+
+**Scope**: Trace whether interior edits on a nested (inception) sub-backpack in SBP 3.23.4.3.106 correctly propagate `setDirty()` up through the handler chain to mark the singleton `BackpackStorage` SavedData dirty for persistence. Triggered by E-8 (SBP#1650, open, reporter's "rollback" symptom on 3.25.31). Files of record: SCore 1.2.9.21.168, SBP 3.23.4.3.106.
+
+### F.1 Chain of custody — what actually runs when a sub-backpack's interior is edited
+
+Start from an Advanced-Magnet-Upgrade pulling an item into a nested sub-backpack (the reporter's exact setup). The item-handler call stack:
+
+**Step 1 — Inception entry point.** `InceptionInventoryHandler.insertItem(int slot, class_1799 stack, boolean simulate)` at `sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/.../upgrades/inception/InceptionInventoryHandler.java:71-74` delegates to `this.combinedInventories.insertItem(slot, stack, simulate)`. `combinedInventories` is a `CombinedInvWrapper` built in the constructor at `:42` via `this.subBackpacksHandler.getSubBackpacks().forEach(sbp -> this.handlers.add(sbp.getInventoryForInputOutput()))`.
+
+**Step 2 — CombinedInvWrapper routing.** `CombinedInvWrapper.setStackInSlot` / `insertSlot` / `extractSlot` (`sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/.../util/CombinedInvWrapper.java:59-121`) just maps the slot index to the correct underlying handler and delegates. No memory of its own, no listener registrations, no dirty tracking. Pure router.
+
+**Step 3 — Sub-backpack's InventoryIOHandler.** The per-sub-backpack handler obtained by `sbp.getInventoryForInputOutput()` at `sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/.../backpack/wrapper/BackpackWrapper.java:158-164` is an `InventoryIOHandler` (lazy-created, cached per sub-wrapper). Its `getFilteredItemHandler()` returns either `storageWrapper.getInventoryForUpgradeProcessing()` directly (no I/O filters) or a `FilteredItemHandler.Modifiable` wrapping it (`sophisticatedcore-1.21.1-1.2.9.21.168/net/.../inventory/InventoryIOHandler.java:12-22`).
+
+**Step 4 — Sub-backpack's InventoryModificationHandler.** `getInventoryForUpgradeProcessing()` at `BackpackWrapper.java:108-114` returns `new InventoryModificationHandler(this).getModifiedInventoryHandler()`. That in turn at `InventoryModificationHandler.java:16-22` calls `this.backpackWrapper.getInventoryHandler()` — the critical line, because this is where the sub-backpack's STORAGE_UUID is auto-allocated if absent.
+
+**Step 5 — Sub-backpack's BackpackInventoryHandler construction.** `BackpackWrapper.getInventoryHandler()` at `BackpackWrapper.java:116-128`:
+
+```java
+public InventoryHandler getInventoryHandler() {
+   if (this.handler == null) {
+      this.handler = new BackpackInventoryHandler(
+         this.getNumberOfInventorySlots() - this.getNumberOfSlotRows() * this.getColumnsTaken(), this, this.getBackpackContentsNbt(), () -> {
+            this.markBackpackContentsDirty();
+            this.inventorySlotChangeHandler.run();
+         }, StackUpgradeItem.getInventorySlotLimit(this)
+      );
+      this.handler.addListener(((ItemDisplaySettingsCategory)this.getSettingsHandler().getTypeCategory(ItemDisplaySettingsCategory.class))::itemChanged);
+   }
+   return this.handler;
+}
+```
+
+Two things happen here:
+- `getBackpackContentsNbt()` at `:150-152` calls `BackpackStorage.get().getOrCreateBackpackContents(this.getOrCreateContentsUuid())`. This returns a **live reference** to `BackpackStorage.backpackContents.get(subUuid)` — the same `class_2487` that BackpackStorage serializes to disk. Mutations to that tag are automatically visible to BackpackStorage's save path.
+- The `saveHandler` Runnable passed into the handler constructor captures `this.markBackpackContentsDirty()` — which at `:154-156` is exactly `BackpackStorage.get().method_80()` (`class_18.setDirty()`).
+
+**Step 6 — onContentsChanged → saveInventory → setDirty.** Every mutation (insertItem, extractItem, setStackInSlot) on the sub-backpack's handler ultimately routes through `InventoryHandler.onContentsChanged(int slot)` at `sophisticatedcore-1.21.1-1.2.9.21.168/net/.../inventory/InventoryHandler.java:112-118`:
+
+```java
+public void onContentsChanged(int slot) {
+   super.onContentsChanged(slot);
+   if (this.persistent && this.updateSlotNbt(slot)) {
+      this.saveInventory();
+      this.triggerOnChangeListeners(slot);
+   }
+}
+```
+
+`saveInventory()` at `InventoryHandler.java:475-482`:
+
+```java
+public void saveInventory() {
+   RegistryHelper.getRegistryAccess().ifPresent(registryAccess -> this.contentsNbt.method_10566("inventory", this.serializeNBT(registryAccess)));
+   if (this.inventoryPartitioner != null) {
+      this.contentsNbt.method_10566("partitioner", this.inventoryPartitioner.serializeNBT());
+   }
+   this.saveHandler.run();
+}
+```
+
+This writes the serialized `"Items"` list into `contentsNbt` (the live reference from Step 5 into `BackpackStorage.backpackContents[subUuid]`), **then** executes `saveHandler.run()` = the lambda from Step 5 = `markBackpackContentsDirty()` + `inventorySlotChangeHandler.run()`.
+
+**Step 7 — BackpackStorage is marked dirty.** `markBackpackContentsDirty()` → `BackpackStorage.get().method_80()`. `BackpackStorage` extends `class_18` (SavedData). `method_80()` is `class_18.setDirty()` — the standard vanilla flag that causes the world's DimensionDataStorage to persist this SavedData on next autosave / world unload.
+
+**Conclusion F.1**: The save-dirty chain for sub-backpack interior edits is **fully wired** in 3.23.4.3.106. Every interior edit via inception propagates to `BackpackStorage.setDirty()`. The hypothesis that "H-26 is a broken save chain" is **structurally false** against this code.
+
+### F.2 What about the outer BackpackStorage entry?
+
+The sub-backpack and outer backpack each have their own STORAGE_UUID → their own `BackpackStorage.backpackContents[uuid]` entry. The singleton `BackpackStorage` SavedData is ONE data file containing ALL UUIDs. `method_80()` marks the singleton dirty, not an individual UUID. On next save, the entire map is written. So:
+
+- Sub-backpack's edit calls sub-backpack-wrapper's `markBackpackContentsDirty()` → `BackpackStorage.method_80()` → whole map persists → **sub-backpack's entry AND outer backpack's entry both get written to disk together**.
+- The outer backpack's entry is written in whatever state its own `contentsNbt` is in at save time. That `contentsNbt` is also a live reference from `BackpackStorage.backpackContents[outerUuid]`, mutated only when the outer's OWN `onContentsChanged` fires (via `SubBackpacksHandler.onContentsChanged` at `SubBackpacksHandler.java:35-46`, which only fires when the outer's slot value changes — i.e., sub-backpack added/removed/swapped, NOT on sub-backpack interior edits).
+
+**This is not a dupe** — both UUIDs' contents are on disk correctly. Sub-backpack edits are persisted. Outer backpack's metadata (the stack it holds in its slot) is only re-serialized on outer-slot change, but that's fine because the outer's slot stack itself hasn't changed — it's still "the sub-backpack item with STORAGE_UUID = X", which is the same identity regardless of what's inside UUID X's contents.
+
+### F.3 The real pre-3.24.16.1269 bug (ITEM LOSS, not dupe)
+
+There IS a real bug in our 3.23.4.3.106 pre-dating the 3.24.16.1269 changelog line "Fixed backpacks nested in another backpack with inception upgrade to properly save their contents id if they haven't been open before being put into the main backpack. Prevents item loss in that case."
+
+**Mechanism**:
+1. Player puts a **fresh** backpack F (no `STORAGE_UUID` data component yet) into outer O's slot via a direct slot click. O's `SubBackpacksHandler.onContentsChanged(slot)` fires (outer slot changed). O's outer handler's `onContentsChanged` → `saveInventory()` → serializes F's current stack NBT (no UUID) into O's cached `stackNbts[slot]` and writes it into `BackpackStorage.backpackContents[outerUuid]["inventory"]["Items"]`.
+2. Later, something accesses F through inception — e.g., Advanced Magnet Upgrade auto-pulls an item, or the player opens O's UI which constructs `InceptionInventoryHandler` which calls `sbp.getInventoryForInputOutput()` on F, which (via Steps 3-5 above) calls F's `getOrCreateContentsUuid()`. F's stack data components are mutated in place: UUID=X is now attached to F's stack. `BackpackStorage.backpackContents[X]` is created.
+3. Items go into `BackpackStorage.backpackContents[X]`. `BackpackStorage.method_80()` fires. Save tick: both entries persist — but O's `contentsNbt` still has F serialized WITHOUT UUID (from step 1; F's stack-data-component mutation did NOT trigger O's `onContentsChanged`, because the outer slot's stack object is the same reference).
+4. World autosaves. On disk: `backpackContents[outerUuid]["inventory"]["Items"]` contains F-with-no-UUID. `backpackContents[X]` contains the items.
+5. World reload. O's BackpackInventoryHandler deserializes F from `"Items"` as a fresh no-UUID stack. Next access creates a NEW UUID Y ≠ X. `BackpackStorage.backpackContents[Y]` is empty. `[X]` is orphaned.
+
+**Net effect**: items go missing on reload. No items duplicated. Orphan entry `[X]` is not reachable from any stack (no surviving reference), and `BackpackStorage.removeNonPlayerBackpackContents` will eventually GC it.
+
+**Why this is NOT a dupe**: no item count ever increases. This is LOSS, not GAIN. The reporter's phrasing "rollback" matches this exactly — they lose items on reload, items don't appear elsewhere.
+
+### F.4 Ctrl+Q path inspection (reporter's specific claim)
+
+Reporter: "I was pressing and holding `CTRL` + `Q` to remove items in bulk... The items never actually dropped on the ground."
+
+`class_1713.field_7795` = vanilla `ClickType.THROW` (Ctrl+Q). Handled in `StorageContainerMenuBase.method_30010` at `sophisticatedcore-1.21.1-1.2.9.21.168/net/.../common/gui/StorageContainerMenuBase.java:1247-1251`:
+
+```java
+} else if (clickType == class_1713.field_7795 && this.method_34255().method_7960() && slotId >= 0) {
+   class_1735 slot4 = this.method_7611(slotId);
+   int i1 = dragType == 0 ? 1 : slot4.method_7677().method_7947();
+   class_1799 itemstack8 = slot4.method_32753(i1, slot4.method_7677().method_7914(), player);
+   player.method_7328(itemstack8, true);
+}
+```
+
+This is a Ctrl+Q INSIDE the sub-backpack's own `BackpackContainer` (the nested bag's UI, not the outer's). Crucial: a sub-backpack's menu binds its storage slots to the SUB's own InventoryHandler (`StorageInventorySlot` at `sophisticatedcore-1.21.1-1.2.9.21.168/net/.../common/gui/StorageInventorySlot.java:15-21` constructs with `storageWrapper::getInventoryHandler` where `storageWrapper` is the sub-backpack's own `BackpackWrapper`). `method_32753` → vanilla `Slot.remove(int, int, Player)` → `method_7671(amount)` (`Slot.remove(int)`) → `SlotItemHandler.remove()` → `handler.extractItem(slot, amount, false)`.
+
+That routes through the sub-backpack's `InventoryHandler.extractItem` → mutates slot → fires `onContentsChanged` → Step 6/7 above → BackpackStorage marked dirty. The extracted stack is returned and `player.method_7328(itemstack8, true)` drops it as an ItemEntity.
+
+**No dupe vector here**. The reporter's "items never dropped" symptom — if it really happens — would be either:
+- A client-server desync (client shows empty slot, server still has full stack, no ItemEntity spawned). This is a SYNC bug, not a dupe.
+- A sub-backpack in the bugged state of F.3 where the sub-UUID-less outer serialization means the dropped ItemEntity's stack has the wrong UUID or no UUID → player picks up a bag appearing empty. Still ITEM LOSS, not gain.
+
+Neither produces a duplicated item.
+
+### F.5 Verdict
+
+**H-26: NONE (no solo dupe in our shipped 3.23.4.3.106).**
+
+Kill-shot, in three lines:
+
+1. `BackpackWrapper.java:116-128` constructs every backpack's `InventoryHandler` with a save-handler Runnable that calls `markBackpackContentsDirty()` on every `onContentsChanged`.
+2. `BackpackWrapper.java:154-156` is that method: `BackpackStorage.get().method_80()` — unconditionally sets the singleton SavedData dirty.
+3. `InventoryHandler.java:112-118` + `:475-482` wire every slot mutation through `onContentsChanged → saveInventory → saveHandler.run()`. The sub-backpack's contents-NBT is a live reference into `BackpackStorage.backpackContents[subUuid]`, so edits are persisted in the next save cycle.
+
+The reporter's SBP#1650 "rollback" symptom matches the **item-loss** bug described by the 3.24.16.1269 changelog, not a dupe. Our version has that item-loss bug (unfixed), but it loses items rather than duplicating them: the orphaned `backpackContents[X]` entry cannot be re-associated with any stack after reload because no stack has the matching UUID anymore.
+
+**Running solo-dupe total across Pass 1+2+3+4+Phase 2+Pass 5: zero confirmed.** H-01 remains the only confirmed dupe and is two-player.
+
+### F.6 What this trace does NOT cover (rule 4)
+
+- The actual item-loss bug of F.3 could be surfaced as a separate finding for the user's attention — it is a real defect in the shipped pack — but it is out of scope for the dupe audit.
+- I did not attempt to bypass the UUID creation by forcing the sub-backpack through pick-block / `/give` / creative-inventory copy paths while nested. `class_1799.method_7972()` (stack copy) preserves the STORAGE_UUID data component, so vanilla stack copies of an existing sub-backpack produce same-UUID siblings that share backing storage (by design, not a dupe).
+- I did not trace the `InceptionWrapperAccessor`, `InceptionFluidHandler`, or `InceptionEnergyStorage` — they are peripheral to the inventory save chain and operate on fluid/energy storage which is unrelated to the reporter's item-dupe claim.
+- Shapes **F, M, U, V, W, X, Y, Z** and Phase 5 (JAR↔source bytecode diff) remain un-executed.
+
