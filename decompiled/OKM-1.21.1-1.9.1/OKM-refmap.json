@@ -1,0 +1,18 @@
+{
+  "mappings": {
+    "cn/enaium/onekeyminer/mixin/ServerPlayerInteractionManagerMixin": {
+      "Lnet/minecraft/item/ItemStack;useOnBlock(Lnet/minecraft/item/ItemUsageContext;)Lnet/minecraft/util/ActionResult;": "Lnet/minecraft/class_1799;method_7981(Lnet/minecraft/class_1838;)Lnet/minecraft/class_1269;",
+      "finishMining": "Lnet/minecraft/class_3225;method_21717(Lnet/minecraft/class_2338;ILjava/lang/String;)V",
+      "interactBlock": "Lnet/minecraft/class_3225;method_14262(Lnet/minecraft/class_3222;Lnet/minecraft/class_1937;Lnet/minecraft/class_1799;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "cn/enaium/onekeyminer/mixin/ServerPlayerInteractionManagerMixin": {
+        "Lnet/minecraft/item/ItemStack;useOnBlock(Lnet/minecraft/item/ItemUsageContext;)Lnet/minecraft/util/ActionResult;": "Lnet/minecraft/class_1799;method_7981(Lnet/minecraft/class_1838;)Lnet/minecraft/class_1269;",
+        "finishMining": "Lnet/minecraft/class_3225;method_21717(Lnet/minecraft/class_2338;ILjava/lang/String;)V",
+        "interactBlock": "Lnet/minecraft/class_3225;method_14262(Lnet/minecraft/class_3222;Lnet/minecraft/class_1937;Lnet/minecraft/class_1799;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+      }
+    }
+  }
+}

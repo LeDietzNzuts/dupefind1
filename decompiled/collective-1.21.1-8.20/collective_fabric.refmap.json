@@ -1,0 +1,414 @@
+{
+  "mappings": {
+    "com/natamus/collective/fabric/mixin/AbstractFurnaceBlockEntityMixin": {
+      "getBurnDuration": "Lnet/minecraft/class_2609;method_11200(Lnet/minecraft/class_1799;)I"
+    },
+    "com/natamus/collective/fabric/mixin/AbstractHorseMixin": {
+      "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;setIsJumping(Z)V": "Lnet/minecraft/class_1496;method_6758(Z)V",
+      "tickRidden": "Lnet/minecraft/class_1496;method_49481(Lnet/minecraft/class_1657;Lnet/minecraft/class_243;)V"
+    },
+    "com/natamus/collective/fabric/mixin/AnimalMixin": {
+      "Lnet/minecraft/world/entity/animal/Animal;getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/AgeableMob;": "Lnet/minecraft/class_1429;method_5613(Lnet/minecraft/class_3218;Lnet/minecraft/class_1296;)Lnet/minecraft/class_1296;",
+      "spawnChildFromBreeding": "Lnet/minecraft/class_1429;method_24650(Lnet/minecraft/class_3218;Lnet/minecraft/class_1429;)V"
+    },
+    "com/natamus/collective/fabric/mixin/AnvilMenuMixin": {
+      "createResult()V": "Lnet/minecraft/class_1706;method_24928()V"
+    },
+    "com/natamus/collective/fabric/mixin/BaseSpawnerMixin": {
+      "Lnet/minecraft/world/entity/Mob;checkSpawnObstruction(Lnet/minecraft/world/level/LevelReader;)Z": "Lnet/minecraft/class_1308;method_5957(Lnet/minecraft/class_4538;)Z",
+      "serverTick(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;)V": "Lnet/minecraft/class_1917;method_31588(Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;)V"
+    },
+    "com/natamus/collective/fabric/mixin/BlockEntityMixin": {
+      "setLevel(Lnet/minecraft/world/level/Level;)V": "Lnet/minecraft/class_2586;method_31662(Lnet/minecraft/class_1937;)V",
+      "setRemoved()V": "Lnet/minecraft/class_2586;method_11012()V"
+    },
+    "com/natamus/collective/fabric/mixin/BlockItemMixin": {
+      "place": "Lnet/minecraft/class_1747;method_7712(Lnet/minecraft/class_1750;)Lnet/minecraft/class_1269;"
+    },
+    "com/natamus/collective/fabric/mixin/BlockMixin": {
+      "playerDestroy": "Lnet/minecraft/class_2248;method_9556(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_2586;Lnet/minecraft/class_1799;)V"
+    },
+    "com/natamus/collective/fabric/mixin/BoneMealItemMixin": {
+      "growCrop(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z": "Lnet/minecraft/class_1752;method_7720(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;)Z",
+      "useOn": "Lnet/minecraft/class_1752;method_7884(Lnet/minecraft/class_1838;)Lnet/minecraft/class_1269;"
+    },
+    "com/natamus/collective/fabric/mixin/BowItemMixin": {
+      "Lnet/minecraft/world/entity/player/Player;hasInfiniteMaterials()Z": "Lnet/minecraft/class_1657;method_56992()Z",
+      "use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;": "Lnet/minecraft/class_1753;method_7836(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1271;"
+    },
+    "com/natamus/collective/fabric/mixin/ChatListenerMixin": {
+      "showMessageToPlayer": "Lnet/minecraft/class_7594;method_44943(Lnet/minecraft/class_2556$class_7602;Lnet/minecraft/class_7471;Lnet/minecraft/class_2561;Lcom/mojang/authlib/GameProfile;ZLjava/time/Instant;)Z"
+    },
+    "com/natamus/collective/fabric/mixin/ClientLevelMixin": {
+      "<init>(Lnet/minecraft/client/multiplayer/ClientPacketListener;Lnet/minecraft/client/multiplayer/ClientLevel$ClientLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/Holder;IILjava/util/function/Supplier;Lnet/minecraft/client/renderer/LevelRenderer;ZJ)V": "Lnet/minecraft/class_638;<init>(Lnet/minecraft/class_634;Lnet/minecraft/class_638$class_5271;Lnet/minecraft/class_5321;Lnet/minecraft/class_6880;IILjava/util/function/Supplier;Lnet/minecraft/class_761;ZJ)V"
+    },
+    "com/natamus/collective/fabric/mixin/CreateWorldScreenMixin": {
+      "Lnet/minecraft/client/gui/screens/worldselection/WorldOpenFlows;confirmWorldCreation(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/worldselection/CreateWorldScreen;Lcom/mojang/serialization/Lifecycle;Ljava/lang/Runnable;Z)V": "Lnet/minecraft/class_7196;method_41892(Lnet/minecraft/class_310;Lnet/minecraft/class_525;Lcom/mojang/serialization/Lifecycle;Ljava/lang/Runnable;Z)V",
+      "onCreate": "Lnet/minecraft/class_525;method_2736()V"
+    },
+    "com/natamus/collective/fabric/mixin/EntityTypeMixin": {
+      "Lnet/minecraft/server/level/ServerLevel;addFreshEntityWithPassengers(Lnet/minecraft/world/entity/Entity;)V": "Lnet/minecraft/class_3218;method_30771(Lnet/minecraft/class_1297;)V",
+      "spawn(Lnet/minecraft/server/level/ServerLevel;Ljava/util/function/Consumer;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/MobSpawnType;ZZ)Lnet/minecraft/world/entity/Entity;": "Lnet/minecraft/class_1299;method_5899(Lnet/minecraft/class_3218;Ljava/util/function/Consumer;Lnet/minecraft/class_2338;Lnet/minecraft/class_3730;ZZ)Lnet/minecraft/class_1297;"
+    },
+    "com/natamus/collective/fabric/mixin/ExplosionMixin": {
+      "explode()V": "Lnet/minecraft/class_1927;method_8348()V"
+    },
+    "com/natamus/collective/fabric/mixin/FishingRodHookedTriggerMixin": {
+      "trigger(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/projectile/FishingHook;Ljava/util/Collection;)V": "Lnet/minecraft/class_2058;method_8939(Lnet/minecraft/class_3222;Lnet/minecraft/class_1799;Lnet/minecraft/class_1536;Ljava/util/Collection;)V"
+    },
+    "com/natamus/collective/fabric/mixin/ItemEntityMixin": {
+      "Lnet/minecraft/world/entity/item/ItemEntity;discard()V": "Lnet/minecraft/class_1542;method_31472()V",
+      "Lnet/minecraft/world/entity/player/Inventory;add(Lnet/minecraft/world/item/ItemStack;)Z": "Lnet/minecraft/class_1661;method_7394(Lnet/minecraft/class_1799;)Z",
+      "playerTouch": "Lnet/minecraft/class_1542;method_5694(Lnet/minecraft/class_1657;)V",
+      "tick": "Lnet/minecraft/class_1542;method_5773()V"
+    },
+    "com/natamus/collective/fabric/mixin/ItemInHandRendererMixin": {
+      "renderArmWithItem": "Lnet/minecraft/class_759;method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+    },
+    "com/natamus/collective/fabric/mixin/ItemStackMixin": {
+      "finishUsingItem(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/item/ItemStack;": "Lnet/minecraft/class_1799;method_7910(Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+    },
+    "com/natamus/collective/fabric/mixin/LanguageMixin": {
+      "loadDefault()Lnet/minecraft/locale/Language;": "Lnet/minecraft/class_2477;method_29429()Lnet/minecraft/class_2477;"
+    },
+    "com/natamus/collective/fabric/mixin/LightningBoltMixin": {
+      "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;": "Lnet/minecraft/class_1937;method_8333(Lnet/minecraft/class_1297;Lnet/minecraft/class_238;Ljava/util/function/Predicate;)Ljava/util/List;",
+      "tick()V": "Lnet/minecraft/class_1538;method_5773()V"
+    },
+    "com/natamus/collective/fabric/mixin/LivingEntityMixin": {
+      "actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V": "Lnet/minecraft/class_1309;method_6074(Lnet/minecraft/class_1282;F)V",
+      "calculateFallDamage(FF)I": "Lnet/minecraft/class_1309;method_23329(FF)I",
+      "die(Lnet/minecraft/world/damagesource/DamageSource;)V": "Lnet/minecraft/class_1309;method_6078(Lnet/minecraft/class_1282;)V",
+      "dropAllDeathLoot(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;)V": "Lnet/minecraft/class_1309;method_16080(Lnet/minecraft/class_3218;Lnet/minecraft/class_1282;)V",
+      "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z": "Lnet/minecraft/class_1309;method_5643(Lnet/minecraft/class_1282;F)Z",
+      "jumpFromGround": "Lnet/minecraft/class_1309;method_6043()V",
+      "tick()V": "Lnet/minecraft/class_1309;method_5773()V"
+    },
+    "com/natamus/collective/fabric/mixin/MagmaCubeMixin": {
+      "jumpFromGround": "Lnet/minecraft/class_1589;method_6043()V"
+    },
+    "com/natamus/collective/fabric/mixin/MinecraftMixin": {
+      "<init>(Lnet/minecraft/client/main/GameConfig;)V": "Lnet/minecraft/class_310;<init>(Lnet/minecraft/class_542;)V",
+      "createUserApiService": "Lnet/minecraft/class_310;method_31382(Lcom/mojang/authlib/yggdrasil/YggdrasilAuthenticationService;Lnet/minecraft/class_542;)Lcom/mojang/authlib/minecraft/UserApiService;"
+    },
+    "com/natamus/collective/fabric/mixin/MinecraftServerMixin": {
+      "<init>(Ljava/lang/Thread;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/server/packs/repository/PackRepository;Lnet/minecraft/server/WorldStem;Ljava/net/Proxy;Lcom/mojang/datafixers/DataFixer;Lnet/minecraft/server/Services;Lnet/minecraft/server/level/progress/ChunkProgressListenerFactory;)V": "Lnet/minecraft/server/MinecraftServer;<init>(Ljava/lang/Thread;Lnet/minecraft/class_32$class_5143;Lnet/minecraft/class_3283;Lnet/minecraft/class_6904;Ljava/net/Proxy;Lcom/mojang/datafixers/DataFixer;Lnet/minecraft/class_7497;Lnet/minecraft/class_3950;)V",
+      "Lnet/minecraft/server/level/ServerLevel;close()V": "Lnet/minecraft/class_3218;close()V",
+      "setInitialSpawn": "Lnet/minecraft/server/MinecraftServer;method_27901(Lnet/minecraft/class_3218;Lnet/minecraft/class_5268;ZZ)V",
+      "stopServer": "Lnet/minecraft/server/MinecraftServer;method_3782()V"
+    },
+    "com/natamus/collective/fabric/mixin/MultiPlayerGameModeMixin": {
+      "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V": "Lnet/minecraft/class_636;method_41931(Lnet/minecraft/class_638;Lnet/minecraft/class_7204;)V",
+      "startDestroyBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Z": "Lnet/minecraft/class_636;method_2910(Lnet/minecraft/class_2338;Lnet/minecraft/class_2350;)Z",
+      "useItemOn": "Lnet/minecraft/class_636;method_2896(Lnet/minecraft/class_746;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+    },
+    "com/natamus/collective/fabric/mixin/NaturalSpawnerMixin": {
+      "Lnet/minecraft/world/level/NaturalSpawner;getMobForSpawn(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/EntityType;)Lnet/minecraft/world/entity/Mob;": "Lnet/minecraft/class_1948;method_24931(Lnet/minecraft/class_3218;Lnet/minecraft/class_1299;)Lnet/minecraft/class_1308;",
+      "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V": "Lnet/minecraft/class_1948;method_24930(Lnet/minecraft/class_1311;Lnet/minecraft/class_3218;Lnet/minecraft/class_2791;Lnet/minecraft/class_2338;Lnet/minecraft/class_1948$class_5261;Lnet/minecraft/class_1948$class_5259;)V"
+    },
+    "com/natamus/collective/fabric/mixin/PistonBaseBlockMixin": {
+      "Lnet/minecraft/world/level/Level;getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;": "Lnet/minecraft/class_1937;method_8321(Lnet/minecraft/class_2338;)Lnet/minecraft/class_2586;",
+      "Lnet/minecraft/world/level/block/piston/PistonBaseBlock;moveBlocks(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Z)Z": "Lnet/minecraft/class_2665;method_11481(Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_2350;Z)Z",
+      "triggerEvent(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;II)Z": "Lnet/minecraft/class_2665;method_9592(Lnet/minecraft/class_2680;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;II)Z"
+    },
+    "com/natamus/collective/fabric/mixin/PlayerListMixin": {
+      "placeNewPlayer": "Lnet/minecraft/class_3324;method_14570(Lnet/minecraft/class_2535;Lnet/minecraft/class_3222;Lnet/minecraft/class_8792;)V",
+      "remove": "Lnet/minecraft/class_3324;method_14611(Lnet/minecraft/class_3222;)V"
+    },
+    "com/natamus/collective/fabric/mixin/PlayerMixin": {
+      "Lnet/minecraft/world/InteractionResult;consumesAction()Z": "Lnet/minecraft/class_1269;method_23665()Z",
+      "Lnet/minecraft/world/entity/player/Player;setItemInHand(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V": "Lnet/minecraft/class_1657;method_6122(Lnet/minecraft/class_1268;Lnet/minecraft/class_1799;)V",
+      "Lnet/minecraft/world/item/ItemStack;isEmpty()Z": "Lnet/minecraft/class_1799;method_7960()Z",
+      "actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V": "Lnet/minecraft/class_1657;method_6074(Lnet/minecraft/class_1282;F)V",
+      "drop(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/world/entity/item/ItemEntity;": "Lnet/minecraft/class_1657;method_7328(Lnet/minecraft/class_1799;Z)Lnet/minecraft/class_1542;",
+      "getDestroySpeed": "Lnet/minecraft/class_1657;method_7351(Lnet/minecraft/class_2680;)F",
+      "hurtCurrentlyUsedShield(F)V": "Lnet/minecraft/class_1657;method_6056(F)V",
+      "interactOn(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;": "Lnet/minecraft/class_1657;method_7287(Lnet/minecraft/class_1297;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;"
+    },
+    "com/natamus/collective/fabric/mixin/PortalShapeMixin": {
+      "createPortalBlocks()V": "Lnet/minecraft/class_2424;method_10363()V"
+    },
+    "com/natamus/collective/fabric/mixin/ServerGamePacketListenerImplMixin": {
+      "method_45064(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/network/chat/Component;Lnet/minecraft/server/network/FilteredText;)V": "Lnet/minecraft/class_3244;method_45064(Lnet/minecraft/class_7471;Lnet/minecraft/class_2561;Lnet/minecraft/class_5837;)V"
+    },
+    "com/natamus/collective/fabric/mixin/ServerLevelMixin": {
+      "addEntity(Lnet/minecraft/world/entity/Entity;)Z": "Lnet/minecraft/class_3218;method_14175(Lnet/minecraft/class_1297;)Z",
+      "updateNeighborsAt": "Lnet/minecraft/class_3218;method_8452(Lnet/minecraft/class_2338;Lnet/minecraft/class_2248;)V",
+      "updateNeighborsAtExceptFromFacing": "Lnet/minecraft/class_3218;method_8508(Lnet/minecraft/class_2338;Lnet/minecraft/class_2248;Lnet/minecraft/class_2350;)V"
+    },
+    "com/natamus/collective/fabric/mixin/ServerPlayerGameModeMixin": {
+      "Lnet/minecraft/world/item/ItemStack;mineBlock(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)V": "Lnet/minecraft/class_1799;method_7952(Lnet/minecraft/class_1937;Lnet/minecraft/class_2680;Lnet/minecraft/class_2338;Lnet/minecraft/class_1657;)V",
+      "destroyBlock(Lnet/minecraft/core/BlockPos;)Z": "Lnet/minecraft/class_3225;method_14266(Lnet/minecraft/class_2338;)Z",
+      "handleBlockBreakAction(Lnet/minecraft/core/BlockPos;Lnet/minecraft/network/protocol/game/ServerboundPlayerActionPacket$Action;Lnet/minecraft/core/Direction;II)V": "Lnet/minecraft/class_3225;method_14263(Lnet/minecraft/class_2338;Lnet/minecraft/class_2846$class_2847;Lnet/minecraft/class_2350;II)V",
+      "useItemOn": "Lnet/minecraft/class_3225;method_14262(Lnet/minecraft/class_3222;Lnet/minecraft/class_1937;Lnet/minecraft/class_1799;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+    },
+    "com/natamus/collective/fabric/mixin/ServerPlayerMixin": {
+      "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z": "Lnet/minecraft/class_1937;method_8649(Lnet/minecraft/class_1297;)Z",
+      "changeDimension(Lnet/minecraft/world/level/portal/DimensionTransition;)Lnet/minecraft/world/entity/Entity;": "Lnet/minecraft/class_3222;method_5731(Lnet/minecraft/class_5454;)Lnet/minecraft/class_1297;",
+      "die(Lnet/minecraft/world/damagesource/DamageSource;)V": "Lnet/minecraft/class_3222;method_6078(Lnet/minecraft/class_1282;)V",
+      "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;": "Lnet/minecraft/class_3222;method_7329(Lnet/minecraft/class_1799;ZZ)Lnet/minecraft/class_1542;",
+      "tick()V": "Lnet/minecraft/class_3222;method_5773()V"
+    },
+    "com/natamus/collective/fabric/mixin/SoundEngineMixin": {
+      "Lnet/minecraft/client/resources/sounds/SoundInstance;canPlaySound()Z": "Lnet/minecraft/class_1113;method_26273()Z",
+      "play": "Lnet/minecraft/class_1140;method_4854(Lnet/minecraft/class_1113;)V"
+    },
+    "com/natamus/collective/fabric/mixin/TeleportCommandMixin": {
+      "performTeleport(Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/server/level/ServerLevel;DDDLjava/util/Set;FFLnet/minecraft/server/commands/TeleportCommand$LookAt;)V": "Lnet/minecraft/class_3143;method_13766(Lnet/minecraft/class_2168;Lnet/minecraft/class_1297;Lnet/minecraft/class_3218;DDDLjava/util/Set;FFLnet/minecraft/class_3143$class_3144;)V"
+    },
+    "com/natamus/collective/fabric/mixin/TitleScreenMixin": {
+      "init()V": "Lnet/minecraft/class_442;method_25426()V"
+    },
+    "com/natamus/collective/fabric/mixin/WorldOpenFlowsMixin": {
+      "confirmWorldCreation": "Lnet/minecraft/class_7196;method_41892(Lnet/minecraft/class_310;Lnet/minecraft/class_525;Lcom/mojang/serialization/Lifecycle;Ljava/lang/Runnable;Z)V",
+      "openWorldCheckWorldStemCompatibility(Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/server/WorldStem;Lnet/minecraft/server/packs/repository/PackRepository;Ljava/lang/Runnable;)V": "Lnet/minecraft/class_7196;method_57775(Lnet/minecraft/class_32$class_5143;Lnet/minecraft/class_6904;Lnet/minecraft/class_3283;Ljava/lang/Runnable;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/BambooBlockMixin": {
+      "Lnet/minecraft/world/level/block/BambooStalkBlock;growBamboo(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;I)V": "Lnet/minecraft/class_2211;method_9385(Lnet/minecraft/class_2680;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;I)V",
+      "randomTick": "Lnet/minecraft/class_2211;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/CactusBlockMixin": {
+      "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+      "randomTick": "Lnet/minecraft/class_2266;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/ChorusFlowerBlockMixin": {
+      "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+      "randomTick": "Lnet/minecraft/class_2279;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/CocoaBlockMixin": {
+      "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z": "Lnet/minecraft/class_3218;method_8652(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;I)Z",
+      "randomTick": "Lnet/minecraft/class_2282;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/CropBlockMixin": {
+      "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z": "Lnet/minecraft/class_3218;method_8652(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;I)Z",
+      "randomTick": "Lnet/minecraft/class_2302;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/GrowingPlantHeadBlockMixin": {
+      "Lnet/minecraft/server/level/ServerLevel;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z": "Lnet/minecraft/class_3218;method_8501(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;)Z",
+      "randomTick": "Lnet/minecraft/class_4865;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/NetherWartBlockMixin": {
+      "Lnet/minecraft/util/RandomSource;nextInt(I)I": "Lnet/minecraft/class_5819;method_43048(I)I",
+      "randomTick": "Lnet/minecraft/class_2421;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/StemBlockMixin": {
+      "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+      "randomTick": "Lnet/minecraft/class_2513;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/SugarCaneBlockMixin": {
+      "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+      "randomTick": "Lnet/minecraft/class_2523;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    },
+    "com/natamus/collective/fabric/mixin/crop/SweetBerryBushBlockMixin": {
+      "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z": "Lnet/minecraft/class_3218;method_8652(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;I)Z",
+      "randomTick": "Lnet/minecraft/class_3830;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/natamus/collective/fabric/mixin/AbstractFurnaceBlockEntityMixin": {
+        "getBurnDuration": "Lnet/minecraft/class_2609;method_11200(Lnet/minecraft/class_1799;)I"
+      },
+      "com/natamus/collective/fabric/mixin/AbstractHorseMixin": {
+        "Lnet/minecraft/world/entity/animal/horse/AbstractHorse;setIsJumping(Z)V": "Lnet/minecraft/class_1496;method_6758(Z)V",
+        "tickRidden": "Lnet/minecraft/class_1496;method_49481(Lnet/minecraft/class_1657;Lnet/minecraft/class_243;)V"
+      },
+      "com/natamus/collective/fabric/mixin/AnimalMixin": {
+        "Lnet/minecraft/world/entity/animal/Animal;getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/AgeableMob;": "Lnet/minecraft/class_1429;method_5613(Lnet/minecraft/class_3218;Lnet/minecraft/class_1296;)Lnet/minecraft/class_1296;",
+        "spawnChildFromBreeding": "Lnet/minecraft/class_1429;method_24650(Lnet/minecraft/class_3218;Lnet/minecraft/class_1429;)V"
+      },
+      "com/natamus/collective/fabric/mixin/AnvilMenuMixin": {
+        "createResult()V": "Lnet/minecraft/class_1706;method_24928()V"
+      },
+      "com/natamus/collective/fabric/mixin/BaseSpawnerMixin": {
+        "Lnet/minecraft/world/entity/Mob;checkSpawnObstruction(Lnet/minecraft/world/level/LevelReader;)Z": "Lnet/minecraft/class_1308;method_5957(Lnet/minecraft/class_4538;)Z",
+        "serverTick(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;)V": "Lnet/minecraft/class_1917;method_31588(Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;)V"
+      },
+      "com/natamus/collective/fabric/mixin/BlockEntityMixin": {
+        "setLevel(Lnet/minecraft/world/level/Level;)V": "Lnet/minecraft/class_2586;method_31662(Lnet/minecraft/class_1937;)V",
+        "setRemoved()V": "Lnet/minecraft/class_2586;method_11012()V"
+      },
+      "com/natamus/collective/fabric/mixin/BlockItemMixin": {
+        "place": "Lnet/minecraft/class_1747;method_7712(Lnet/minecraft/class_1750;)Lnet/minecraft/class_1269;"
+      },
+      "com/natamus/collective/fabric/mixin/BlockMixin": {
+        "playerDestroy": "Lnet/minecraft/class_2248;method_9556(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;Lnet/minecraft/class_2586;Lnet/minecraft/class_1799;)V"
+      },
+      "com/natamus/collective/fabric/mixin/BoneMealItemMixin": {
+        "growCrop(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z": "Lnet/minecraft/class_1752;method_7720(Lnet/minecraft/class_1799;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;)Z",
+        "useOn": "Lnet/minecraft/class_1752;method_7884(Lnet/minecraft/class_1838;)Lnet/minecraft/class_1269;"
+      },
+      "com/natamus/collective/fabric/mixin/BowItemMixin": {
+        "Lnet/minecraft/world/entity/player/Player;hasInfiniteMaterials()Z": "Lnet/minecraft/class_1657;method_56992()Z",
+        "use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;": "Lnet/minecraft/class_1753;method_7836(Lnet/minecraft/class_1937;Lnet/minecraft/class_1657;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1271;"
+      },
+      "com/natamus/collective/fabric/mixin/ChatListenerMixin": {
+        "showMessageToPlayer": "Lnet/minecraft/class_7594;method_44943(Lnet/minecraft/class_2556$class_7602;Lnet/minecraft/class_7471;Lnet/minecraft/class_2561;Lcom/mojang/authlib/GameProfile;ZLjava/time/Instant;)Z"
+      },
+      "com/natamus/collective/fabric/mixin/ClientLevelMixin": {
+        "<init>(Lnet/minecraft/client/multiplayer/ClientPacketListener;Lnet/minecraft/client/multiplayer/ClientLevel$ClientLevelData;Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/Holder;IILjava/util/function/Supplier;Lnet/minecraft/client/renderer/LevelRenderer;ZJ)V": "Lnet/minecraft/class_638;<init>(Lnet/minecraft/class_634;Lnet/minecraft/class_638$class_5271;Lnet/minecraft/class_5321;Lnet/minecraft/class_6880;IILjava/util/function/Supplier;Lnet/minecraft/class_761;ZJ)V"
+      },
+      "com/natamus/collective/fabric/mixin/CreateWorldScreenMixin": {
+        "Lnet/minecraft/client/gui/screens/worldselection/WorldOpenFlows;confirmWorldCreation(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/worldselection/CreateWorldScreen;Lcom/mojang/serialization/Lifecycle;Ljava/lang/Runnable;Z)V": "Lnet/minecraft/class_7196;method_41892(Lnet/minecraft/class_310;Lnet/minecraft/class_525;Lcom/mojang/serialization/Lifecycle;Ljava/lang/Runnable;Z)V",
+        "onCreate": "Lnet/minecraft/class_525;method_2736()V"
+      },
+      "com/natamus/collective/fabric/mixin/EntityTypeMixin": {
+        "Lnet/minecraft/server/level/ServerLevel;addFreshEntityWithPassengers(Lnet/minecraft/world/entity/Entity;)V": "Lnet/minecraft/class_3218;method_30771(Lnet/minecraft/class_1297;)V",
+        "spawn(Lnet/minecraft/server/level/ServerLevel;Ljava/util/function/Consumer;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/MobSpawnType;ZZ)Lnet/minecraft/world/entity/Entity;": "Lnet/minecraft/class_1299;method_5899(Lnet/minecraft/class_3218;Ljava/util/function/Consumer;Lnet/minecraft/class_2338;Lnet/minecraft/class_3730;ZZ)Lnet/minecraft/class_1297;"
+      },
+      "com/natamus/collective/fabric/mixin/ExplosionMixin": {
+        "explode()V": "Lnet/minecraft/class_1927;method_8348()V"
+      },
+      "com/natamus/collective/fabric/mixin/FishingRodHookedTriggerMixin": {
+        "trigger(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/projectile/FishingHook;Ljava/util/Collection;)V": "Lnet/minecraft/class_2058;method_8939(Lnet/minecraft/class_3222;Lnet/minecraft/class_1799;Lnet/minecraft/class_1536;Ljava/util/Collection;)V"
+      },
+      "com/natamus/collective/fabric/mixin/ItemEntityMixin": {
+        "Lnet/minecraft/world/entity/item/ItemEntity;discard()V": "Lnet/minecraft/class_1542;method_31472()V",
+        "Lnet/minecraft/world/entity/player/Inventory;add(Lnet/minecraft/world/item/ItemStack;)Z": "Lnet/minecraft/class_1661;method_7394(Lnet/minecraft/class_1799;)Z",
+        "playerTouch": "Lnet/minecraft/class_1542;method_5694(Lnet/minecraft/class_1657;)V",
+        "tick": "Lnet/minecraft/class_1542;method_5773()V"
+      },
+      "com/natamus/collective/fabric/mixin/ItemInHandRendererMixin": {
+        "renderArmWithItem": "Lnet/minecraft/class_759;method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+      },
+      "com/natamus/collective/fabric/mixin/ItemStackMixin": {
+        "finishUsingItem(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/item/ItemStack;": "Lnet/minecraft/class_1799;method_7910(Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;"
+      },
+      "com/natamus/collective/fabric/mixin/LanguageMixin": {
+        "loadDefault()Lnet/minecraft/locale/Language;": "Lnet/minecraft/class_2477;method_29429()Lnet/minecraft/class_2477;"
+      },
+      "com/natamus/collective/fabric/mixin/LightningBoltMixin": {
+        "Lnet/minecraft/world/level/Level;getEntities(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;)Ljava/util/List;": "Lnet/minecraft/class_1937;method_8333(Lnet/minecraft/class_1297;Lnet/minecraft/class_238;Ljava/util/function/Predicate;)Ljava/util/List;",
+        "tick()V": "Lnet/minecraft/class_1538;method_5773()V"
+      },
+      "com/natamus/collective/fabric/mixin/LivingEntityMixin": {
+        "actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V": "Lnet/minecraft/class_1309;method_6074(Lnet/minecraft/class_1282;F)V",
+        "calculateFallDamage(FF)I": "Lnet/minecraft/class_1309;method_23329(FF)I",
+        "die(Lnet/minecraft/world/damagesource/DamageSource;)V": "Lnet/minecraft/class_1309;method_6078(Lnet/minecraft/class_1282;)V",
+        "dropAllDeathLoot(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;)V": "Lnet/minecraft/class_1309;method_16080(Lnet/minecraft/class_3218;Lnet/minecraft/class_1282;)V",
+        "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z": "Lnet/minecraft/class_1309;method_5643(Lnet/minecraft/class_1282;F)Z",
+        "jumpFromGround": "Lnet/minecraft/class_1309;method_6043()V",
+        "tick()V": "Lnet/minecraft/class_1309;method_5773()V"
+      },
+      "com/natamus/collective/fabric/mixin/MagmaCubeMixin": {
+        "jumpFromGround": "Lnet/minecraft/class_1589;method_6043()V"
+      },
+      "com/natamus/collective/fabric/mixin/MinecraftMixin": {
+        "<init>(Lnet/minecraft/client/main/GameConfig;)V": "Lnet/minecraft/class_310;<init>(Lnet/minecraft/class_542;)V",
+        "createUserApiService": "Lnet/minecraft/class_310;method_31382(Lcom/mojang/authlib/yggdrasil/YggdrasilAuthenticationService;Lnet/minecraft/class_542;)Lcom/mojang/authlib/minecraft/UserApiService;"
+      },
+      "com/natamus/collective/fabric/mixin/MinecraftServerMixin": {
+        "<init>(Ljava/lang/Thread;Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/server/packs/repository/PackRepository;Lnet/minecraft/server/WorldStem;Ljava/net/Proxy;Lcom/mojang/datafixers/DataFixer;Lnet/minecraft/server/Services;Lnet/minecraft/server/level/progress/ChunkProgressListenerFactory;)V": "Lnet/minecraft/server/MinecraftServer;<init>(Ljava/lang/Thread;Lnet/minecraft/class_32$class_5143;Lnet/minecraft/class_3283;Lnet/minecraft/class_6904;Ljava/net/Proxy;Lcom/mojang/datafixers/DataFixer;Lnet/minecraft/class_7497;Lnet/minecraft/class_3950;)V",
+        "Lnet/minecraft/server/level/ServerLevel;close()V": "Lnet/minecraft/class_3218;close()V",
+        "setInitialSpawn": "Lnet/minecraft/server/MinecraftServer;method_27901(Lnet/minecraft/class_3218;Lnet/minecraft/class_5268;ZZ)V",
+        "stopServer": "Lnet/minecraft/server/MinecraftServer;method_3782()V"
+      },
+      "com/natamus/collective/fabric/mixin/MultiPlayerGameModeMixin": {
+        "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V": "Lnet/minecraft/class_636;method_41931(Lnet/minecraft/class_638;Lnet/minecraft/class_7204;)V",
+        "startDestroyBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Z": "Lnet/minecraft/class_636;method_2910(Lnet/minecraft/class_2338;Lnet/minecraft/class_2350;)Z",
+        "useItemOn": "Lnet/minecraft/class_636;method_2896(Lnet/minecraft/class_746;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+      },
+      "com/natamus/collective/fabric/mixin/NaturalSpawnerMixin": {
+        "Lnet/minecraft/world/level/NaturalSpawner;getMobForSpawn(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/EntityType;)Lnet/minecraft/world/entity/Mob;": "Lnet/minecraft/class_1948;method_24931(Lnet/minecraft/class_3218;Lnet/minecraft/class_1299;)Lnet/minecraft/class_1308;",
+        "spawnCategoryForPosition(Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/NaturalSpawner$SpawnPredicate;Lnet/minecraft/world/level/NaturalSpawner$AfterSpawnCallback;)V": "Lnet/minecraft/class_1948;method_24930(Lnet/minecraft/class_1311;Lnet/minecraft/class_3218;Lnet/minecraft/class_2791;Lnet/minecraft/class_2338;Lnet/minecraft/class_1948$class_5261;Lnet/minecraft/class_1948$class_5259;)V"
+      },
+      "com/natamus/collective/fabric/mixin/PistonBaseBlockMixin": {
+        "Lnet/minecraft/world/level/Level;getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;": "Lnet/minecraft/class_1937;method_8321(Lnet/minecraft/class_2338;)Lnet/minecraft/class_2586;",
+        "Lnet/minecraft/world/level/block/piston/PistonBaseBlock;moveBlocks(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Z)Z": "Lnet/minecraft/class_2665;method_11481(Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_2350;Z)Z",
+        "triggerEvent(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;II)Z": "Lnet/minecraft/class_2665;method_9592(Lnet/minecraft/class_2680;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;II)Z"
+      },
+      "com/natamus/collective/fabric/mixin/PlayerListMixin": {
+        "placeNewPlayer": "Lnet/minecraft/class_3324;method_14570(Lnet/minecraft/class_2535;Lnet/minecraft/class_3222;Lnet/minecraft/class_8792;)V",
+        "remove": "Lnet/minecraft/class_3324;method_14611(Lnet/minecraft/class_3222;)V"
+      },
+      "com/natamus/collective/fabric/mixin/PlayerMixin": {
+        "Lnet/minecraft/world/InteractionResult;consumesAction()Z": "Lnet/minecraft/class_1269;method_23665()Z",
+        "Lnet/minecraft/world/entity/player/Player;setItemInHand(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/ItemStack;)V": "Lnet/minecraft/class_1657;method_6122(Lnet/minecraft/class_1268;Lnet/minecraft/class_1799;)V",
+        "Lnet/minecraft/world/item/ItemStack;isEmpty()Z": "Lnet/minecraft/class_1799;method_7960()Z",
+        "actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V": "Lnet/minecraft/class_1657;method_6074(Lnet/minecraft/class_1282;F)V",
+        "drop(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/world/entity/item/ItemEntity;": "Lnet/minecraft/class_1657;method_7328(Lnet/minecraft/class_1799;Z)Lnet/minecraft/class_1542;",
+        "getDestroySpeed": "Lnet/minecraft/class_1657;method_7351(Lnet/minecraft/class_2680;)F",
+        "hurtCurrentlyUsedShield(F)V": "Lnet/minecraft/class_1657;method_6056(F)V",
+        "interactOn(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;": "Lnet/minecraft/class_1657;method_7287(Lnet/minecraft/class_1297;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;"
+      },
+      "com/natamus/collective/fabric/mixin/PortalShapeMixin": {
+        "createPortalBlocks()V": "Lnet/minecraft/class_2424;method_10363()V"
+      },
+      "com/natamus/collective/fabric/mixin/ServerGamePacketListenerImplMixin": {
+        "method_45064(Lnet/minecraft/network/chat/PlayerChatMessage;Lnet/minecraft/network/chat/Component;Lnet/minecraft/server/network/FilteredText;)V": "Lnet/minecraft/class_3244;method_45064(Lnet/minecraft/class_7471;Lnet/minecraft/class_2561;Lnet/minecraft/class_5837;)V"
+      },
+      "com/natamus/collective/fabric/mixin/ServerLevelMixin": {
+        "addEntity(Lnet/minecraft/world/entity/Entity;)Z": "Lnet/minecraft/class_3218;method_14175(Lnet/minecraft/class_1297;)Z",
+        "updateNeighborsAt": "Lnet/minecraft/class_3218;method_8452(Lnet/minecraft/class_2338;Lnet/minecraft/class_2248;)V",
+        "updateNeighborsAtExceptFromFacing": "Lnet/minecraft/class_3218;method_8508(Lnet/minecraft/class_2338;Lnet/minecraft/class_2248;Lnet/minecraft/class_2350;)V"
+      },
+      "com/natamus/collective/fabric/mixin/ServerPlayerGameModeMixin": {
+        "Lnet/minecraft/world/item/ItemStack;mineBlock(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/entity/player/Player;)V": "Lnet/minecraft/class_1799;method_7952(Lnet/minecraft/class_1937;Lnet/minecraft/class_2680;Lnet/minecraft/class_2338;Lnet/minecraft/class_1657;)V",
+        "destroyBlock(Lnet/minecraft/core/BlockPos;)Z": "Lnet/minecraft/class_3225;method_14266(Lnet/minecraft/class_2338;)Z",
+        "handleBlockBreakAction(Lnet/minecraft/core/BlockPos;Lnet/minecraft/network/protocol/game/ServerboundPlayerActionPacket$Action;Lnet/minecraft/core/Direction;II)V": "Lnet/minecraft/class_3225;method_14263(Lnet/minecraft/class_2338;Lnet/minecraft/class_2846$class_2847;Lnet/minecraft/class_2350;II)V",
+        "useItemOn": "Lnet/minecraft/class_3225;method_14262(Lnet/minecraft/class_3222;Lnet/minecraft/class_1937;Lnet/minecraft/class_1799;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+      },
+      "com/natamus/collective/fabric/mixin/ServerPlayerMixin": {
+        "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z": "Lnet/minecraft/class_1937;method_8649(Lnet/minecraft/class_1297;)Z",
+        "changeDimension(Lnet/minecraft/world/level/portal/DimensionTransition;)Lnet/minecraft/world/entity/Entity;": "Lnet/minecraft/class_3222;method_5731(Lnet/minecraft/class_5454;)Lnet/minecraft/class_1297;",
+        "die(Lnet/minecraft/world/damagesource/DamageSource;)V": "Lnet/minecraft/class_3222;method_6078(Lnet/minecraft/class_1282;)V",
+        "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;": "Lnet/minecraft/class_3222;method_7329(Lnet/minecraft/class_1799;ZZ)Lnet/minecraft/class_1542;",
+        "tick()V": "Lnet/minecraft/class_3222;method_5773()V"
+      },
+      "com/natamus/collective/fabric/mixin/SoundEngineMixin": {
+        "Lnet/minecraft/client/resources/sounds/SoundInstance;canPlaySound()Z": "Lnet/minecraft/class_1113;method_26273()Z",
+        "play": "Lnet/minecraft/class_1140;method_4854(Lnet/minecraft/class_1113;)V"
+      },
+      "com/natamus/collective/fabric/mixin/TeleportCommandMixin": {
+        "performTeleport(Lnet/minecraft/commands/CommandSourceStack;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/server/level/ServerLevel;DDDLjava/util/Set;FFLnet/minecraft/server/commands/TeleportCommand$LookAt;)V": "Lnet/minecraft/class_3143;method_13766(Lnet/minecraft/class_2168;Lnet/minecraft/class_1297;Lnet/minecraft/class_3218;DDDLjava/util/Set;FFLnet/minecraft/class_3143$class_3144;)V"
+      },
+      "com/natamus/collective/fabric/mixin/TitleScreenMixin": {
+        "init()V": "Lnet/minecraft/class_442;method_25426()V"
+      },
+      "com/natamus/collective/fabric/mixin/WorldOpenFlowsMixin": {
+        "confirmWorldCreation": "Lnet/minecraft/class_7196;method_41892(Lnet/minecraft/class_310;Lnet/minecraft/class_525;Lcom/mojang/serialization/Lifecycle;Ljava/lang/Runnable;Z)V",
+        "openWorldCheckWorldStemCompatibility(Lnet/minecraft/world/level/storage/LevelStorageSource$LevelStorageAccess;Lnet/minecraft/server/WorldStem;Lnet/minecraft/server/packs/repository/PackRepository;Ljava/lang/Runnable;)V": "Lnet/minecraft/class_7196;method_57775(Lnet/minecraft/class_32$class_5143;Lnet/minecraft/class_6904;Lnet/minecraft/class_3283;Ljava/lang/Runnable;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/BambooBlockMixin": {
+        "Lnet/minecraft/world/level/block/BambooStalkBlock;growBamboo(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/util/RandomSource;I)V": "Lnet/minecraft/class_2211;method_9385(Lnet/minecraft/class_2680;Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;I)V",
+        "randomTick": "Lnet/minecraft/class_2211;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/CactusBlockMixin": {
+        "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+        "randomTick": "Lnet/minecraft/class_2266;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/ChorusFlowerBlockMixin": {
+        "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+        "randomTick": "Lnet/minecraft/class_2279;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/CocoaBlockMixin": {
+        "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z": "Lnet/minecraft/class_3218;method_8652(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;I)Z",
+        "randomTick": "Lnet/minecraft/class_2282;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/CropBlockMixin": {
+        "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z": "Lnet/minecraft/class_3218;method_8652(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;I)Z",
+        "randomTick": "Lnet/minecraft/class_2302;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/GrowingPlantHeadBlockMixin": {
+        "Lnet/minecraft/server/level/ServerLevel;setBlockAndUpdate(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z": "Lnet/minecraft/class_3218;method_8501(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;)Z",
+        "randomTick": "Lnet/minecraft/class_4865;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/NetherWartBlockMixin": {
+        "Lnet/minecraft/util/RandomSource;nextInt(I)I": "Lnet/minecraft/class_5819;method_43048(I)I",
+        "randomTick": "Lnet/minecraft/class_2421;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/StemBlockMixin": {
+        "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+        "randomTick": "Lnet/minecraft/class_2513;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/SugarCaneBlockMixin": {
+        "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;": "Lnet/minecraft/class_2680;method_11654(Lnet/minecraft/class_2769;)Ljava/lang/Comparable;",
+        "randomTick": "Lnet/minecraft/class_2523;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      },
+      "com/natamus/collective/fabric/mixin/crop/SweetBerryBushBlockMixin": {
+        "Lnet/minecraft/server/level/ServerLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z": "Lnet/minecraft/class_3218;method_8652(Lnet/minecraft/class_2338;Lnet/minecraft/class_2680;I)Z",
+        "randomTick": "Lnet/minecraft/class_3830;method_9514(Lnet/minecraft/class_2680;Lnet/minecraft/class_3218;Lnet/minecraft/class_2338;Lnet/minecraft/class_5819;)V"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "combatlog",
+  "version": "2.6",
+  "name": "CombatLog",
+  "description": "",
+  "authors": [
+    "WildToastyMop"
+  ],
+  "contact": {},
+  "license": "LGPLv3",
+  "icon": "assets/combatlog/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.toastymop.combatlog.platforms.fabric.CombatLogFabric"
+    ]
+  },
+  "mixins": [
+    "combatlog-common.mixins.json",
+    "combatlog-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "\u003e\u003d0.15",
+    "minecraft": "\u003e\u003d1.21 \u003c\u003d1.21.1"
+  },
+  "accessWidener": "combatlog.accesswidener",
+  "jars": [
+    {
+      "file": "META-INF/jars/json-0.2.1.jar"
+    }
+  ]
+}

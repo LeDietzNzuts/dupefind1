@@ -1,0 +1,18 @@
+accessWidener	v2	intermediary
+accessible	class	net/minecraft/class_1890$class_1891
+accessible	field	net/minecraft/class_1308	field_6201	Lnet/minecraft/class_1355;
+accessible	field	net/minecraft/class_1646	field_18527	Ljava/util/Set;
+mutable	field	net/minecraft/class_1646	field_18527	Ljava/util/Set;
+accessible	field	net/minecraft/class_3785	field_16680	Lit/unimi/dsi/fastutil/objects/ObjectArrayList;
+accessible	field	net/minecraft/class_3785	field_16864	Ljava/util/List;
+mutable	field	net/minecraft/class_3785	field_16864	Ljava/util/List;
+accessible	field	net/minecraft/class_2315	field_10919	Ljava/util/Map;
+extendable	method	net/minecraft/class_2347	dispense	(Lnet/minecraft/class_2342;Lnet/minecraft/class_1799;)Lnet/minecraft/class_1799;
+accessible	method	net/minecraft/class_2237	method_31618	(Lnet/minecraft/class_2591;Lnet/minecraft/class_2591;Lnet/minecraft/class_5558;)Lnet/minecraft/class_5558;
+accessible	method	net/minecraft/class_1890	method_8220	(Lnet/minecraft/class_1799;Lnet/minecraft/class_1890$class_1891;)V
+accessible	method	net/minecraft/class_1887	method_60035	(Lnet/minecraft/class_9331;Lnet/minecraft/class_3218;ILnet/minecraft/class_1799;Lnet/minecraft/class_1297;Lnet/minecraft/class_1282;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
+accessible	field	net/minecraft/class_5497	field_26662	Ljava/util/List;
+mutable	field	net/minecraft/class_5497	field_26662	Ljava/util/List;
+accessible	class	net/minecraft/class_5411$class_5412
+accessible	method	net/minecraft/class_5411$class_5412	<init>	(ZZ)V
+mutable	field	net/minecraft/class_1646	field_18526	Ljava/util/Map;

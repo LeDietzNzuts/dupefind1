@@ -1,0 +1,104 @@
+{
+  "mappings": {
+    "com/talhanation/smallships/mixin/client/KeyboardHandlerMixin": {
+      "keyPress": "Lnet/minecraft/class_309;method_1466(JIIII)V"
+    },
+    "com/talhanation/smallships/mixin/container/MinecraftMixin": {
+      "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;": "Lnet/minecraft/class_310;field_1755:Lnet/minecraft/class_437;",
+      "Lnet/minecraft/client/gui/screens/Screen;init(Lnet/minecraft/client/Minecraft;II)V": "Lnet/minecraft/class_437;method_25423(Lnet/minecraft/class_310;II)V",
+      "setScreen(Lnet/minecraft/client/gui/screens/Screen;)V": "Lnet/minecraft/class_310;method_1507(Lnet/minecraft/class_437;)V"
+    },
+    "com/talhanation/smallships/mixin/container/MouseHandlerAccessor": {
+      "mouseGrabbed": "field_1783:Z",
+      "xpos": "field_1795:D",
+      "ypos": "field_1794:D"
+    },
+    "com/talhanation/smallships/mixin/container/SimpleContainerAccessor": {
+      "items": "field_5828:Lnet/minecraft/class_2371;"
+    },
+    "com/talhanation/smallships/mixin/controlling/BoatAccessor": {
+      "deltaRotation": "field_7690:F",
+      "inputDown": "field_7693:Z",
+      "inputLeft": "field_7710:Z",
+      "inputRight": "field_7695:Z",
+      "inputUp": "field_7709:Z"
+    },
+    "com/talhanation/smallships/mixin/controlling/BoatMixin": {
+      "Lnet/minecraft/world/entity/vehicle/Boat;checkInsideBlocks()V": "Lnet/minecraft/class_1690;method_5852()V",
+      "Lnet/minecraft/world/entity/vehicle/Boat;controlBoat()V": "Lnet/minecraft/class_1690;method_7549()V",
+      "Lnet/minecraft/world/entity/vehicle/Boat;tickLerp()V": "Lnet/minecraft/class_1690;method_7555()V",
+      "tick": "Lnet/minecraft/class_1690;method_5773()V"
+    },
+    "com/talhanation/smallships/mixin/entity/EntityMixin": {
+      "turn": "Lnet/minecraft/class_1297;method_5872(DD)V"
+    },
+    "com/talhanation/smallships/mixin/entity/LivingEntityMixin": {
+      "Lnet/minecraft/world/entity/LivingEntity;dismountTo(DDD)V": "Lnet/minecraft/class_1309;method_33567(DDD)V",
+      "dismountVehicle": "Lnet/minecraft/class_1309;method_6038(Lnet/minecraft/class_1297;)V"
+    },
+    "com/talhanation/smallships/mixin/entity/ServerEntityMixin": {
+      "Lnet/minecraft/server/level/ServerEntity;removedPassengers(Ljava/util/List;Ljava/util/List;)Ljava/util/stream/Stream;": "Lnet/minecraft/class_3231;method_49753(Ljava/util/List;Ljava/util/List;)Ljava/util/stream/Stream;",
+      "sendChanges": "Lnet/minecraft/class_3231;method_18756()V"
+    },
+    "com/talhanation/smallships/mixin/zooming/client/CameraMixin": {
+      "Lnet/minecraft/client/Camera;getMaxZoom(F)F": "Lnet/minecraft/class_4184;method_19318(F)F",
+      "setup": "Lnet/minecraft/class_4184;method_19321(Lnet/minecraft/class_1922;Lnet/minecraft/class_1297;ZZF)V"
+    },
+    "com/talhanation/smallships/mixin/zooming/client/MouseHandlerMixin": {
+      "Lnet/minecraft/world/entity/player/Inventory;swapPaint(D)V": "Lnet/minecraft/class_1661;method_7373(D)V",
+      "onScroll(JDD)V": "Lnet/minecraft/class_312;method_1598(JDD)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/talhanation/smallships/mixin/client/KeyboardHandlerMixin": {
+        "keyPress": "Lnet/minecraft/class_309;method_1466(JIIII)V"
+      },
+      "com/talhanation/smallships/mixin/container/MinecraftMixin": {
+        "Lnet/minecraft/client/Minecraft;screen:Lnet/minecraft/client/gui/screens/Screen;": "Lnet/minecraft/class_310;field_1755:Lnet/minecraft/class_437;",
+        "Lnet/minecraft/client/gui/screens/Screen;init(Lnet/minecraft/client/Minecraft;II)V": "Lnet/minecraft/class_437;method_25423(Lnet/minecraft/class_310;II)V",
+        "setScreen(Lnet/minecraft/client/gui/screens/Screen;)V": "Lnet/minecraft/class_310;method_1507(Lnet/minecraft/class_437;)V"
+      },
+      "com/talhanation/smallships/mixin/container/MouseHandlerAccessor": {
+        "mouseGrabbed": "field_1783:Z",
+        "xpos": "field_1795:D",
+        "ypos": "field_1794:D"
+      },
+      "com/talhanation/smallships/mixin/container/SimpleContainerAccessor": {
+        "items": "field_5828:Lnet/minecraft/class_2371;"
+      },
+      "com/talhanation/smallships/mixin/controlling/BoatAccessor": {
+        "deltaRotation": "field_7690:F",
+        "inputDown": "field_7693:Z",
+        "inputLeft": "field_7710:Z",
+        "inputRight": "field_7695:Z",
+        "inputUp": "field_7709:Z"
+      },
+      "com/talhanation/smallships/mixin/controlling/BoatMixin": {
+        "Lnet/minecraft/world/entity/vehicle/Boat;checkInsideBlocks()V": "Lnet/minecraft/class_1690;method_5852()V",
+        "Lnet/minecraft/world/entity/vehicle/Boat;controlBoat()V": "Lnet/minecraft/class_1690;method_7549()V",
+        "Lnet/minecraft/world/entity/vehicle/Boat;tickLerp()V": "Lnet/minecraft/class_1690;method_7555()V",
+        "tick": "Lnet/minecraft/class_1690;method_5773()V"
+      },
+      "com/talhanation/smallships/mixin/entity/EntityMixin": {
+        "turn": "Lnet/minecraft/class_1297;method_5872(DD)V"
+      },
+      "com/talhanation/smallships/mixin/entity/LivingEntityMixin": {
+        "Lnet/minecraft/world/entity/LivingEntity;dismountTo(DDD)V": "Lnet/minecraft/class_1309;method_33567(DDD)V",
+        "dismountVehicle": "Lnet/minecraft/class_1309;method_6038(Lnet/minecraft/class_1297;)V"
+      },
+      "com/talhanation/smallships/mixin/entity/ServerEntityMixin": {
+        "Lnet/minecraft/server/level/ServerEntity;removedPassengers(Ljava/util/List;Ljava/util/List;)Ljava/util/stream/Stream;": "Lnet/minecraft/class_3231;method_49753(Ljava/util/List;Ljava/util/List;)Ljava/util/stream/Stream;",
+        "sendChanges": "Lnet/minecraft/class_3231;method_18756()V"
+      },
+      "com/talhanation/smallships/mixin/zooming/client/CameraMixin": {
+        "Lnet/minecraft/client/Camera;getMaxZoom(F)F": "Lnet/minecraft/class_4184;method_19318(F)F",
+        "setup": "Lnet/minecraft/class_4184;method_19321(Lnet/minecraft/class_1922;Lnet/minecraft/class_1297;ZZF)V"
+      },
+      "com/talhanation/smallships/mixin/zooming/client/MouseHandlerMixin": {
+        "Lnet/minecraft/world/entity/player/Inventory;swapPaint(D)V": "Lnet/minecraft/class_1661;method_7373(D)V",
+        "onScroll(JDD)V": "Lnet/minecraft/class_312;method_1598(JDD)V"
+      }
+    }
+  }
+}

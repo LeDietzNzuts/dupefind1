@@ -1,0 +1,5 @@
+accessWidener	v1	intermediary
+accessible	method	net/minecraft/class_327	method_1724	(Ljava/lang/String;FFIZLorg/joml/Matrix4f;Lnet/minecraft/class_4597;Lnet/minecraft/class_327$class_6415;II)F
+accessible	field	net/minecraft/class_4185	field_22767	Lnet/minecraft/class_4185$class_4241;
+mutable	field	net/minecraft/class_4185	field_22767	Lnet/minecraft/class_4185$class_4241;
+accessible	field	net/minecraft/class_304	field_1655	Lnet/minecraft/class_3675$class_306;
