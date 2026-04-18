@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "clumps",
+  "name": "Clumps",
+  "version": "19.0.0.1",
+  "environment": "*",
+  "icon": "icon.png",
+  "authors": ["Jared"],
+  "license": "MIT",
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/clumps",
+    "sources": "https://github.com/jaredlll08/Clumps",
+    "issues": "https://github.com/jaredlll08/Clumps/issues"
+  },
+  "description": "Clumps xp orbs together.",
+  "entrypoints": {
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "java": ">=21",
+    "minecraft": "1.21.1"
+  },
+  "custom": {},
+  "mixins": [
+    {
+      "config": "clumps.mixins.json",
+      "environment": "*"
+    }
+  ]
+}

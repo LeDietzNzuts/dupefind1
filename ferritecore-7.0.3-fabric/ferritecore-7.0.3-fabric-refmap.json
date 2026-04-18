@@ -1,0 +1,158 @@
+{
+  "mappings": {
+    "malte0811/ferritecore/mixin/accessors/ArrayVSAccess": {
+      "xs": "field_1361:Lit/unimi/dsi/fastutil/doubles/DoubleList;",
+      "ys": "field_1362:Lit/unimi/dsi/fastutil/doubles/DoubleList;",
+      "zs": "field_1363:Lit/unimi/dsi/fastutil/doubles/DoubleList;"
+    },
+    "malte0811/ferritecore/mixin/accessors/BakedQuadAccess": {
+      "vertices": "field_4175:[I"
+    },
+    "malte0811/ferritecore/mixin/accessors/BitSetDVSAccess": {
+      "storage": "field_1359:Ljava/util/BitSet;",
+      "xMax": "field_1355:I",
+      "xMin": "field_1358:I",
+      "yMax": "field_1354:I",
+      "yMin": "field_1357:I",
+      "zMax": "field_1360:I",
+      "zMin": "field_1356:I"
+    },
+    "malte0811/ferritecore/mixin/accessors/DiscreteVSAccess": {
+      "xSize": "field_1374:I",
+      "ySize": "field_1373:I",
+      "zSize": "field_1372:I"
+    },
+    "malte0811/ferritecore/mixin/accessors/SliceShapeAccess": {
+      "axis": "field_1396:Lnet/minecraft/class_2350$class_2351;",
+      "delegate": "field_1397:Lnet/minecraft/class_265;"
+    },
+    "malte0811/ferritecore/mixin/accessors/SubShapeAccess": {
+      "endX": "field_1389:I",
+      "endY": "field_1388:I",
+      "endZ": "field_1394:I",
+      "parent": "field_1393:Lnet/minecraft/class_251;",
+      "startX": "field_1392:I",
+      "startY": "field_1391:I",
+      "startZ": "field_1390:I"
+    },
+    "malte0811/ferritecore/mixin/accessors/VoxelShapeAccess": {
+      "faces": "field_19318:[Lnet/minecraft/class_265;",
+      "shape": "field_1401:Lnet/minecraft/class_251;"
+    },
+    "malte0811/ferritecore/mixin/blockstatecache/BlockStateBaseMixin": {
+      "initCache": "Lnet/minecraft/class_4970$class_4971;method_26200()V"
+    },
+    "malte0811/ferritecore/mixin/blockstatecache/BlockStateCacheMixin": {
+      "net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase$Cache": "net/minecraft/class_4970$class_4971$class_3752"
+    },
+    "malte0811/ferritecore/mixin/datacomponents/PatchedDataComponentMapMixin": {
+      "applyPatch(Lnet/minecraft/core/component/DataComponentPatch;)V": "Lnet/minecraft/class_9335;method_57936(Lnet/minecraft/class_9326;)V",
+      "remove": "Lnet/minecraft/class_9335;method_57939(Lnet/minecraft/class_9331;)Ljava/lang/Object;",
+      "restorePatch": "Lnet/minecraft/class_9335;method_59772(Lnet/minecraft/class_9326;)V",
+      "set": "Lnet/minecraft/class_9335;method_57938(Lnet/minecraft/class_9331;Ljava/lang/Object;)Ljava/lang/Object;"
+    },
+    "malte0811/ferritecore/mixin/dedupbakedquad/SimpleModelBuilderMixin": {
+      "addCulledFace": "Lnet/minecraft/class_1093$class_1094;method_4745(Lnet/minecraft/class_2350;Lnet/minecraft/class_777;)Lnet/minecraft/class_1093$class_1094;",
+      "addUnculledFace": "Lnet/minecraft/class_1093$class_1094;method_4748(Lnet/minecraft/class_777;)Lnet/minecraft/class_1093$class_1094;"
+    },
+    "malte0811/ferritecore/mixin/dedupmultipart/MixinMultipartBuilder": {
+      "(Ljava/util/List;)Lnet/minecraft/client/resources/model/MultiPartBakedModel;": "(Ljava/util/List;)Lnet/minecraft/class_1095;",
+      "build": "Lnet/minecraft/class_1095$class_1096;method_4750()Lnet/minecraft/class_1087;"
+    },
+    "malte0811/ferritecore/mixin/fabric/MinecraftMixin": {
+      "<init>": "Lnet/minecraft/class_310;<init>(Lnet/minecraft/class_542;)V",
+      "Lnet/minecraft/client/renderer/entity/ItemRenderer;<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/client/resources/model/ModelManager;Lnet/minecraft/client/color/item/ItemColors;Lnet/minecraft/client/renderer/BlockEntityWithoutLevelRenderer;)V": "Lnet/minecraft/class_918;<init>(Lnet/minecraft/class_310;Lnet/minecraft/class_1060;Lnet/minecraft/class_1092;Lnet/minecraft/class_325;Lnet/minecraft/class_756;)V"
+    },
+    "malte0811/ferritecore/mixin/fastmap/FastMapStateHolderMixin": {
+      "setValue": "Lnet/minecraft/class_2688;method_11657(Lnet/minecraft/class_2769;Ljava/lang/Comparable;)Ljava/lang/Object;",
+      "trySetValue": "Lnet/minecraft/class_2688;method_47968(Lnet/minecraft/class_2769;Ljava/lang/Comparable;)Ljava/lang/Object;"
+    },
+    "malte0811/ferritecore/mixin/mrl/ModelResourceLocationMixin": {
+      "<init>(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/String;)V": "Lnet/minecraft/class_1091;<init>(Lnet/minecraft/class_2960;Ljava/lang/String;)V"
+    },
+    "malte0811/ferritecore/mixin/threaddetec/PalettedContainerMixin": {
+      "<init>(Lnet/minecraft/core/IdMap;Ljava/lang/Object;Lnet/minecraft/world/level/chunk/PalettedContainer$Strategy;)V": "Lnet/minecraft/class_2841;<init>(Lnet/minecraft/class_2359;Ljava/lang/Object;Lnet/minecraft/class_2841$class_6563;)V",
+      "<init>(Lnet/minecraft/core/IdMap;Lnet/minecraft/world/level/chunk/PalettedContainer$Strategy;Lnet/minecraft/world/level/chunk/PalettedContainer$Configuration;Lnet/minecraft/util/BitStorage;Ljava/util/List;)V": "Lnet/minecraft/class_2841;<init>(Lnet/minecraft/class_2359;Lnet/minecraft/class_2841$class_6563;Lnet/minecraft/class_2841$class_6560;Lnet/minecraft/class_6490;Ljava/util/List;)V",
+      "<init>(Lnet/minecraft/core/IdMap;Lnet/minecraft/world/level/chunk/PalettedContainer$Strategy;Lnet/minecraft/world/level/chunk/PalettedContainer$Data;)V": "Lnet/minecraft/class_2841;<init>(Lnet/minecraft/class_2359;Lnet/minecraft/class_2841$class_6563;Lnet/minecraft/class_2841$class_6561;)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "malte0811/ferritecore/mixin/accessors/ArrayVSAccess": {
+        "xs": "field_1361:Lit/unimi/dsi/fastutil/doubles/DoubleList;",
+        "ys": "field_1362:Lit/unimi/dsi/fastutil/doubles/DoubleList;",
+        "zs": "field_1363:Lit/unimi/dsi/fastutil/doubles/DoubleList;"
+      },
+      "malte0811/ferritecore/mixin/accessors/BakedQuadAccess": {
+        "vertices": "field_4175:[I"
+      },
+      "malte0811/ferritecore/mixin/accessors/BitSetDVSAccess": {
+        "storage": "field_1359:Ljava/util/BitSet;",
+        "xMax": "field_1355:I",
+        "xMin": "field_1358:I",
+        "yMax": "field_1354:I",
+        "yMin": "field_1357:I",
+        "zMax": "field_1360:I",
+        "zMin": "field_1356:I"
+      },
+      "malte0811/ferritecore/mixin/accessors/DiscreteVSAccess": {
+        "xSize": "field_1374:I",
+        "ySize": "field_1373:I",
+        "zSize": "field_1372:I"
+      },
+      "malte0811/ferritecore/mixin/accessors/SliceShapeAccess": {
+        "axis": "field_1396:Lnet/minecraft/class_2350$class_2351;",
+        "delegate": "field_1397:Lnet/minecraft/class_265;"
+      },
+      "malte0811/ferritecore/mixin/accessors/SubShapeAccess": {
+        "endX": "field_1389:I",
+        "endY": "field_1388:I",
+        "endZ": "field_1394:I",
+        "parent": "field_1393:Lnet/minecraft/class_251;",
+        "startX": "field_1392:I",
+        "startY": "field_1391:I",
+        "startZ": "field_1390:I"
+      },
+      "malte0811/ferritecore/mixin/accessors/VoxelShapeAccess": {
+        "faces": "field_19318:[Lnet/minecraft/class_265;",
+        "shape": "field_1401:Lnet/minecraft/class_251;"
+      },
+      "malte0811/ferritecore/mixin/blockstatecache/BlockStateBaseMixin": {
+        "initCache": "Lnet/minecraft/class_4970$class_4971;method_26200()V"
+      },
+      "malte0811/ferritecore/mixin/blockstatecache/BlockStateCacheMixin": {
+        "net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase$Cache": "net/minecraft/class_4970$class_4971$class_3752"
+      },
+      "malte0811/ferritecore/mixin/datacomponents/PatchedDataComponentMapMixin": {
+        "applyPatch(Lnet/minecraft/core/component/DataComponentPatch;)V": "Lnet/minecraft/class_9335;method_57936(Lnet/minecraft/class_9326;)V",
+        "remove": "Lnet/minecraft/class_9335;method_57939(Lnet/minecraft/class_9331;)Ljava/lang/Object;",
+        "restorePatch": "Lnet/minecraft/class_9335;method_59772(Lnet/minecraft/class_9326;)V",
+        "set": "Lnet/minecraft/class_9335;method_57938(Lnet/minecraft/class_9331;Ljava/lang/Object;)Ljava/lang/Object;"
+      },
+      "malte0811/ferritecore/mixin/dedupbakedquad/SimpleModelBuilderMixin": {
+        "addCulledFace": "Lnet/minecraft/class_1093$class_1094;method_4745(Lnet/minecraft/class_2350;Lnet/minecraft/class_777;)Lnet/minecraft/class_1093$class_1094;",
+        "addUnculledFace": "Lnet/minecraft/class_1093$class_1094;method_4748(Lnet/minecraft/class_777;)Lnet/minecraft/class_1093$class_1094;"
+      },
+      "malte0811/ferritecore/mixin/dedupmultipart/MixinMultipartBuilder": {
+        "(Ljava/util/List;)Lnet/minecraft/client/resources/model/MultiPartBakedModel;": "(Ljava/util/List;)Lnet/minecraft/class_1095;",
+        "build": "Lnet/minecraft/class_1095$class_1096;method_4750()Lnet/minecraft/class_1087;"
+      },
+      "malte0811/ferritecore/mixin/fabric/MinecraftMixin": {
+        "<init>": "Lnet/minecraft/class_310;<init>(Lnet/minecraft/class_542;)V",
+        "Lnet/minecraft/client/renderer/entity/ItemRenderer;<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/client/resources/model/ModelManager;Lnet/minecraft/client/color/item/ItemColors;Lnet/minecraft/client/renderer/BlockEntityWithoutLevelRenderer;)V": "Lnet/minecraft/class_918;<init>(Lnet/minecraft/class_310;Lnet/minecraft/class_1060;Lnet/minecraft/class_1092;Lnet/minecraft/class_325;Lnet/minecraft/class_756;)V"
+      },
+      "malte0811/ferritecore/mixin/fastmap/FastMapStateHolderMixin": {
+        "setValue": "Lnet/minecraft/class_2688;method_11657(Lnet/minecraft/class_2769;Ljava/lang/Comparable;)Ljava/lang/Object;",
+        "trySetValue": "Lnet/minecraft/class_2688;method_47968(Lnet/minecraft/class_2769;Ljava/lang/Comparable;)Ljava/lang/Object;"
+      },
+      "malte0811/ferritecore/mixin/mrl/ModelResourceLocationMixin": {
+        "<init>(Lnet/minecraft/resources/ResourceLocation;Ljava/lang/String;)V": "Lnet/minecraft/class_1091;<init>(Lnet/minecraft/class_2960;Ljava/lang/String;)V"
+      },
+      "malte0811/ferritecore/mixin/threaddetec/PalettedContainerMixin": {
+        "<init>(Lnet/minecraft/core/IdMap;Ljava/lang/Object;Lnet/minecraft/world/level/chunk/PalettedContainer$Strategy;)V": "Lnet/minecraft/class_2841;<init>(Lnet/minecraft/class_2359;Ljava/lang/Object;Lnet/minecraft/class_2841$class_6563;)V",
+        "<init>(Lnet/minecraft/core/IdMap;Lnet/minecraft/world/level/chunk/PalettedContainer$Strategy;Lnet/minecraft/world/level/chunk/PalettedContainer$Configuration;Lnet/minecraft/util/BitStorage;Ljava/util/List;)V": "Lnet/minecraft/class_2841;<init>(Lnet/minecraft/class_2359;Lnet/minecraft/class_2841$class_6563;Lnet/minecraft/class_2841$class_6560;Lnet/minecraft/class_6490;Ljava/util/List;)V",
+        "<init>(Lnet/minecraft/core/IdMap;Lnet/minecraft/world/level/chunk/PalettedContainer$Strategy;Lnet/minecraft/world/level/chunk/PalettedContainer$Data;)V": "Lnet/minecraft/class_2841;<init>(Lnet/minecraft/class_2359;Lnet/minecraft/class_2841$class_6563;Lnet/minecraft/class_2841$class_6561;)V"
+      }
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "mappings": {
+    "ewewukek/musketmod/mixin/AbstractClientPlayerMixin": {
+      "getFieldOfViewModifier": "Lnet/minecraft/class_742;method_3118()F"
+    },
+    "ewewukek/musketmod/mixin/AbstractSkeletonMixin": {
+      "populateDefaultEquipmentSlots": "Lnet/minecraft/class_1547;method_5964(Lnet/minecraft/class_5819;Lnet/minecraft/class_1266;)V",
+      "registerGoals": "Lnet/minecraft/class_1547;method_5959()V"
+    },
+    "ewewukek/musketmod/mixin/EntityMixin": {
+      "spawnAtLocation(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/entity/item/ItemEntity;": "Lnet/minecraft/class_1297;method_5775(Lnet/minecraft/class_1799;)Lnet/minecraft/class_1542;"
+    },
+    "ewewukek/musketmod/mixin/HumanoidModelMixin": {
+      "poseLeftArm": "Lnet/minecraft/class_572;method_30155(Lnet/minecraft/class_1309;)V",
+      "poseRightArm": "Lnet/minecraft/class_572;method_30154(Lnet/minecraft/class_1309;)V",
+      "setupAnim": "Lnet/minecraft/class_572;method_17087(Lnet/minecraft/class_1309;FFFFF)V"
+    },
+    "ewewukek/musketmod/mixin/ItemInHandRendererMixin": {
+      "renderArmWithItem": "Lnet/minecraft/class_759;method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+    },
+    "ewewukek/musketmod/mixin/LocalPlayerMixin": {
+      "aiStep": "Lnet/minecraft/class_746;method_6007()V",
+      "canStartSprinting": "Lnet/minecraft/class_746;method_48300()Z",
+      "getViewXRot": "Lnet/minecraft/class_746;method_5695(F)F",
+      "isUsingItem": "Lnet/minecraft/class_746;method_6115()Z"
+    },
+    "ewewukek/musketmod/mixin/LootTableMixin": {
+      "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;": "Lnet/minecraft/class_52;method_319(Lnet/minecraft/class_47;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"
+    },
+    "ewewukek/musketmod/mixin/MinecraftMixin": {
+      "continueAttack": "Lnet/minecraft/class_310;method_1590(Z)V",
+      "handleKeybinds": "Lnet/minecraft/class_310;method_1508()V",
+      "startAttack": "Lnet/minecraft/class_310;method_1536()Z"
+    },
+    "ewewukek/musketmod/mixin/MultiPlayerGameModeMixin": {
+      "interact": "Lnet/minecraft/class_636;method_2905(Lnet/minecraft/class_1657;Lnet/minecraft/class_1297;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;",
+      "interactAt": "Lnet/minecraft/class_636;method_2917(Lnet/minecraft/class_1657;Lnet/minecraft/class_1297;Lnet/minecraft/class_3966;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;",
+      "useItem": "Lnet/minecraft/class_636;method_2919(Lnet/minecraft/class_1657;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;",
+      "useItemOn": "Lnet/minecraft/class_636;method_2896(Lnet/minecraft/class_746;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+    },
+    "ewewukek/musketmod/mixin/PillagerMixin": {
+      "getArmPose": "Lnet/minecraft/class_1604;method_6990()Lnet/minecraft/class_1543$class_1544;",
+      "populateDefaultEquipmentSlots": "Lnet/minecraft/class_1604;method_5964(Lnet/minecraft/class_5819;Lnet/minecraft/class_1266;)V",
+      "registerGoals": "Lnet/minecraft/class_1604;method_5959()V"
+    },
+    "ewewukek/musketmod/mixin/PlayerMixin": {
+      "isScoping": "Lnet/minecraft/class_1657;method_31550()Z"
+    },
+    "ewewukek/musketmod/mixin/ReloadableServerRegistriesHolderMixin": {
+      "getLootTable": "Lnet/minecraft/class_9383$class_9385;method_58295(Lnet/minecraft/class_5321;)Lnet/minecraft/class_52;"
+    },
+    "ewewukek/musketmod/mixin/SkeletonModelMixin": {
+      "Lnet/minecraft/world/entity/Mob;getMainHandItem()Lnet/minecraft/world/item/ItemStack;": "Lnet/minecraft/class_1308;method_6047()Lnet/minecraft/class_1799;",
+      "prepareMobModel": "Lnet/minecraft/class_606;method_19689(Lnet/minecraft/class_1308;FFF)V",
+      "setupAnim": "Lnet/minecraft/class_606;method_19690(Lnet/minecraft/class_1308;FFFFF)V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "ewewukek/musketmod/mixin/AbstractClientPlayerMixin": {
+        "getFieldOfViewModifier": "Lnet/minecraft/class_742;method_3118()F"
+      },
+      "ewewukek/musketmod/mixin/AbstractSkeletonMixin": {
+        "populateDefaultEquipmentSlots": "Lnet/minecraft/class_1547;method_5964(Lnet/minecraft/class_5819;Lnet/minecraft/class_1266;)V",
+        "registerGoals": "Lnet/minecraft/class_1547;method_5959()V"
+      },
+      "ewewukek/musketmod/mixin/EntityMixin": {
+        "spawnAtLocation(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/entity/item/ItemEntity;": "Lnet/minecraft/class_1297;method_5775(Lnet/minecraft/class_1799;)Lnet/minecraft/class_1542;"
+      },
+      "ewewukek/musketmod/mixin/HumanoidModelMixin": {
+        "poseLeftArm": "Lnet/minecraft/class_572;method_30155(Lnet/minecraft/class_1309;)V",
+        "poseRightArm": "Lnet/minecraft/class_572;method_30154(Lnet/minecraft/class_1309;)V",
+        "setupAnim": "Lnet/minecraft/class_572;method_17087(Lnet/minecraft/class_1309;FFFFF)V"
+      },
+      "ewewukek/musketmod/mixin/ItemInHandRendererMixin": {
+        "renderArmWithItem": "Lnet/minecraft/class_759;method_3228(Lnet/minecraft/class_742;FFLnet/minecraft/class_1268;FLnet/minecraft/class_1799;FLnet/minecraft/class_4587;Lnet/minecraft/class_4597;I)V"
+      },
+      "ewewukek/musketmod/mixin/LocalPlayerMixin": {
+        "aiStep": "Lnet/minecraft/class_746;method_6007()V",
+        "canStartSprinting": "Lnet/minecraft/class_746;method_48300()Z",
+        "getViewXRot": "Lnet/minecraft/class_746;method_5695(F)F",
+        "isUsingItem": "Lnet/minecraft/class_746;method_6115()Z"
+      },
+      "ewewukek/musketmod/mixin/LootTableMixin": {
+        "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;": "Lnet/minecraft/class_52;method_319(Lnet/minecraft/class_47;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"
+      },
+      "ewewukek/musketmod/mixin/MinecraftMixin": {
+        "continueAttack": "Lnet/minecraft/class_310;method_1590(Z)V",
+        "handleKeybinds": "Lnet/minecraft/class_310;method_1508()V",
+        "startAttack": "Lnet/minecraft/class_310;method_1536()Z"
+      },
+      "ewewukek/musketmod/mixin/MultiPlayerGameModeMixin": {
+        "interact": "Lnet/minecraft/class_636;method_2905(Lnet/minecraft/class_1657;Lnet/minecraft/class_1297;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;",
+        "interactAt": "Lnet/minecraft/class_636;method_2917(Lnet/minecraft/class_1657;Lnet/minecraft/class_1297;Lnet/minecraft/class_3966;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;",
+        "useItem": "Lnet/minecraft/class_636;method_2919(Lnet/minecraft/class_1657;Lnet/minecraft/class_1268;)Lnet/minecraft/class_1269;",
+        "useItemOn": "Lnet/minecraft/class_636;method_2896(Lnet/minecraft/class_746;Lnet/minecraft/class_1268;Lnet/minecraft/class_3965;)Lnet/minecraft/class_1269;"
+      },
+      "ewewukek/musketmod/mixin/PillagerMixin": {
+        "getArmPose": "Lnet/minecraft/class_1604;method_6990()Lnet/minecraft/class_1543$class_1544;",
+        "populateDefaultEquipmentSlots": "Lnet/minecraft/class_1604;method_5964(Lnet/minecraft/class_5819;Lnet/minecraft/class_1266;)V",
+        "registerGoals": "Lnet/minecraft/class_1604;method_5959()V"
+      },
+      "ewewukek/musketmod/mixin/PlayerMixin": {
+        "isScoping": "Lnet/minecraft/class_1657;method_31550()Z"
+      },
+      "ewewukek/musketmod/mixin/ReloadableServerRegistriesHolderMixin": {
+        "getLootTable": "Lnet/minecraft/class_9383$class_9385;method_58295(Lnet/minecraft/class_5321;)Lnet/minecraft/class_52;"
+      },
+      "ewewukek/musketmod/mixin/SkeletonModelMixin": {
+        "Lnet/minecraft/world/entity/Mob;getMainHandItem()Lnet/minecraft/world/item/ItemStack;": "Lnet/minecraft/class_1308;method_6047()Lnet/minecraft/class_1799;",
+        "prepareMobModel": "Lnet/minecraft/class_606;method_19689(Lnet/minecraft/class_1308;FFF)V",
+        "setupAnim": "Lnet/minecraft/class_606;method_19690(Lnet/minecraft/class_1308;FFFFF)V"
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "farmersdelight",
+  "version": "1.21.1-3.2.8+refabricated",
+  "name": "Farmer\u0027s Delight",
+  "description": "A cozy expansion to farming and cooking!",
+  "authors": [
+    "Vectorwing, ChrysanthCow, MehVahdJukaar, cassiancc"
+  ],
+  "contributors": [
+    "vectorwing"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/farmers-delight-refabricated",
+    "sources": "https://github.com/MehVahdJukaar/FarmersDelightRefabricated"
+  },
+  "license": "MIT License",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "vectorwing.farmersdelight.FarmersDelight"
+    ],
+    "client": [
+      "vectorwing.farmersdelight.client.FarmersDelightClient"
+    ],
+    "mm:early_risers": [
+      "vectorwing.farmersdelight.refabricated.FarmersDelightASM"
+    ],
+    "jei_mod_plugin": [
+      "vectorwing.farmersdelight.integration.jei.JEIPlugin"
+    ],
+    "rei_client": [
+      "vectorwing.farmersdelight.integration.rei.ClientREIPlugin"
+    ],
+    "rei_server": [
+      "vectorwing.farmersdelight.integration.rei.ServerREIPlugin"
+    ],
+    "emi": [
+      "vectorwing.farmersdelight.integration.emi.EMIPlugin"
+    ],
+    "modmenu": [
+      "vectorwing.farmersdelight.integration.modmenu.ModMenuCompat"
+    ]
+  },
+  "mixins": [
+    "farmersdelight.mixins.json"
+  ],
+  "accessWidener": "farmersdelight.accesswidener",
+  "depends": {
+    "fabricloader": "\u003e\u003d0.16",
+    "fabric-api": "*",
+    "minecraft": "\u003e\u003d1.21 \u003c\u003d1.21.1"
+  },
+  "jars": [
+    {
+      "file": "META-INF/jars/Fabric-ASM-v2.3.jar"
+    }
+  ]
+}

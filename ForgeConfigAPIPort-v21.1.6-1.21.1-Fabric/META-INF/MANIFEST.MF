@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Specification-Title: Forge Config API Port
+Specification-Version: 21.1.6
+Specification-Vendor: Fuzs
+Implementation-Title: Forge Config API Port
+Implementation-Version: 21.1.6
+Implementation-Vendor: Fuzs
+Implementation-Timestamp: 2025-11-12T09:59:47+0100
+Implementation-Timestamp-Milli: 1762937987646
+Implementation-URL: https://github.com/Fuzss/forgeconfigapiport
+Built-On-Java: 21.0.7+6-LTS (Microsoft)
+Built-On-Minecraft: 1.21.1
+Fabric-Jar-Type: classes
+Fabric-Loom-Mixin-Remap-Type: mixin
+Fabric-Gradle-Version: 8.8
+Fabric-Loom-Version: 1.7.435
+Fabric-Mixin-Compile-Extensions-Version: 0.6.0
+Fabric-Minecraft-Version: 1.21.1
+Fabric-Tiny-Remapper-Version: 0.10.3
+Fabric-Loader-Version: 0.16.14
+Fabric-Mixin-Version: 0.15.5+mixin.0.8.7
+Fabric-Mixin-Group: net.fabricmc
+Fabric-Mapping-Namespace: intermediary
+

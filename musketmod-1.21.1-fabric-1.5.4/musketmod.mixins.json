@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "package": "ewewukek.musketmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "AbstractClientPlayerMixin",
+    "HumanoidModelMixin",
+    "ItemInHandRendererMixin",
+    "LocalPlayerMixin",
+    "MinecraftMixin",
+    "MultiPlayerGameModeMixin",
+    "PlayerMixin",
+    "SkeletonModelMixin"
+  ],
+  "mixins": [
+    "AbstractSkeletonMixin",
+    "EntityMixin",
+    "LootTableMixin",
+    "PillagerMixin",
+    "ReloadableServerRegistriesHolderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "musketmod-1.21.1-fabric-refmap.json"
+}

@@ -1,0 +1,31 @@
+accessWidener	v1	intermediary
+accessible	class	net/minecraft/class_327$class_5232
+accessible	method	net/minecraft/class_377$class_7647	method_45080	(Z)Lnet/minecraft/class_379;
+accessible	method	net/minecraft/class_327	method_27526	(Lnet/minecraft/class_2960;)Lnet/minecraft/class_377;
+accessible	field	net/minecraft/class_310	field_1708	Lnet/minecraft/class_378;
+accessible	field	net/minecraft/class_378	field_2259	Ljava/util/Map;
+accessible	field	net/minecraft/class_1006	field_4913	Lnet/minecraft/class_2960;
+accessible	field	net/minecraft/class_9799	field_52082	J
+accessible	field	net/minecraft/class_287	field_52071	Lnet/minecraft/class_9799;
+accessible	field	net/minecraft/class_287	field_1556	Z
+accessible	method	net/minecraft/class_4597$class_4598	<init>	(Lnet/minecraft/class_9799;Ljava/util/SequencedMap;)V
+accessible	method	net/minecraft/class_4597$class_4598	method_60893	(Lnet/minecraft/class_1921;Lnet/minecraft/class_287;)V
+mutable	field	net/minecraft/class_4597$class_4598	field_52156	Lnet/minecraft/class_9799;
+accessible	class	net/minecraft/class_1921$class_4687
+accessible	class	net/minecraft/class_1921$class_4688
+accessible	field	net/minecraft/class_1921$class_4688	field_21406	Lnet/minecraft/class_4668$class_5939;
+accessible	method	net/minecraft/class_1921$class_4687	method_35784	()Lnet/minecraft/class_1921$class_4688;
+accessible	method	net/minecraft/class_4668$class_5939	method_23564	()Ljava/util/Optional;
+accessible	field	net/minecraft/class_4668	field_21363	Ljava/lang/String;
+accessible	class	net/minecraft/class_330$class_331
+accessible	field	net/minecraft/class_4597$class_4598	field_20953	Ljava/util/SequencedMap;
+accessible	field	net/minecraft/class_4618	field_21059	Lnet/minecraft/class_4597$class_4598;
+accessible	field	com/mojang/blaze3d/platform/GlStateManager	BLEND	Lcom/mojang/blaze3d/platform/GlStateManager$class_1017;
+accessible	class	com/mojang/blaze3d/platform/GlStateManager$class_1017
+accessible	field	com/mojang/blaze3d/platform/GlStateManager	DEPTH	Lcom/mojang/blaze3d/platform/GlStateManager$class_1026;
+accessible	class	com/mojang/blaze3d/platform/GlStateManager$class_1026
+accessible	class	com/mojang/blaze3d/platform/GlStateManager$class_1018
+accessible	field	com/mojang/blaze3d/platform/GlStateManager$class_1018	field_5051	Z
+accessible	field	net/minecraft/class_332	field_44658	Lnet/minecraft/class_4597$class_4598;
+mutable	field	net/minecraft/class_332	field_44658	Lnet/minecraft/class_4597$class_4598;
+accessible	field	com/mojang/blaze3d/systems/RenderSystem	shaderLightDirections	[Lorg/joml/Vector3f;

@@ -1,0 +1,4 @@
+accessWidener	v1	intermediary
+accessible	field	net/minecraft/class_3785	field_16680	Lit/unimi/dsi/fastutil/objects/ObjectArrayList;
+accessible	field	net/minecraft/class_3785	field_16864	Ljava/util/List;
+mutable	field	net/minecraft/class_3785	field_16864	Ljava/util/List;

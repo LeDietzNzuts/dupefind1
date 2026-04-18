@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "mcwfurnitures",
+  "version": "3.4.1",
+
+  "name": "Macaw's Furniture",
+  "description": "Chairs, Wardrobes, Drawers, Tables, Desks and more..!",
+  "authors": [
+    "Sketch Macaw & Peachy Macaw"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/macaws-furniture",
+    "sources": ""
+  },
+
+  "license": "All Right Reserved",
+  "icon": "assets/mcwfurnitures/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.kikoz.mcwfurnitures.MacawsFurniture"
+    ],
+	"client": [
+      "net.kikoz.mcwfurnitures.util.ClientEventBusSubscriber"
+    ]
+  },
+ 
+
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
