@@ -885,3 +885,109 @@ Shape N's classic red flag — *"custom invulnerable ItemEntity that never despa
 - **Rule 4 restated**: this audit has now traced shapes A, B, D, G, H, I, J, L, N, plus H-08/H-09, H-10-adjacent surfaces, and the YIAS death-path totem branch. Shapes **F, K, M, U, V, W, X, Y, Z**, Phase 2 (external trackers for the exact shipped versions: SBP `3.23.4.3.106`, SCore `1.2.9.21.168`, Lootr `1.11.37.118`, YIAS `4.7`), and Phase 5 (JAR↔source bytecode diff) remain un-executed. A solo dupe could still hide there.
 - **Structural summary (why so few solo dupes in this stack):** SBP and SCore tie every backpack to a `STORAGE_UUID`-keyed world-global `BackpackStorage` entry, so stack-duplicating operations (pick-block, recipe-copy, inventory-move) share storage rather than cloning it. Lootr drops vanilla chest items with `copy_components.include` limited to `minecraft:custom_name`, so block-break cannot carry per-container identity. YIAS is the only mod in the stack that exposes raw `ItemStack` references across a tick boundary — which is exactly why H-01 (YIAS × SBP pickup-upgrade) is the surface that fell and no YIAS-alone solo surface has been found after four passes.
 - **Auditor**: Devin (session `c18c25e7b8ec48aaa59d10412d68e148`).
+
+---
+
+## Appendix E — Pass 5: External intel (Phase 2, 2026-04-18)
+
+**Scope**: Public issue trackers, Modrinth comments, CurseForge comments, Reddit, and YouTube for the exact shipped versions — **SBP `3.23.4.3.106`, SCore `1.2.9.21.168`, Lootr `1.11.37.118`, YIAS `4.7`**.
+
+**Rule 7 compliance**: This appendix reports what third parties have publicly claimed. A third-party claim is *evidence*, not *proof*. Every candidate H-25+ below is flagged with (a) whether the claim is maintainer-confirmed, (b) whether the bug mechanism is present in our shipped code, and (c) whether repro is solo.
+
+### E.1 Log of every public report reviewed
+
+| # | Repo / Issue | Title | Filed | Status | Version reported | Maintainer verdict | Solo? |
+|---|---|---|---|---|---|---|---|
+| E-1 | [SBP#1487](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1487) | Anvil Upgrade causes unintentional item duping (shift-click result) | 2025-09-01 | CLOSED same-day | 1.21.8-3.24.23.1318 | **CONFIRMED** by P3pp3rF1y: "tiny piece of code changed in vanilla that caused the result to be recreated half way through the shift click. Same issue actually affected Smithing Upgrade as well. Now both of these are fixed in the latest releases for 1.21.4 and later" | YES |
+| E-2 | [SBP#1525](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1525) | Backpack contents lost after updating from 1.20.1 to 1.21.1 | 2025-10-22 | CLOSED | 1.21.1-3.25.12.1403 | Migration issue, not dupe. Data loss on version upgrade. | N/A |
+| E-3 | [SBP#1526](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1526) | Every item in my backpacks keeps getting deleted (inception + keep-inventory death) | 2025-10-24 | CLOSED | 1.21.1 | "Unable to recreate in dev pack. Likely modpack-specific." Later maintainer hypothesis: "duplicate backpack deduplication logic cleared their id." | Unclear |
+| E-4 | [SBP#1528](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1528) | Item deletions and dupes within backpacks accessed via inception upgrade | 2025-10-27 | CLOSED 2026-03-30 | 1.21.1-3.25.12 | "Unable to recreate in dev pack" — closed without fix, not reproducible by maintainer | Reporter claimed yes |
+| E-5 | [SBP#1535](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1535) | Inception Upgrade Issues (Advanced Magnet + dupe-then-delete) | 2025-11-11 | CLOSED 2026-03-30 | 1.21.1-3.25.14.1410 | "Unable to recreate these issues." Closed as stale. | Reporter: solo mostly |
+| E-6 | [SBP#1564](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1564) | Duplication/deletion issue with Minecraft's new bundle item | 2025-12-12 | CLOSED | — | Closed (resolution not in public summary) | Needs bundle-experiment enabled in 1.21.1 |
+| E-7 | [SBP#1580](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1580) | Backpack make item copy (craft table upgrade remove/re-add) | 2025-12-24 | CLOSED 2025-12-28 | 1.21.1-3.25.20.1470 | "I am unable to recreate this even with the exact same setup. So this is a case of another mod interfering." Closed as `question` / stale. | Reporter: required mekanism pipes for the provided repro; core mechanism (remove craft-upgrade → state persists) is solo in principle |
+| E-8 | [SBP#1650](https://github.com/P3pp3rF1y/SophisticatedBackpacks/issues/1650) | [1.21.1] Dupe/Rollback on Backpack Contents When Nested w/ Inception Upgrade | 2026-04-14 | **STILL OPEN** | 1.21.1-3.25.31.1560 / 3.25.34.1604 | Maintainer has not yet responded on record as of 2026-04-18 | Reporter: solo |
+| E-9 | [Lootr#21](https://github.com/LootrMinecraft/Lootr/issues/21) | Duplication bug with Lootr chest in minecart (1.16 era) | 2021-02-22 | CLOSED same-day | 0.0.4.14 (1.16) | "A fix for this was released over three weeks ago" — fix in 0.0.4.15, Feb 2021 | N/A (pre-1.21) |
+| E-10 | [Lootr#624](https://github.com/LootrMinecraft/Lootr/issues/624) | Unable to open chests in different structures (NeoForge 1.21.1) | 2025-04-25 | CLOSED 2025-05-18 | NeoForge 1.21.1 | Null loot pool in broken world generation; unrelated to dupe | N/A |
+| E-11 | Lootr issues listing | (No other dupe reports for Lootr 1.21.1) | — | — | — | Only historical 1.16-era dupe reports surfaced | — |
+| E-12 | [Serilum/.issue-tracker#3673](https://github.com/Serilum/.issue-tracker/issues/3673) | Items Deleted from Inventory on Death (Stack Refill, not YIAS) | 2026-04-08 | OPEN | MC 26.1 (post-1.21.x) | Assigned to ricksouth, labelled `Bug` | N/A — wrong mod (Stack Refill, not YIAS) and wrong MC version |
+| E-13 | Serilum tracker (YIAS-specific search) | — | — | No YIAS dupe reports located | — | — | — |
+
+### E.2 Version cross-reference
+
+**Our shipped SBP = `3.23.4.3.106`** (pre-1.21.1? Let me restate: the `1.21.1-3.23.4.3.106` tag is on the CurseForge-only build ladder. The Modrinth ladder for 1.21.1 starts at `3.23.2.1185`, jumps to `3.24.3.1216` → `3.24.16.1269` (first inception-save fix) → `3.25.12.1403` → `3.25.31.1560` (bug E-8 reported here). Our version is **before** every one of the documented inception fixes.)
+
+**Our shipped YIAS = `4.7`**, Lootr = `1.11.37.118`, SCore = `1.2.9.21.168`.
+
+Relevant fix log lines from SBP's Modrinth/CurseForge changelogs checked during this pass:
+
+- **`3.24.16.1269`**: *"Fixed backpacks nested in another backpack with inception upgrade to properly save their contents id if they haven't been open before being put into the main backpack. Prevents item loss in that case."*
+- **1.21.4+ branch**: fix for E-1 anvil/smithing shift-click dupe ("recreated half way through the shift click"). **Not backported to the 1.21.1 line.**
+
+### E.3 Candidate H-25 hypotheses (ranked)
+
+#### H-25 (candidate) — Anvil-upgrade shift-click result dupe
+
+**Source**: E-1 (SBP#1487), maintainer-confirmed on 1.21.8.
+
+**Bug mechanism (per maintainer)**: "a tiny piece of code changed in vanilla that caused the result to be recreated half way through the shift click." The vanilla change in question is in `AnvilMenu` / `ItemCombinerMenu` / `ResultSlot` between 1.21.1 and 1.21.8.
+
+**Presence in our shipped code**: our SBP has `AnvilUpgradeContainer$PersistableAnvilMenu extends class_1706 (AnvilMenu)` at <ref_snippet file="/home/ubuntu/repos/dupefind1/decompiled/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/upgrades/anvil/AnvilUpgradeContainer.java" lines="97-165" />. The result slot is defined at `AnvilUpgradeContainer:38-39` and passed to the outer upgrade-container framework as `slots.add(this.resultSlot)`. The shift-click logic is not overridden in `AnvilUpgradeContainer` itself — it is delegated to the outer `BackpackMenu.method_7601` / `quickMoveStack` path, which I have not yet traced.
+
+**Critical distinction**: the maintainer said the trigger is a vanilla change *after* 1.21.1. That means **if the vanilla bug does not exist in 1.21.1, neither does this dupe.** The most likely scenario is: 1.21.4 introduced a change to `ItemCombinerMenu.slotsChanged` or `ResultSlot.onTake` that caused the result stack to be regenerated during shift-click. If that change is not in 1.21.1, our shipped SBP code does not expose this dupe.
+
+**Verdict without trace**: **UNKNOWN. Strong circumstantial evidence the dupe does NOT exist in 1.21.1** (because the maintainer's language implies the vanilla code change that caused it happened in 1.21.4+). Trace target: compare `net.minecraft.class_1706` / `class_1734` / `ResultSlot.onTake` between the 1.21.1 vanilla jar and the 1.21.4 vanilla jar. That comparison requires the vanilla jar (out of scope for this four-mod audit — the vanilla 1.21.1 side of it might be reachable from the deobf jars shipped with the modpack).
+
+#### H-26 (candidate) — Inception upgrade rollback-on-normal-edit (open as of 2026-04-18)
+
+**Source**: E-8 (SBP#1650), currently open, reporter on 1.21.1-3.25.31.
+
+**Bug mechanism (per reporter)**: nested backpack (inception upgrade) inventory rolls back to pre-edit state during normal gameplay. Specifically: (1) `Ctrl+Q` bulk-remove from nested bag while holding — items never drop to ground; (2) later removing the nested bag and reopening shows it reverted to pre-`Ctrl+Q` state. Advanced Magnet Upgrades in the nested bags are part of the configuration.
+
+**Presence in our shipped code**: our SBP has `SubBackpacksHandler` + `InceptionInventoryHandler` + `InceptionUpgradeWrapper`. The save path that is failing (per reporter) would be `BackpackWrapper.save()` → backpack's `BackpackStorage.setDirty()`. I have not yet traced whether a sub-backpack's inventory edit correctly propagates `setDirty()` up through `InceptionInventoryHandler` → `SubBackpacksHandler` → outer `BackpackWrapper` → `BackpackStorage`.
+
+**Critical structural observation from our code** (raw read of the three files — no trace of save path yet):
+- `SubBackpacksHandler:35-46` (`onContentsChanged`) only fires when the OUTER backpack's slot at index N changes — adding/removing a sub-backpack or swapping one out. Edits to the sub-backpack's *interior* do not trigger `onContentsChanged` on the outer.
+- `InceptionInventoryHandler:71-86` (`insertItem` / `extractItem`) delegates via `combinedInventories` to the sub-backpack's `getInventoryForInputOutput()`. The sub-backpack's own `setDirty` should fire on that path.
+- Whether that setDirty actually marks the OUTER `BackpackStorage` SavedData dirty — which is what persists to disk — is the open question.
+
+**Verdict without trace**: **PLAUSIBLE-IN-OUR-CODE. Reporter-confirmed in 3.25.31+, mechanism exists in 3.23.4.3.106.** This is the single strongest "might actually be present in our version" lead from Phase 2. Trace target: `SubBackpacksHandler`, `InceptionInventoryHandler`, `BackpackWrapper.getInventoryForInputOutput`, `BackpackStorage.setDirty`. Estimated 60-120 min of careful trace.
+
+#### H-27 (candidate) — Craft-table-upgrade state persistence / infinite copy
+
+**Source**: E-7 (SBP#1580), reporter claim, maintainer could not reproduce.
+
+**Bug mechanism (per reporter)**: (1) put craft-table upgrade in backpack; (2) put items in its grid; (3) move them out via item pipe to a chest; (4) remove the craft-table upgrade from backpack and re-add; (5) the 3×3 grid items are back. Net effect: items end up in the chest AND in the re-added upgrade.
+
+**Presence in our shipped code**: our SBP has `CraftingUpgradeItem` / `CraftingUpgradeContainer` / `CraftingUpgradeWrapper` (not yet read in this pass). The mechanism ("upgrade state persists in upgrade stack on detach") is a `ComponentItemHandler`-on-upgrade-stack pattern. The `AnvilUpgradeWrapper:17-29` uses this exact pattern — `ComponentItemHandler(upgrade, class_9334.field_49622, 2)` — storing inventory directly on the upgrade stack's data components. If crafting upgrade uses the same pattern, the upgrade stack will carry items with it when removed.
+
+**Critical distinction**: the maintainer said "unable to recreate even with the exact same setup" — suggesting the bug depends on a mod-interaction (Mekanism pipes moving items while the craft table upgrade is present). The *core* mechanism (upgrade stack carrying grid contents when detached) is likely not a bug in isolation — it's how the upgrade is designed. The dupe only manifests when a SECOND path removes the items from the grid (pipe extraction) while the upgrade retains them.
+
+**Verdict without trace**: **REQUIRES MEKANISM OR EQUIVALENT PIPE MOD.** Our modpack contains four mods; Mekanism is not one of them. Not a solo dupe in the four-mod audit scope. Might be reproducible with vanilla hoppers (which could pull from the craft-table's result slot in-world if the backpack is placed as a block) — this is a stretch but worth a grep.
+
+#### H-28 (candidate) — Bundle dupe inside backpack slot
+
+**Source**: E-6 (SBP#1564), closed without detailed resolution in public summary.
+
+**Bug mechanism**: right-click to remove an item from a bundle stored in a backpack slot duplicates the item (item grabbed to cursor, but not removed from bundle). Alternatively, left-click to add an item to a bundle causes the item to disappear.
+
+**Presence in our shipped code**: requires Minecraft 1.21.1 to have bundles enabled. In 1.21.1, bundles are behind an experimental datapack flag (`minecraft:bundle` experiment). **If the modpack's world does not enable the bundle experiment, this dupe is unreachable.** Our audit scope does not include world/datapack config for the shipped modpack.
+
+**Verdict without trace**: **CONTINGENT ON BUNDLE EXPERIMENT.** If enabled, plausible in our version (the bundle item-handler code in SBP's slot-click path would be the same across the 3.23 → 3.25 range unless explicitly patched).
+
+### E.4 What Phase 2 did NOT find
+
+- **Zero dupe reports for Lootr on any 1.21.x version.** The only 1.21.x Lootr issue found (E-10) is a crash bug, not a dupe. The historical 2021 dupe (E-9) was patched years before our shipped 1.21.1 build.
+- **Zero dupe reports for YIAS on any version.** Serilum's consolidated issue tracker has zero YIAS-labeled dupe issues. The one similar-looking report (E-12) is against Stack Refill — a different Serilum mod.
+- **Zero dupe reports specifically for SCore on its own.** All SBP-world dupes route through a backpack UI (SBP code), which depends on SCore primitives (slot handlers, component storage) — SCore is never named as the standalone culprit in public reports.
+- **No Reddit or YouTube dupe tutorials** for SBP 3.23 / Lootr 1.11.37 / YIAS 4.7 / SCore 1.2.9.21 surfaced in Phase 2 searches. The mainstream modded-1.21.1 dupe tutorials in that corpus are about other mods (Create, IE, Mekanism, etc.).
+
+### E.5 Consolidated verdict
+
+**Running solo-dupe total across Pass 1+2+3+4+Phase 2: zero confirmed, zero probable, two plausible-in-our-code candidates (H-26, H-28), one structurally-unlikely (H-25), one out-of-scope (H-27).**
+
+H-01 remains the only confirmed dupe in the surfaces traced, and it is two-player.
+
+**External intel's strongest contribution to the audit**: **E-8 (SBP#1650) is still open as of this writing**, filed four days before this Phase 2 pass, by a reporter on a 1.21.1 modpack, describing a dupe that matches the code shape visible in our `SubBackpacksHandler` + `InceptionInventoryHandler`. The maintainer has not yet responded. The reporter provided no code or stack trace, but the described mechanism (nested-backpack state rollback during normal edits) is **consistent** with what is visible in our shipped source. This upgrades Shape K (Inception Upgrade) from "historically productive shape" to "actively reported, unfixed, matching-code-visible" and makes it the clear next trace target if the audit continues.
+
+**Rule 4 restated**: Phase 2 narrowed the un-traced surface but did not empty it. Shapes **F, M, U, V, W, X, Y, Z**, Phase 5 (JAR↔source bytecode diff), and H-25/H-26/H-28 code-trace remain un-executed.
+
