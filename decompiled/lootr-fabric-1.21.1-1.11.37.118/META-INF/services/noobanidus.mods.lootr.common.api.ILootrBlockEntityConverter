@@ -1,7 +1,0 @@
-noobanidus.mods.lootr.common.block.entity.LootrBarrelBlockEntity$DefaultBlockEntityConverter
-noobanidus.mods.lootr.common.block.entity.LootrBrushableBlockEntity$DefaultBlockEntityConverter
-noobanidus.mods.lootr.common.block.entity.LootrChestBlockEntity$DefaultBlockEntityConverter
-noobanidus.mods.lootr.common.block.entity.LootrDecoratedPotBlockEntity$DefaultBlockEntityConverter
-noobanidus.mods.lootr.common.block.entity.LootrInventoryBlockEntity$DefaultBlockEntityConverter
-noobanidus.mods.lootr.common.block.entity.LootrShulkerBlockEntity$DefaultBlockEntityConverter
-noobanidus.mods.lootr.common.block.entity.LootrTrappedChestBlockEntity$DefaultBlockEntityConverter

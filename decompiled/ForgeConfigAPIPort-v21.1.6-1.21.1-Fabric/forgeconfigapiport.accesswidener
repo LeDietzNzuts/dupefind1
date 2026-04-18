@@ -1,0 +1,6 @@
+accessWidener	v2	intermediary
+accessible	method	net/minecraft/class_5218	<init>	(Ljava/lang/String;)V
+accessible	method	net/minecraft/class_8610	method_52406	(Lnet/minecraft/class_8605$class_8606;)V
+accessible	class	net/minecraft/class_7172$class_7178
+accessible	field	net/minecraft/class_7172	field_37864	Ljava/util/function/Function;
+accessible	field	net/minecraft/class_7172	field_38280	Lnet/minecraft/class_2561;

@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.embeddedt.modernfix.fabric.mixin",
+  "plugin": "org.embeddedt.modernfix.core.ModernFixMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "core.MinecraftServerMixin",
+    "perf.faster_command_suggestions.SuggestionsBuilderMixin"
+  ],
+  "client": [
+    "feature.measure_time.MinecraftMixin_Fabric",
+    "feature.branding.GuiMixin",
+    "core.ClientMinecraftServerMixin",
+    "core.MCMixin_Fabric",
+    "core.ClientCommonPacketListenerImplMixin",
+    "core.ClientPlayNetHandlerMixin",
+    "safety.DynamicTextureMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true
+  },
+  "refmap": "modernfix-fabric-fabric-refmap.json"
+}

@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Specification-Title: collective
+Specification-Vendor: Serilum
+Specification-Version: 8.20
+Implementation-Title: Forge
+Implementation-Version: 8.20
+Implementation-Vendor: Serilum
+Implementation-Timestamp: 2026-04-14T11:58:04+0200
+Timestamp: 1776160684073
+Built-On-Java: 21.0.6+8-LTS-188 (Oracle Corporation)
+Built-On-Minecraft: 1.21.1
+MixinConfigs: collective_forge.mixins.json
+

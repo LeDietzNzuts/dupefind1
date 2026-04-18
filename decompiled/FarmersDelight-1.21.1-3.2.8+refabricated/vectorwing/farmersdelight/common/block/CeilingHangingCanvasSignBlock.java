@@ -1,0 +1,47 @@
+package vectorwing.farmersdelight.common.block;
+
+import net.minecraft.class_1309;
+import net.minecraft.class_1767;
+import net.minecraft.class_1799;
+import net.minecraft.class_1937;
+import net.minecraft.class_2246;
+import net.minecraft.class_2248;
+import net.minecraft.class_2338;
+import net.minecraft.class_2586;
+import net.minecraft.class_2625;
+import net.minecraft.class_2680;
+import net.minecraft.class_4719;
+import net.minecraft.class_7713;
+import net.minecraft.class_4970.class_2251;
+import org.jetbrains.annotations.Nullable;
+import vectorwing.farmersdelight.common.block.state.CanvasSign;
+import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
+
+public class CeilingHangingCanvasSignBlock extends class_7713 implements CanvasSign {
+   private final class_1767 backgroundColor;
+
+   public CeilingHangingCanvasSignBlock(@Nullable class_1767 backgroundColor) {
+      super(class_4719.field_21677, class_2251.method_9630(class_2246.field_40263));
+      this.backgroundColor = backgroundColor;
+   }
+
+   @Nullable
+   @Override
+   public class_1767 getBackgroundColor() {
+      return this.backgroundColor;
+   }
+
+   public class_2586 method_10123(class_2338 pos, class_2680 state) {
+      return ModBlockEntityTypes.HANGING_CANVAS_SIGN.get().method_11032(pos, state);
+   }
+
+   public void method_9567(class_1937 level, class_2338 pos, class_2680 state, @Nullable class_1309 placer, class_1799 stack) {
+      super.method_9567(level, pos, state, placer, stack);
+      class_2586 tileEntity = level.method_8321(pos);
+      class_2248 block = state.method_26204();
+      if (tileEntity instanceof class_2625 signEntity && block instanceof CanvasSign canvasSignBlock && canvasSignBlock.isDarkBackground()) {
+         signEntity.method_49841(signText -> signText.method_49862(class_1767.field_7952), true);
+         signEntity.method_49841(signText -> signText.method_49862(class_1767.field_7952), false);
+      }
+   }
+}

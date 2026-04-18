@@ -1,0 +1,15 @@
+{
+  "attributes": {
+    "common": {
+      "impact": 3.1,
+      "max_strikes": 2
+    },
+    "one_hand": {
+      "speed_bonus": 0.4
+    },
+    "two_hand": {
+      "speed_bonus": -0.4
+    }
+  },
+  "type": "magistuarmory:pike"
+}

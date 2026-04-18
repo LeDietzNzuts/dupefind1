@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "magistuarmory",
+  "version": "10.12",
+  "name": "Epic Knights: Shields, Armor and Weapons",
+  "description": "Adds medieval stuff to the game",
+  "license": "All Rights Reserved",
+  "icon": "icon.png",
+  "authors": ["Magistu"],
+  "contributors": ["StaxiHD","Mino","Lexiolty","Jackiecrazy","CrazyBarkley","Ryuje","Witchkings","Cole3050","taizazanek","thyreo"],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/epic-knights-armor-and-weapons",
+    "issues": "https://github.com/Magistu/Epic-Knights/issues",
+    "sources": "https://github.com/Magistu/Epic-Knights",
+    "discord": "https://discord.gg/H9CVcXEmYe"
+  },
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.magistuarmory.fabric.EpicKnightsFabric"
+    ],
+    "modmenu": [
+      "com.magistuarmory.fabric.config.ModMenuFabric"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "fabricloader": ">=0.16",
+    "minecraft": ">=1.21 <1.21.2",
+    "architectury": ">=13.0.8",
+    "magistuarmory": ">=10.2",
+    "cloth-config2": ">=15.0.128"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/H9CVcXEmYe"
+      }
+    }
+  }
+}

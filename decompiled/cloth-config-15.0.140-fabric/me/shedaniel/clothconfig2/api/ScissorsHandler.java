@@ -1,0 +1,22 @@
+package me.shedaniel.clothconfig2.api;
+
+import java.util.List;
+import me.shedaniel.clothconfig2.impl.ScissorsHandlerImpl;
+import me.shedaniel.math.Rectangle;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+
+@Environment(EnvType.CLIENT)
+public interface ScissorsHandler {
+   ScissorsHandler INSTANCE = ScissorsHandlerImpl.INSTANCE;
+
+   void clearScissors();
+
+   List<Rectangle> getScissorsAreas();
+
+   void scissor(Rectangle var1);
+
+   void removeLastScissor();
+
+   void applyScissors();
+}

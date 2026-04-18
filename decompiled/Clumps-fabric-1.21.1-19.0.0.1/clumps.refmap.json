@@ -1,0 +1,40 @@
+{
+  "mappings": {
+    "com/blamejared/clumps/mixin/ExperienceOrbAccess": {
+      "age": "field_6164:I",
+      "count": "field_27009:I"
+    },
+    "com/blamejared/clumps/mixin/MixinExperienceOrb": {
+      "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRandomItemWith(Lnet/minecraft/core/component/DataComponentType;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Predicate;)Ljava/util/Optional;": "Lnet/minecraft/class_1890;method_8204(Lnet/minecraft/class_9331;Lnet/minecraft/class_1309;Ljava/util/function/Predicate;)Ljava/util/Optional;",
+      "addAdditionalSaveData": "Lnet/minecraft/class_1303;method_5652(Lnet/minecraft/class_2487;)V",
+      "canMerge(Lnet/minecraft/world/entity/ExperienceOrb;)Z": "Lnet/minecraft/class_1303;method_31494(Lnet/minecraft/class_1303;)Z",
+      "canMerge(Lnet/minecraft/world/entity/ExperienceOrb;II)Z": "Lnet/minecraft/class_1303;method_31495(Lnet/minecraft/class_1303;II)Z",
+      "merge(Lnet/minecraft/world/entity/ExperienceOrb;)V": "Lnet/minecraft/class_1303;method_31497(Lnet/minecraft/class_1303;)V",
+      "net/minecraft/world/entity/ExperienceOrb.discard()V": "Lnet/minecraft/class_1303;method_31472()V",
+      "playerTouch(Lnet/minecraft/world/entity/player/Player;)V": "Lnet/minecraft/class_1303;method_5694(Lnet/minecraft/class_1657;)V",
+      "readAdditionalSaveData": "Lnet/minecraft/class_1303;method_5749(Lnet/minecraft/class_2487;)V",
+      "repairPlayerItems": "Lnet/minecraft/class_1303;method_35051(Lnet/minecraft/class_3222;I)I",
+      "tryMergeToExisting(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)Z": "Lnet/minecraft/class_1303;method_31496(Lnet/minecraft/class_3218;Lnet/minecraft/class_243;I)Z"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "com/blamejared/clumps/mixin/ExperienceOrbAccess": {
+        "age": "field_6164:I",
+        "count": "field_27009:I"
+      },
+      "com/blamejared/clumps/mixin/MixinExperienceOrb": {
+        "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getRandomItemWith(Lnet/minecraft/core/component/DataComponentType;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Predicate;)Ljava/util/Optional;": "Lnet/minecraft/class_1890;method_8204(Lnet/minecraft/class_9331;Lnet/minecraft/class_1309;Ljava/util/function/Predicate;)Ljava/util/Optional;",
+        "addAdditionalSaveData": "Lnet/minecraft/class_1303;method_5652(Lnet/minecraft/class_2487;)V",
+        "canMerge(Lnet/minecraft/world/entity/ExperienceOrb;)Z": "Lnet/minecraft/class_1303;method_31494(Lnet/minecraft/class_1303;)Z",
+        "canMerge(Lnet/minecraft/world/entity/ExperienceOrb;II)Z": "Lnet/minecraft/class_1303;method_31495(Lnet/minecraft/class_1303;II)Z",
+        "merge(Lnet/minecraft/world/entity/ExperienceOrb;)V": "Lnet/minecraft/class_1303;method_31497(Lnet/minecraft/class_1303;)V",
+        "net/minecraft/world/entity/ExperienceOrb.discard()V": "Lnet/minecraft/class_1303;method_31472()V",
+        "playerTouch(Lnet/minecraft/world/entity/player/Player;)V": "Lnet/minecraft/class_1303;method_5694(Lnet/minecraft/class_1657;)V",
+        "readAdditionalSaveData": "Lnet/minecraft/class_1303;method_5749(Lnet/minecraft/class_2487;)V",
+        "repairPlayerItems": "Lnet/minecraft/class_1303;method_35051(Lnet/minecraft/class_3222;I)I",
+        "tryMergeToExisting(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)Z": "Lnet/minecraft/class_1303;method_31496(Lnet/minecraft/class_3218;Lnet/minecraft/class_243;I)Z"
+      }
+    }
+  }
+}

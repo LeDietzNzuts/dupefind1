@@ -1,0 +1,59 @@
+accessWidener	v2	intermediary
+accessible	field	net/minecraft/class_631	field_16246	Lnet/minecraft/class_631$class_3681;
+accessible	field	net/minecraft/class_631	field_3677	Lnet/minecraft/class_3568;
+mutable	field	net/minecraft/class_631	field_3677	Lnet/minecraft/class_3568;
+accessible	class	net/minecraft/class_631$class_3681
+accessible	field	net/minecraft/class_631$class_3681	field_16251	Ljava/util/concurrent/atomic/AtomicReferenceArray;
+accessible	field	net/minecraft/class_1937	field_27082	Ljava/util/List;
+accessible	class	net/minecraft/class_1921$class_4687
+accessible	method	net/minecraft/class_2487	<init>	(Ljava/util/Map;)V
+accessible	class	net/minecraft/class_6686$class_6692
+accessible	class	net/minecraft/class_6686$class_6702
+accessible	class	net/minecraft/class_6686$class_6709
+accessible	class	net/minecraft/class_6686$class_6715
+accessible	class	net/minecraft/class_6686$class_6694
+accessible	class	net/minecraft/class_6916$class_6927
+accessible	class	net/minecraft/class_6916$class_6927$class_6928
+accessible	method	net/minecraft/class_6916$class_6927	<init>	(Lnet/minecraft/class_6916$class_6927$class_6928;Lnet/minecraft/class_6910;)V
+accessible	class	net/minecraft/class_6916$class_6925
+accessible	class	net/minecraft/class_6916$class_6925$class_6926
+accessible	method	net/minecraft/class_6916$class_6925	<init>	(Lnet/minecraft/class_6916$class_6925$class_6926;Lnet/minecraft/class_6910;DD)V
+accessible	class	net/minecraft/class_6916$class_6929
+accessible	class	net/minecraft/class_6916$class_6929$class_6930
+accessible	method	net/minecraft/class_6916$class_6929	<init>	(Lnet/minecraft/class_6916$class_6929$class_6930;Lnet/minecraft/class_6910;DDD)V
+accessible	class	net/minecraft/class_4970$class_4971$class_3752
+accessible	class	net/minecraft/class_3215$class_4212
+accessible	field	net/minecraft/class_4970	field_23155	Lnet/minecraft/class_4970$class_2251;
+accessible	class	net/minecraft/class_783$class_784
+accessible	class	net/minecraft/class_1055$class_1056
+accessible	field	net/minecraft/class_1055$class_1056	comp_1047	I
+accessible	field	net/minecraft/class_1055$class_1056	comp_1048	I
+accessible	field	net/minecraft/class_2940	comp_2327	I
+mutable	field	net/minecraft/class_2940	comp_2327	I
+accessible	method	net/minecraft/class_156	method_28122	(Ljava/lang/String;)Ljava/util/concurrent/ExecutorService;
+accessible	field	net/minecraft/class_3898	field_17213	Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;
+accessible	field	net/minecraft/class_3898	field_17220	Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;
+accessible	field	net/minecraft/class_3898	field_18807	Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;
+accessible	method	net/minecraft/class_5321	<init>	(Lnet/minecraft/class_2960;Lnet/minecraft/class_2960;)V
+accessible	field	net/minecraft/class_793	field_4254	Lcom/google/gson/Gson;
+accessible	class	net/minecraft/class_3898$class_3216
+accessible	class	net/minecraft/class_1088$class_7776
+accessible	method	net/minecraft/class_1088$class_7776	<init>	(Lnet/minecraft/class_2960;Lnet/minecraft/class_4590;Z)V
+accessible	class	net/minecraft/class_1088$class_7778
+accessible	method	net/minecraft/class_1088$class_7778	<init>	(Lnet/minecraft/class_1088;Lnet/minecraft/class_1088$class_9826;Lnet/minecraft/class_1091;)V
+accessible	method	net/minecraft/class_1088	method_4726	(Lnet/minecraft/class_2960;)Lnet/minecraft/class_1100;
+accessible	class	net/minecraft/class_2841$class_6561
+accessible	field	net/minecraft/server/MinecraftServer	field_25318	Lnet/minecraft/server/MinecraftServer$class_6897;
+accessible	class	net/minecraft/server/MinecraftServer$class_6897
+accessible	method	net/minecraft/class_437	method_37063	(Lnet/minecraft/class_364;)Lnet/minecraft/class_364;
+accessible	field	net/minecraft/class_304	field_1657	Ljava/util/Map;
+accessible	field	net/minecraft/class_816	field_4329	Lnet/minecraft/class_2689;
+accessible	field	net/minecraft/class_806$class_5827	field_28795	Lnet/minecraft/class_1087;
+mutable	field	net/minecraft/class_806$class_5827	field_28795	Lnet/minecraft/class_1087;
+accessible	field	net/minecraft/class_895$class_625	field_21441	Lnet/minecraft/class_1510;
+accessible	method	net/minecraft/class_2689	method_30040	(Lcom/mojang/serialization/MapCodec;Ljava/util/function/Supplier;Ljava/lang/String;Lnet/minecraft/class_2769;)Lcom/mojang/serialization/MapCodec;
+accessible	class	net/minecraft/class_1124$class_1125
+accessible	field	net/minecraft/class_4010$class_4046	field_18040	Ljava/util/concurrent/atomic/AtomicLong;
+accessible	field	net/minecraft/class_4010$class_4046	field_18041	Ljava/util/concurrent/atomic/AtomicLong;
+accessible	class	net/minecraft/class_1856$class_1859
+accessible	class	net/minecraft/class_1856$class_1857
