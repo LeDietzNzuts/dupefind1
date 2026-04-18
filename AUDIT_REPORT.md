@@ -783,3 +783,105 @@ Shape N's classic red flag — *"custom invulnerable ItemEntity that never despa
 - **Running solo-dupe total across Pass 1+2+3**: **zero confirmed, zero probable.** H-01 remains the only confirmed dupe in the surfaces traced, and it is explicitly two-player.
 - **Rule 4 restated**: this audit has now traced shapes A, B, D, G, H, I, J, L, N, plus H-08/H-09 and H-10-adjacent surfaces. Shapes **F, K, M, U, V, W, X, Y, Z** and Phase 2 (external trackers) / Phase 5 (JAR↔source bytecode diff) remain un-executed. A solo dupe could still hide there — this audit has NOT proven the four-mod stack dupe-free, only that the surfaces enumerated above do not contain one.
 - **Auditor**: Devin (session `863e86d89f9a493a872fe1a7a32246b0`).
+
+---
+
+## Appendix D — Pass 4 (H-24 YIAS solo totem-revive)
+
+**Scope this pass**: the single solo surface the user's prior auditor flagged as "highest-probability solo surface I've seen that neither of us has touched." Hypothesis: if YIAS's death handler snapshots drops BEFORE the totem check, and the totem cancels the death, a stale snapshot could survive and be re-applied on a subsequent real death — yielding a solo dupe. Every verdict below is surface-scoped; rule 4 still applies.
+
+---
+
+### H-24 — YIAS death handler does NOT see a totem-saved death, does NOT persist snapshots across deaths, and cannot dupe solo via a totem-revive loop
+
+- **Shape**: D (kill / death timing) + reference-aliasing across two tick boundaries with a cancellable event in the middle.
+- **Files**:
+  - `decompiled/youritemsaresafe-1.21.1-4.7/com/natamus/youritemsaresafe/ModFabric.java:12-29` (Fabric registration of `ServerLivingEntityEvents.ALLOW_DEATH`)
+  - `decompiled/youritemsaresafe-1.21.1-4.7/com/natamus/youritemsaresafe/neoforge/events/NeoForgeDeathEvent.java:10-20` (NeoForge `@SubscribeEvent` on `LivingDeathEvent`)
+  - `decompiled/youritemsaresafe-1.21.1-4.7/com/natamus/youritemsaresafe/forge/events/ForgeDeathEvent.java:10-20` (Forge `@SubscribeEvent` on `LivingDeathEvent`)
+  - `decompiled/youritemsaresafe-1.21.1-4.7/com/natamus/youritemsaresafe_common_fabric/events/DeathEvent.java:33-277` (shared death handler logic — Fabric variant is the shipped path per `fabric.mod.json:19`)
+  - `decompiled/youritemsaresafe-1.21.1-4.7/com/natamus/youritemsaresafe_common_neoforge/events/DeathEvent.java:32-275` (NeoForge variant — structurally identical, verified via `diff`)
+  - `decompiled/youritemsaresafe-1.21.1-4.7/com/natamus/youritemsaresafe_common_fabric/util/Util.java:73-77` (`getInventoryItems` — constructs a per-call `ArrayList`)
+
+**Trace:**
+
+1. **Entry-point never fires on a totem-saved death.** In all three loader variants the handler is wired to an event that is a strict downstream of the totem check:
+   - Fabric — `ModFabric.java:22-28` registers `ServerLivingEntityEvents.ALLOW_DEATH`. The Fabric API mixin that fires this event is injected in `LivingEntity.damage(...)` at the call-site of `die(...)` — i.e. AFTER `checkTotemDeathProtection` / `tryUseTotem` has already been consulted and returned `false`. A totem-successful save exits `damage(...)` before the `die(...)` call-site is reached, so `ALLOW_DEATH` (and YIAS's handler) never runs. Matches the Pass 1 trace at `AUDIT_REPORT.md` H-16: *"YIAS runs at `ServerLivingEntityEvents.ALLOW_DEATH` (pre-`die()`)"* — *pre-die* means after the totem gate, before the death event chain.
+   - NeoForge — `NeoForgeDeathEvent.java:11-18` uses plain `@SubscribeEvent` (default `receiveCanceled = false`) on `LivingDeathEvent`. Vanilla `LivingEntity.checkTotemDeathProtection` nullifies the damage and returns before `die(source)` is invoked, so `LivingDeathEvent` never fires on a totem-save. Identical semantics for the Forge build at `ForgeDeathEvent.java:11-18`.
+   - Therefore the "snapshot taken before totem cancels" premise of H-24 is structurally impossible: **no handler → no snapshot**.
+
+2. **Defensive in-handler totem check returns early before any mutation.** Even assuming a hypothetical path where the event did fire while the player still holds a totem (e.g. a third-party mod bypassing vanilla's totem gate, or an inventory-totem mod that keeps the totem in main inventory where vanilla's gate can't see it), `DeathEvent.java:89-100` re-scans for totems:
+   ```
+   if (Constants.inventoryTotemModIsLoaded) {
+     for (ItemStack inventoryStack : itemStacks) {
+       if (inventoryStack.getItem().equals(Items.TOTEM_OF_UNDYING)) {
+         return;
+       }
+     }
+   }
+   if (player.getMainHandItem().getItem().equals(Items.TOTEM_OF_UNDYING)
+       || player.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) {
+     return;
+   }
+   ```
+   This returns BEFORE `player.setItemSlot(..., ItemStack.EMPTY)` at `:179` / `:191` / `:207` and BEFORE the `TaskFunctions.enqueueCollectiveTask` delayed `setCount(0)` loop at `:215-271`. **No player inventory mutation occurs.** No chest is placed. No snapshot is retained.
+
+3. **The "snapshot" has no persistent storage.** The inventory list used by the delayed task is built inline at `:37` (`List<class_1799> itemStacks = Util.getInventoryItems(player)` — which in turn returns `new ArrayList<>(player.getInventory().items)` at `Util.java:74`) and captured into the lambda via a stack-local `final`: `DeathEvent.java:213-214`:
+   ```
+   BlockPos finalDeathPos = deathPos;
+   List<ItemStack> finalItemStacks = itemStacks;
+   ```
+   Both variables are closed over exactly one lambda (`:217-269`) that is submitted to `TaskFunctions.enqueueCollectiveTask(level.getServer(), ..., 1)` and runs exactly once on tick T+1. After the lambda executes (or is GC'd if the server shuts down mid-tick), there is no reference path back to the list.
+   - A repo-wide grep for `static\s+(final\s+)?(List|Map|HashMap|ArrayList|Set)\s*<` across the entire YIAS source tree (all three loader trees) returns exactly these six matches:
+     - `Constants.slotTypes` (Fabric / Forge / NeoForge) — a static `List<EquipmentSlot>` of the four armor slots; not an inventory snapshot.
+     - `ConfigHandler.configMetaData` (Fabric / Forge / NeoForge) — a static `HashMap<String, List<String>>` of config metadata strings; not an inventory snapshot.
+   - **No static field anywhere in YIAS stores a `List<ItemStack>`, a `Map<UUID, List<ItemStack>>`, or any other per-player drop cache.** The premise of H-24 — that a stale snapshot could persist across deaths — has no memory to live in.
+
+4. **The delayed task is self-contained and idempotent-on-the-empty-list.** Inside the lambda at `:227-249`:
+   ```
+   for (ItemStack itemStackx : finalItemStacks) {
+     if (!itemStackx.isEmpty()) {
+       chestEntity.setItem(i, itemStackx.copy());
+       itemStackx.setCount(0);
+       ...
+     }
+   }
+   ```
+   On first execution, every non-empty stack is copied into the chest and its source is zeroed. If the same lambda were somehow re-invoked (it is not — `TaskFunctions.enqueueCollectiveTask` queues once), the iterator would see all stacks at `count == 0`, `itemStackx.isEmpty()` would return `true`, and the body would be skipped. **There is no re-apply mechanism and no re-apply surface.**
+
+5. **"Death cancelled after YIAS" (an alternate framing of H-24) is also not a dupe.** If a lower-priority `LivingDeathEvent`/`ALLOW_DEATH` handler (a graves mod, a life-saver mod) cancels the death after YIAS has already run, the outcome is:
+   - Synchronous tick T: YIAS clears armor slots into an armor stand (`:187-211`). Other mod runs later, cancels death. Player survives with armor slots empty.
+   - Tick T+1: YIAS's queued task runs; creates chest at death pos; for each snapshotted stack: `chestEntity.setItem(i, stack.copy()); stack.setCount(0);`. Player's main inventory is now emptied into the chest.
+   - Player is alive. Chest + armor stand are at the "death" position. Walking to them retrieves the items. **Sum of items across (player + chest + armorstand) is invariant — no new ItemStack was constructed anywhere except as `stack.copy()` paired one-to-one with a `setCount(0)` on the source.** This is item *transfer*, not *duplication*.
+   - For this to dupe, the `setCount(0)` on the source would have to be undone *after* the chest copy lands. There is no code path that reinstates the source count. No exception in vanilla `Container.setItem`/`ItemStack.copy` can leave the loop mid-iteration with the copy succeeded and the `setCount(0)` skipped — both lines are straight-line bytecode with no intervening branch.
+
+6. **Void-death + totem is not a solo dupe either.** The totem check at `:89-100` is only reached in the non-void branch (`else` at line 89 follows the `if (isVoidDeath)` at `:65-88`). A void death bypasses the in-handler totem scan — but vanilla totems also do not save from void damage, and the net result is still transfer-not-dupe (items go from player-inventory to chest placed above void via `:66-88`).
+
+7. **Two solo "totem-revive" scenarios drawn out in full:**
+   - **Scenario A — player holds totem in hand, dies to fire damage.** Vanilla `LivingEntity.hurt` calls `checkTotemDeathProtection(source)`, totem activates, health is set to 1, damage is nullified, `die(...)` is never invoked. `ServerLivingEntityEvents.ALLOW_DEATH` / `LivingDeathEvent` never fires. YIAS's handler is not called. No snapshot is ever created. Player walks away alive with one fewer totem. **No dupe.**
+   - **Scenario B — player has totem in main inventory (not hand), `inventoryTotemModIsLoaded` is true.** Vanilla gate misses the totem (only checks hands). Third-party inventory-totem mod is the handler that consumes the totem and cancels death. Regardless of which mod runs first in the event bus:
+     - If inventory-totem mod runs first and cancels death: NeoForge/Forge YIAS (default `receiveCanceled = false`) does not run — no snapshot, no dupe. Fabric YIAS is array-backed and still runs, but hits the `inventoryTotemModIsLoaded` branch at `:90-95`, finds the (now-just-consumed) totem or doesn't, and either way either returns early or runs the transfer path; neither produces a duplicate (transfer, not dupe, as in §5).
+     - If YIAS runs first: the `inventoryTotemModIsLoaded` branch at `:90-95` finds the totem still present in the snapshotted list and returns. No mutation. The inventory-totem mod then consumes the totem and cancels death. **No dupe.**
+
+**Verdict: NONE (solo)**
+
+**Rationale**: the YIAS code path cannot be triggered by a totem-saved death in any of the three loader variants, the handler's own defensive totem scan aborts before mutating state, and the only "snapshot" of drops is a stack-local variable that lives exactly one tick inside one lambda with no field/collection carrying it across deaths. The proposed H-24 mechanism has no memory to live in and no re-apply path. "Death cancelled after YIAS runs" resolves to transfer-not-dupe by invariant of `copy()`-paired-with-`setCount(0)`.
+
+**Repro steps**: N/A (NONE verdict).
+
+**Not verified**:
+
+- The Fabric-API `ServerLivingEntityEvents.ALLOW_DEATH` mixin (in `fabric-entity-events-v1`) was not re-decompiled this pass — I am relying on Pass 1's H-16 characterisation of it as firing pre-`die()`/post-totem, which matches public documentation but has not been byte-verified for the `1.21.1` Fabric API shipping with this modpack. If that event actually fires *before* `tryUseTotem`, the in-handler scan at `:89-100` is still the kill-shot on non-void deaths; void-death + held-totem becomes the only remaining surface and still resolves to transfer-not-dupe by §5.
+- **YIAS × third-party "revive / graves / corail-tombstone" mod interactions** are out of scope for the four-mod audit. A graves mod that (a) registers higher priority than YIAS, (b) copies the dying player's inventory to its own grave entity BEFORE YIAS clears it, and (c) does not cancel `LivingDeathEvent` could coexist with YIAS to produce a two-site copy of the same inventory — but that is by definition a cross-mod interaction involving a mod outside this audit, not a YIAS-alone solo dupe.
+- **Crash / save race during tick T+1** (server crash after `chestEntity.setItem(i, stack.copy())` is executed but before `stack.setCount(0)` commits and before the player's inventory NBT is saved to disk) is a 1-bytecode-instruction window with no concurrency inside it — the two statements execute on the same server thread with no intervening event dispatch. Not plausibly reachable absent JVM-level failure, and any such failure would also interrupt the world-save that would persist the chest.
+- **Shape F slot-decrement side of `slot.method_32753`** (flagged in Pass 3 closing) is unrelated to YIAS and still untraced.
+
+---
+
+### Pass 4 closing notes
+
+- **H-24 (YIAS solo totem-revive) — NONE (solo).** This closes the highest-probability solo surface the prior auditor could name. The YIAS handler is downstream of the vanilla totem gate in all three loader variants; its own defensive totem check returns early before any mutation; and no static field exists anywhere in the YIAS source tree that could carry an inventory snapshot across deaths. Rule-7 compliance: I am not going to speculate "but maybe" around this — the snapshot has no memory to live in.
+- **Running solo-dupe total across Pass 1+2+3+4**: **zero confirmed, zero probable.** H-01 remains the only confirmed dupe in the surfaces traced, and it is explicitly two-player.
+- **Rule 4 restated**: this audit has now traced shapes A, B, D, G, H, I, J, L, N, plus H-08/H-09, H-10-adjacent surfaces, and the YIAS death-path totem branch. Shapes **F, K, M, U, V, W, X, Y, Z**, Phase 2 (external trackers for the exact shipped versions: SBP `3.23.4.3.106`, SCore `1.2.9.21.168`, Lootr `1.11.37.118`, YIAS `4.7`), and Phase 5 (JAR↔source bytecode diff) remain un-executed. A solo dupe could still hide there.
+- **Structural summary (why so few solo dupes in this stack):** SBP and SCore tie every backpack to a `STORAGE_UUID`-keyed world-global `BackpackStorage` entry, so stack-duplicating operations (pick-block, recipe-copy, inventory-move) share storage rather than cloning it. Lootr drops vanilla chest items with `copy_components.include` limited to `minecraft:custom_name`, so block-break cannot carry per-container identity. YIAS is the only mod in the stack that exposes raw `ItemStack` references across a tick boundary — which is exactly why H-01 (YIAS × SBP pickup-upgrade) is the surface that fell and no YIAS-alone solo surface has been found after four passes.
+- **Auditor**: Devin (session `c18c25e7b8ec48aaa59d10412d68e148`).
