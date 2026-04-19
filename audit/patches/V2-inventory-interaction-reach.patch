@@ -1,0 +1,45 @@
+# V2: InventoryInteractionPayload reach bypass — suggested fix
+
+Require the target block to be within the player's block-interaction reach, and require the target chunk to already be loaded (don't let the attacker force-load via this payload).
+
+```diff
+--- a/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/InventoryInteractionPayload.java
++++ b/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/InventoryInteractionPayload.java
+@@ -26,11 +26,30 @@ public record InventoryInteractionPayload(class_2338 pos, class_2350 face) imple
+    public static void handlePayload(InventoryInteractionPayload payload, Context context) {
+       class_1657 player = context.player();
++      if (player == null) return;
++      net.minecraft.class_1937 level = player.method_37908();
++      // Only act on blocks in already-loaded chunks. Do NOT force-load via the interaction path.
++      if (!level.method_8393(payload.pos.method_10263() >> 4, payload.pos.method_10260() >> 4)) {
++          return;
++      }
++      // Reject targets outside the player's block-interaction reach.
++      // In 1.21.1 use class_1657#method_55754() (entity attribute based).
++      double reach = player instanceof net.minecraft.class_3222 sp
++              ? sp.method_55754()
++              : 4.5D;
++      // Add 0.5 block tolerance for hitbox/face offset.
++      double maxSq = (reach + 1.0D) * (reach + 1.0D);
++      net.minecraft.class_243 eye = player.method_33571();
++      double dx = (payload.pos.method_10263() + 0.5D) - eye.field_1352;
++      double dy = (payload.pos.method_10264() + 0.5D) - eye.field_1351;
++      double dz = (payload.pos.method_10260() + 0.5D) - eye.field_1350;
++      if (dx * dx + dy * dy + dz * dz > maxSq) {
++          return;
++      }
+       PlayerInventoryProvider.get().runOnBackpacks(player, (backpack, inventoryName, identifier, slot) -> {
+-         InventoryInteractionHelper.tryInventoryInteraction(payload.pos, player.method_37908(), backpack, payload.face, player);
++         InventoryInteractionHelper.tryInventoryInteraction(payload.pos, level, backpack, payload.face, player);
+          player.method_23667(class_1268.field_5808, true);
+          return true;
+       });
+    }
+ }
+```
+
+## Notes
+
+- `class_1937#method_8393(chunkX, chunkZ)` (`hasChunk`) returns false for unloaded chunks — this is the cheapest loaded-chunk check that does not itself trigger a load.
+- `class_1657#method_55754()` is the 1.21.1 block-interaction range (default 4.5, affected by `field_47759` attribute). If you target older MC versions, fall back to a hard-coded `6.0D`.
+- The 1.0-block tolerance is deliberate: Minecraft's own server-side reach validation uses a similar pad to avoid false rejects from rubber-banding.

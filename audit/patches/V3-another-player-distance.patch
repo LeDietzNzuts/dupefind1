@@ -1,0 +1,59 @@
+# V3: AnotherPlayerBackpackOpenPayload cross-map open — suggested fix
+
+Require the two players to be within a bounded distance when the open is requested. Default to the block-interaction reach so the feature keeps working for people standing next to each other, but can't be abused from across the world.
+
+```diff
+--- a/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/AnotherPlayerBackpackOpenPayload.java
++++ b/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/AnotherPlayerBackpackOpenPayload.java
+@@ -33,16 +33,28 @@ public record AnotherPlayerBackpackOpenPayload(int anotherPlayerId) implements c
+    public static void handlePayload(AnotherPlayerBackpackOpenPayload payload, Context context) {
+       class_1657 player = context.player();
++      if (player == null) return;
+       if (!Boolean.FALSE.equals(Config.SERVER.allowOpeningOtherPlayerBackpacks.get())) {
+          if (player.method_37908().method_8469(payload.anotherPlayerId) instanceof class_1657 anotherPlayer) {
++            // FIX V3: cap open-distance. Use the configured max distance (default ~6 blocks).
++            double maxDistance = Config.SERVER.anotherPlayerBackpackOpenMaxDistance != null
++                    ? Config.SERVER.anotherPlayerBackpackOpenMaxDistance.get()
++                    : 6.0D;
++            if (player.method_37908() != anotherPlayer.method_37908()) {
++                return;
++            }
++            if (player.method_5739(anotherPlayer) > maxDistance) {
++                return;
++            }
+             PlayerInventoryProvider.get()
+                .runOnBackpacks(
+                   anotherPlayer,
+                   (backpack, inventoryName, identifier, slot) -> {
+                      if (canAnotherPlayerOpenBackpack(anotherPlayer, backpack)) {
+                         BackpackContext.AnotherPlayer backpackContext = new BackpackContext.AnotherPlayer(inventoryName, identifier, slot, anotherPlayer);
+                         player.sophisticatedCore_openMenu(
+                            new class_747((w, p, pl) -> new BackpackContainer(w, pl, backpackContext), backpack.method_7964()), backpackContext::toBuffer
+                         );
+                      } else {
+                         player.method_7353(class_2561.method_43471("gui.sophisticatedbackpacks.status.backpack_cannot_be_open_by_another_player"), true);
+                      }
+                      return true;
+                   },
+                   true
+                );
+          }
+       }
+    }
+```
+
+## Config change
+
+Add to `Config$Server`:
+
+```java
+public final ModConfigSpec.DoubleValue anotherPlayerBackpackOpenMaxDistance;
+// ...
+anotherPlayerBackpackOpenMaxDistance = builder
+    .comment("Maximum distance (blocks) at which a player can open another player's backpack.")
+    .defineInRange("anotherPlayerBackpackOpenMaxDistance", 6.0D, 0.0D, 64.0D);
+```
+
+## Moderation aid (optional)
+
+Log the opener's name + target's name + backpack identifier to the server log when an open succeeds. This makes abuse auditable after the fact without disrupting legitimate use.

@@ -1,0 +1,55 @@
+# V4: Block/Entity Tool Swap reach bypass — suggested fix
+
+Gate both payload handlers by the player's reach, and in the block case also require the target chunk to be loaded.
+
+```diff
+--- a/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/BlockToolSwapPayload.java
++++ b/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/BlockToolSwapPayload.java
+@@ -27,6 +27,18 @@ public record BlockToolSwapPayload(class_2338 pos) implements class_8710 {
+    public static void handlePayload(BlockToolSwapPayload payload, Context context) {
+       class_1657 player = context.player();
++      if (player == null) return;
++      net.minecraft.class_1937 level = player.method_37908();
++      if (!level.method_8393(payload.pos.method_10263() >> 4, payload.pos.method_10260() >> 4)) {
++          return;
++      }
++      double reach = player instanceof net.minecraft.class_3222 sp ? sp.method_55754() : 4.5D;
++      double maxSq = (reach + 1.0D) * (reach + 1.0D);
++      net.minecraft.class_243 eye = player.method_33571();
++      double dx = (payload.pos.method_10263() + 0.5D) - eye.field_1352;
++      double dy = (payload.pos.method_10264() + 0.5D) - eye.field_1351;
++      double dz = (payload.pos.method_10260() + 0.5D) - eye.field_1350;
++      if (dx * dx + dy * dy + dz * dz > maxSq) return;
+       AtomicBoolean result = new AtomicBoolean(false);
+       AtomicBoolean anyUpgradeCanInteract = new AtomicBoolean(false);
+       PlayerInventoryProvider.get().runOnBackpacks(player, (backpack, inventoryName, identifier, slot) -> {
+```
+
+```diff
+--- a/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/EntityToolSwapPayload.java
++++ b/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/EntityToolSwapPayload.java
+@@ -29,6 +29,14 @@ public record EntityToolSwapPayload(int entityId) implements class_8710 {
+    public static void handlePayload(EntityToolSwapPayload payload, Context context) {
+       class_1657 player = context.player();
++      if (player == null) return;
+       class_1937 level = player.method_37908();
+       class_1297 entity = level.method_8469(payload.entityId);
+-      if (entity != null) {
++      // FIX V4: reject cross-dimension and out-of-reach targets.
++      if (entity != null && entity.method_37908() == level) {
++         double reach = player instanceof net.minecraft.class_3222 sp ? sp.method_7349() : 3.0D;
++         // method_7349() = entity interaction range in 1.21.1 (default 3.0, ~4.5 in creative).
++         double maxSq = (reach + 1.0D) * (reach + 1.0D);
++         if (player.method_5858(entity) > maxSq) {
++             return;
++         }
+          AtomicBoolean result = new AtomicBoolean(false);
+          AtomicBoolean anyUpgradeCanInteract = new AtomicBoolean(false);
+          PlayerInventoryProvider.get().runOnBackpacks(player, (backpack, inventoryName, identifier, slot) -> {
+```
+
+## Notes
+
+- Entity reach in 1.21.1 is exposed via `class_3222#method_7349()` (entity-interaction range attribute).
+- `method_5739(entity)` returns linear distance; `method_5858(entity)` is squared. We use squared to avoid the `sqrt`.
+- The `entity.method_37908() == level` check defends against the (rare) case where `level.method_8469(id)` resolves to an entity marked in a different dimension during dimension transitions.
