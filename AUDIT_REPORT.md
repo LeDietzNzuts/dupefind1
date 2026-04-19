@@ -1304,3 +1304,120 @@ The reporter's SBP#1650 "rollback" symptom matches the **item-loss** bug describ
 - I did not trace the `InceptionWrapperAccessor`, `InceptionFluidHandler`, or `InceptionEnergyStorage` — they are peripheral to the inventory save chain and operate on fluid/energy storage which is unrelated to the reporter's item-dupe claim.
 - Shapes **F, M, U, V, W, X, Y, Z** and Phase 5 (JAR↔source bytecode diff) remain un-executed.
 
+---
+
+## Appendix G — Pass 6: out-of-scope death-event surface sweep (combatlog-fabric, Clumps, full-pack grep)
+
+**Scope**: Prior auditor's final-pass experiment on H-25 came back null (0 dupes observed across 20 deaths; at ~10% per-death expected probability, p ≤ ~0.12 that the mechanism-as-described is live). User asked for anything still worth hunting. This pass extends the search **outside the original 4-mod audit scope** to the rest of the shipped pack, looking for any additional actor that holds `ItemStack` references across a YIAS death tick — the structural shape that produced H-01.
+
+Every verdict below is still rule-4-scoped: "no dupe in the surfaces traced using shapes I know."
+
+### G.1 combatlog-fabric-2.6+1.21.1 (full trace)
+
+**Why this mod was a plausible H-01-shaped second-actor candidate**: it is the only other death-adjacent mod in the pack (hooks disconnect-while-in-combat and force-kills). If it snapshotted, forked, or held the dying player's inventory like SBP's pickup-upgrade does, it could race YIAS's copy-and-zero across the tick boundary.
+
+**Full source footprint** (14 files, 517 LoC):
+- `me/toastymop/combatlog/platforms/fabric/CombatLogFabric.java:7-11` — `onInitialize()`: loads config and registers `ServerTickEvents.END_SERVER_TICK → CombatLogEventHandler.INSTANCE`. No other entrypoints.
+- `me/toastymop/combatlog/platforms/fabric/CombatLogEventHandler.java:10-12` — `onEndTick` → `CombatTicks.CombatTick(server)`.
+- `me/toastymop/combatlog/CombatTicks.java:13-35` — iterates all players, decrements their `combatTime` NBT int, posts a HUD notice when it hits zero. **No inventory/ItemStack access anywhere.**
+- `me/toastymop/combatlog/CombatCheck.java:15-45` — on damage, sets a "combatTime" + "inCombat" NBT flag on target (and attacker if PvP), optionally starts an ender-pearl cooldown. **No inventory/ItemStack access.** The `class_1802.field_8634.method_7854().method_7909()` at line 13 is a cached `Items.ENDER_PEARL` ref used only as a key for cooldowns — never inserted into or copied from a real inventory.
+- `me/toastymop/combatlog/mixin/EntityDamageMixin.java:24-27` — `@Inject(at=TAIL)` on `class_1309.method_5643` (hurt). Calls `CombatCheck.CheckCombat`. No inventory access.
+- `me/toastymop/combatlog/mixin/DisconnectMixin.java:12-15` — `@Inject(at=HEAD)` on `class_3222.method_14231` (disconnect). Calls `CombatDisconnect.OnPlayerDisconnect`.
+- `me/toastymop/combatlog/CombatDisconnect.java:17-51` — **the one non-trivial code path.** If the disconnecting player is in combat and `disconnectKill=true`:
+  1. Temporarily flip `gameRules.keepInventory` → false (line 26).
+  2. Call `entity.method_5643(damageSources.generic(), 100000f)` (line 27) — vanilla damage pipeline, which goes `hurt → die → dropAllDeathLoot → ItemEntity spawns`, firing YIAS's `ALLOW_DEATH` mid-pipeline exactly as any other death.
+  3. Flip `keepInventory` back to its previous value (line 28).
+  4. Optionally run a configured `disconnectCommand` against the server.
+  5. `TagData.endCombat(entity)` clears the combat NBT flags (line 49).
+- `me/toastymop/combatlog/mixin/PlayerMixin.java:12-19` — cancels `Player.tryToStartFallFlying()` while in combat. No inventory access.
+- `me/toastymop/combatlog/mixin/CommandsMixin.java:20-36` — cancels certain Brigadier-dispatched commands while in combat. No inventory access.
+- `me/toastymop/combatlog/mixin/EntityDataSaverMixin.java:25-36` — adds a `combatLog` `class_2487` tag to every entity's save NBT. Opaque scalar storage for the combat flags.
+- `me/toastymop/combatlog/util/TagData.java:7-35` — six static helpers that read/write `combatTime` (int) and `inCombat` (bool) on the entity's persistent-data tag. **Pure NBT, no ItemStack.**
+- `me/toastymop/combatlog/util/IEntityDataSaver.java:5-7` — interface with a single `getPersistentData()` → `class_2487` method.
+- `me/toastymop/combatlog/CombatConfig.java:1-196` — JSON5 config loader. No runtime inventory interaction.
+
+**Kill-shot grep**: `grep -rE "class_1799|ItemStack|method_7972|inventory|field_7547|drop|setCount|grow|class_1542" me/toastymop/` matches **exactly one line** across the entire mod — `CombatConfig.java:129`, a user-facing config comment string containing the English word "drop" in prose. The combatlog Java source tree contains **zero `ItemStack` handling, zero `ItemEntity` handling, zero inventory mutation, zero pickup or drop interception**.
+
+**Interaction with YIAS**:
+1. Player is marked `inCombat` via `EntityDamageMixin.TAIL` on their next-taken damage tick (purely an NBT flag, does not read or copy inventory).
+2. Player presses Disconnect → `ServerPlayer.disconnect()` → `DisconnectMixin.HEAD` fires → `CombatDisconnect.OnPlayerDisconnect` → (if in combat + `disconnectKill=true`) flips gamerule, calls `hurt(damage,100000f)`, flips gamerule back.
+3. Inside that `hurt()` call, the vanilla death pipeline runs and YIAS's `ALLOW_DEATH` listener fires on the dying player **identically to any other death trigger** (lava, `/kill`, TNT, etc.). YIAS captures the inventory refs via `Util.getInventoryItems` and enqueues its `+1`-tick delayed task (`DeathEvent.java:37`, `Util.java:73-77`).
+4. `CombatDisconnect` returns, `DisconnectMixin` returns, vanilla `ServerPlayer.disconnect()` continues: the player's NBT is serialized to disk (inventory is **already empty** at this point because `dropAllDeathLoot` has already run and cleared each slot), the player entity is removed.
+5. Tick T+1: YIAS's task fires and copies the captured refs into the death chest, zeros the original stacks. Nothing to race against — combatlog has no residual state, no held ItemStacks, no scheduled follow-up.
+
+**Disk vs. world consistency at the disconnect**: the only dupe shape one could imagine here is "player's saved-to-disk inventory still has items at the moment of disconnect while the world-side death chest also has them." For that to happen, the disk save would need to run **before** `dropAllDeathLoot` inside the hurt call. It doesn't: the disk save is invoked by `PlayerList.remove(player)` further down `ServerPlayer.disconnect()`, which is **strictly after** the HEAD injection of combatlog — after `hurt` has already cleared the inventory.
+
+**Verdict: NONE (solo).** combatlog-fabric is a thin NBT-flag + disconnect-hook mod with no inventory or `ItemStack` surface whatsoever. It functions as a trigger for vanilla death, not as an actor that interacts with items. It cannot satisfy the H-01 structural shape because it never holds an `ItemStack` reference at any point in its execution.
+
+### G.2 Clumps-fabric-1.21.1-19.0.0.1 — XP-only (confirmed)
+
+**Why considered**: Clumps has an "entity-merge" flavor; the mod's historical pattern of merging entities of a type could in principle be applied to `ItemEntity` in a way that causes reference aliasing near YIAS's death tick.
+
+**Full mixin footprint** (from `clumps.mixins.json`):
+- `MixinExperienceOrb` — `@Mixin(class_1303.class, priority=1001)` — operates exclusively on `class_1303` (ExperienceOrb).
+- `ExperienceOrbAccess` — accessor mixin on the same target.
+
+**Full-tree grep for item-entity surface**: `grep -rE "class_1542|ItemEntity" Clumps-fabric-.../` → **0 matches** across the entire mod source tree. The only `class_1799` references are:
+- `MixinExperienceOrb.java:23` — import for `class_1799`, used at `:137` where `foundItem.comp_2682()` returns a gear `ItemStack` being repaired by the XP orb (read-only; standard vanilla `repairPlayerItems` flow).
+- `platform/IPlatformHelper.java:6` — `getRepairRatio(class_1799 stack)` utility (read-only, gear-repair math).
+
+**Verdict: NONE (solo, cross-mod with YIAS).** Clumps does not touch `ItemEntity` at all. It merges XP orbs only. The one place it reads an `ItemStack` is the vanilla `repairPlayerItems` pathway on the player's worn/held gear, which is read-only and occurs when the player picks up the orb (not at death).
+
+### G.3 Pack-wide death-event surface closure
+
+**Purpose of this section**: put a ceiling on how many unaudited H-01-shaped "second actors" exist in the shipped pack.
+
+**Grep 1 — registered death-event handlers**:
+
+```sh
+grep -rlE "ALLOW_DEATH|LivingDeathEvent|LivingDropsEvent|LivingEntityEvents\.DROPS|ItemEntityEvents\.CAN_PICKUP|ServerPlayerEvents\.AFTER_RESPAWN" decompiled/ --include="*.java" \
+  | grep -v "sophisticated\|lootr\|youritemsaresafe\|combatlog\|fabric-api"
+```
+
+Result: **0 matches.** Every file in the decompiled tree that registers any of these event types belongs to one of the four originally-audited mods, combatlog (cleared above), or fabric-api itself (the infrastructure layer).
+
+**Grep 2 — overrides/mixins targeting the vanilla death pipeline**:
+
+```sh
+grep -rlE "method_6078|method_16080|dropAllDeathLoot|onKilled|onDeath|dropDeathLoot|dropEquipment|dropFromLootTable|class_1657.*drop|ServerPlayer.*drop|Inventory.*drop|method_7380" decompiled/ --include="*.java" \
+  | grep -vE "sophisticated|lootr|youritemsaresafe|combatlog|fabric-api|architectury|cloth-config|collective|modernfix|ForgeConfig|lithium|sodium|ImmediatelyFast|ferritecore"
+```
+
+Result: **1 match — `FarmersDelight/.../CookingPotBlockEntity.java:191`**, which serializes a field named "Inventory" into an NBT blob (the cooking pot's ingredient list). False-positive on the substring "drop" appearing inside the variable name `drops` for the BE's internal ingredient cache. Not death-related, not a player-inventory interaction.
+
+**Grep 3 — rendering infra mods** (`lithium`, `sodium`, `ImmediatelyFast`, `ferritecore`, `ModernFix`, `ForgeConfigAPIPort`, `architectury`, `cloth-config`) **are performance/compat layers** whose mixins target chunk/render/storage primitives, not entity death or inventory. They appear in the exclusion list above because their broad codebase produces false-positive hits on generic strings like `drop`/`inventory`/`items` that have nothing to do with player death.
+
+**Collective** (YIAS's support library) was traced inside YIAS's trace path in Appendix D — `TaskFunctions.enqueueCollectiveTask` is the only Collective primitive YIAS uses, and its scheduling semantics are the one piece of YIAS's timing that remains source-unconfirmed (the Collective jar is not in the decompiled tree). This was flagged as the most likely reason the H-25 live test came back null (the magnet would always lose the race if Collective runs tasks before BE-ticks on tick T+1). Collective does not itself register death handlers.
+
+**Infinitetrading** (villager trading), **Farmer's Delight** (cooking), **Musket Mod** (firearms), **Epic Knights** (weapons/armor), **Small Ships** (ships), **MCW Furniture**, **Beautify**, **OKM**, **Incendium**, **Nullscape**, **Terralith** — worldgen / decorative / equipment mods. None of them register any event from Grep 1 or override any method from Grep 2.
+
+### G.4 Consolidated Pass 6 verdict
+
+**Running solo-dupe total across Passes 1+2+3+4+5+6: zero CONFIRMED. One POSSIBLE weakened by negative experimental evidence (H-25 at 0/20 observed dupes with ~88% cumulative expected under the mechanism-as-described).**
+
+**Cross-mod second-actor surface for H-01-shaped dupes in the shipped pack**:
+- SBP (H-01 CONFIRMED, 2-player only).
+- SBP's placed-block Magnet Upgrade (H-25 POSSIBLE, live-test null).
+- **Combatlog-fabric — NONE (Pass 6 / G.1).**
+- **Clumps — NONE (Pass 6 / G.2, XP-only).**
+- **No other mod in the pack registers any death/drop/pickup event** (Pass 6 / G.3, two grep sweeps).
+
+This closes the solo-reproducible second-actor surface for the shipped 4-mod audit scope + the full rest of the pack. To find an additional CONFIRMED solo dupe in this stack, one of the following must be true:
+1. The H-25 timing model is right but the test missed — re-run with tighter setup (player standing **on** the backpack, deterministic `/kill`, open backpack GUI to observe the 1-diamond partial stack), and try the Advanced Magnet variant (different cooldown: 4 ticks instead of 10, per `MagnetUpgradeWrapper` constructor).
+2. Collective does schedule at `END_SERVER_TICK` (making H-25's window real) AND the pickup filter rejected a specific item in the partial-match case — worth checking that the 1-diamond-in-backpack slot had no filter restriction.
+3. A dupe exists in one of shapes **F, M, U, W, X, Y, Z** (Phase 2 tracker candidates H-27 Mekanism-only / H-28 bundle-experiment-only also remain, both out-of-scope for the default modpack config).
+4. Phase 5 (CFR against the shipped JAR, bytecode diff vs. the decompiled tree) reveals a compiler-level divergence between `decompiled/` and what actually runs. Not executed.
+
+### G.5 What Pass 6 does NOT cover (rule 4)
+
+- **Collective library source** is still not in the decompile tree. A direct read of `TaskFunctions.enqueueCollectiveTask`'s scheduler registration is the one missing piece that could flip H-25 from POSSIBLE+weak-evidence-null to confirmed-NONE or confirmed-CONFIRMED.
+- I did not attempt to build a modified client that fabricates a `BackpackOpenPayload` with malicious `(handlerName, identifier)` — the only solo-modified-client surface still POSSIBLE from Pass 2 (H-20). That requires work outside the scope of a decompiled-source audit.
+- Shapes **F, M, U, V, W, X, Y, Z** remain un-executed against any mod. Phase 5 (JAR↔source bytecode diff) remains un-executed.
+- G.2's statement on Clumps is scoped to item-dupe interaction with YIAS; Clumps may still have XP-specific bugs, which are out of scope for this audit.
+
+### G.6 Operational note for the server operator
+
+The shipped SBP 3.23.4.3.106 is missing the **3.24.16.1269 inception save-id fix** documented in Appendix F.3. Symptom: if a player puts a **fresh, never-opened** backpack into an inception-upgrade backpack, the sub-backpack's items can be orphaned on world reload (item *loss*, not gain — not a dupe, but a real defect). Mitigation: either update SBP to 3.24.16.1269+ (requires checking for save-format compatibility), or document to players that every sub-backpack must be opened once before being nested.
+
+- **Auditor**: Devin (session `0f553816835f4f3db46204f2393fec22`).
+
