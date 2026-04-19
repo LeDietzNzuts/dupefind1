@@ -1,0 +1,106 @@
+# H-27: Crafting Upgrade stale-recipe dupe — suggested fix
+
+Paths are relative to the decompiled source tree in this repo. Apply the equivalent change in the upstream `SophisticatedCore` Fabric sources before building a fixed jar.
+
+## Patch: CraftingUpgradeContainer.java
+
+Two changes:
+1. In `updateCraftingResult`, clear the match caches on the empty-input path.
+2. In `selectCraftingResult`, re-validate the chosen recipe against the current craft matrix before materialising the result slot.
+
+```diff
+--- a/sophisticatedcore-1.21.1-1.2.9.21.168/net/p3pp3rf1y/sophisticatedcore/upgrades/crafting/CraftingUpgradeContainer.java
++++ b/sophisticatedcore-1.21.1-1.2.9.21.168/net/p3pp3rf1y/sophisticatedcore/upgrades/crafting/CraftingUpgradeContainer.java
+@@ -191,21 +191,31 @@ public class CraftingUpgradeContainer extends UpgradeContainerBase<CraftingUpgra
+    private void updateCraftingResult(class_1937 level, class_1657 player, class_8566 inventory, class_1731 inventoryResult, class_1734 craftingResultSlot) {
+       if (!level.field_9236) {
+          class_3222 serverplayerentity = (class_3222)player;
+          class_1799 itemstack = class_1799.field_8037;
+          if (this.lastRecipe != null && ((class_3955)this.lastRecipe.comp_1933()).method_8115(inventory.method_59961(), level)) {
+             itemstack = ((class_3955)this.lastRecipe.comp_1933()).method_8116(inventory.method_59961(), level.method_30349());
+          } else {
+             List<class_8786<class_3955>> recipes = RecipeHelper.safeGetRecipesFor(class_3956.field_17545, inventory.method_59961(), level);
+             if (!recipes.isEmpty()) {
+                this.matchedCraftingRecipes = recipes;
+                this.matchedCraftingResults.clear();
+                this.selectedCraftingResultIndex = 0;
+                class_8786<class_3955> craftingRecipe = this.matchedCraftingRecipes.get(0);
+                if (inventoryResult.method_7665(level, serverplayerentity, craftingRecipe)) {
+                   this.lastRecipe = craftingRecipe;
+                   itemstack = ((class_3955)this.lastRecipe.comp_1933()).method_8116(inventory.method_59961(), level.method_30349());
+                   this.matchedCraftingResults.add(itemstack.method_7972());
+                } else {
+                   this.lastRecipe = null;
+                }
+ 
+                for (int i = 1; i < this.matchedCraftingRecipes.size(); i++) {
+                   this.matchedCraftingResults
+                      .add(((class_3955)this.matchedCraftingRecipes.get(i).comp_1933()).method_8116(inventory.method_59961(), level.method_30349()));
+                }
++            } else {
++               // FIX H-27: no recipes match the current matrix (e.g. it went empty).
++               // Drop the stale caches so a later selectCraftingResult(index) cannot
++               // re-materialise a result for a matrix that no longer holds the inputs.
++               this.matchedCraftingRecipes.clear();
++               this.matchedCraftingResults.clear();
++               this.selectedCraftingResultIndex = 0;
++               this.lastRecipe = null;
+             }
+          }
+ 
+          craftingResultSlot.method_7673(itemstack);
+       }
+    }
+@@ -239,13 +249,26 @@ public class CraftingUpgradeContainer extends UpgradeContainerBase<CraftingUpgra
+    public void selectCraftingResult(int resultIndex) {
+       if (resultIndex >= 0 && resultIndex < this.matchedCraftingResults.size()) {
+          if (this.player instanceof class_3222 serverPlayer) {
+-            this.selectedCraftingResultIndex = resultIndex;
+-            this.lastRecipe = this.matchedCraftingRecipes.get(resultIndex);
+-            class_1799 result = this.matchedCraftingResults.get(resultIndex).method_7972();
+-            this.craftingResultSlot.method_7673(result);
+-            this.craftResult.method_7665(this.player.method_37908(), serverPlayer, this.lastRecipe);
++            // FIX H-27: never trust the cached match lists. Re-derive the authoritative
++            // recipe set from the current craft matrix on the server, and only materialise
++            // a result if the requested recipe still matches.
++            class_1937 level = this.player.method_37908();
++            List<class_8786<class_3955>> fresh = RecipeHelper.safeGetRecipesFor(
++                  class_3956.field_17545, this.craftMatrix.method_59961(), level);
++            if (resultIndex >= fresh.size()) {
++               // Stale request. Drop caches and bail.
++               this.matchedCraftingRecipes.clear();
++               this.matchedCraftingResults.clear();
++               this.selectedCraftingResultIndex = 0;
++               this.lastRecipe = null;
++               this.craftingResultSlot.method_7673(class_1799.field_8037);
++               return;
++            }
++            this.matchedCraftingRecipes = fresh;
++            this.matchedCraftingResults.clear();
++            class_8786<class_3955> chosen = fresh.get(resultIndex);
++            class_1799 result = ((class_3955) chosen.comp_1933())
++                  .method_8116(this.craftMatrix.method_59961(), level.method_30349());
++            for (class_8786<class_3955> r : fresh) {
++               this.matchedCraftingResults.add(((class_3955) r.comp_1933())
++                     .method_8116(this.craftMatrix.method_59961(), level.method_30349()));
++            }
++            this.selectedCraftingResultIndex = resultIndex;
++            this.lastRecipe = chosen;
++            this.craftingResultSlot.method_7673(result);
++            this.craftResult.method_7665(level, serverPlayer, this.lastRecipe);
+          } else {
+             this.sendDataToServer(() -> NBTHelper.putInt(new class_2487(), "selectResult", resultIndex));
+          }
+       }
+    }
+```
+
+## Why this works
+
+`RecipeHelper.safeGetRecipesFor` returns a fresh authoritative list from the current matrix. If the matrix is empty or has mismatched ingredients, the list is empty and `resultIndex >= fresh.size()` short-circuits before any item is placed in the result slot. The method no longer reads from potentially-stale `matchedCraftingRecipes`.
+
+## Regression risk
+
+- Legit multi-result recipe selection still works: the fresh list is identical to what the client just saw when the result lists were populated legitimately (inputs unchanged in the ~1 tick round-trip).
+- `craftResult.method_7665` continues to fire, preserving "recipe used" tracking.
+- No change to the `method_7667` (take) handler — input consumption there is already correct when inputs are present.

@@ -1,0 +1,85 @@
+# V1: RequestBackpackInventoryContentsPayload info leak — suggested fix
+
+Require the requesting player to have an existing, legitimate reason to know that UUID. The simplest correct model is: the server maintains a per-player "seen backpacks" set, populated when the server opens a `BackpackContainer` menu for that player, and cleared on disconnect.
+
+## Patch: add an allow-list and check it
+
+```diff
+--- a/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/RequestBackpackInventoryContentsPayload.java
++++ b/sophisticatedbackpacks-1.21.1-3.23.4.3.106/net/p3pp3rf1y/sophisticatedbackpacks/network/RequestBackpackInventoryContentsPayload.java
+@@ -27,14 +27,21 @@ public record RequestBackpackInventoryContentsPayload(UUID backpackUuid) impleme
+    public static void handlePayload(RequestBackpackInventoryContentsPayload payload, Context context) {
+-      class_2487 backpackContents = BackpackStorage.get().getOrCreateBackpackContents(payload.backpackUuid);
++      class_3222 serverPlayer = context.player();
++      if (serverPlayer == null) {
++          return;
++      }
++      if (!BackpackAccessTracker.canRead(serverPlayer, payload.backpackUuid)) {
++          // Silently drop. Do not leak existence by differing responses.
++          return;
++      }
++      class_2487 backpackContents = BackpackStorage.get().getBackpackContents(payload.backpackUuid);
++      if (backpackContents == null) {
++          return;
++      }
+       class_2487 inventoryContents = new class_2487();
+       class_2520 inventoryNbt = backpackContents.method_10580("inventory");
+       if (inventoryNbt != null) {
+          inventoryContents.method_10566("inventory", inventoryNbt);
+       }
+
+       class_2520 upgradeNbt = backpackContents.method_10580("upgradeInventory");
+       if (upgradeNbt != null) {
+          inventoryContents.method_10566("upgradeInventory", upgradeNbt);
+       }
+
+-      class_3222 var7 = context.player();
+-      if (var7 instanceof class_3222) {
+-         PacketDistributor.sendToPlayer(var7, new BackpackContentsPayload(payload.backpackUuid, inventoryContents));
+-      }
++      PacketDistributor.sendToPlayer(serverPlayer, new BackpackContentsPayload(payload.backpackUuid, inventoryContents));
+    }
+```
+
+## Supporting class (new): BackpackAccessTracker
+
+Add a simple weak map keyed by player UUID. Populate it from the places that currently open a `BackpackContainer` server-side (see callers of `sophisticatedCore_openMenu` with a `BackpackContext`). Clear it on `PlayerLoggedOutEvent` / `ServerPlayConnectionEvents.DISCONNECT`.
+
+```java
+// new file: sophisticatedbackpacks-.../backpack/BackpackAccessTracker.java
+package net.p3pp3rf1y.sophisticatedbackpacks.backpack;
+
+import net.minecraft.class_3222;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+public final class BackpackAccessTracker {
+    private static final Map<UUID, Set<UUID>> ALLOWED = new HashMap<>();
+
+    private BackpackAccessTracker() {}
+
+    public static synchronized void grant(class_3222 player, UUID backpackUuid) {
+        ALLOWED.computeIfAbsent(player.method_5667(), k -> new HashSet<>()).add(backpackUuid);
+    }
+
+    public static synchronized boolean canRead(class_3222 player, UUID backpackUuid) {
+        Set<UUID> s = ALLOWED.get(player.method_5667());
+        return s != null && s.contains(backpackUuid);
+    }
+
+    public static synchronized void clear(UUID playerId) {
+        ALLOWED.remove(playerId);
+    }
+}
+```
+
+## Supporting change: flip getOrCreate → get
+
+In `BackpackStorage`, add a non-creating `getBackpackContents(UUID)` sibling of `getOrCreateBackpackContents`. The existing `getOrCreate` should stay available for paths that legitimately need to create new entries (placing a new backpack, etc.).
+
+## Defense-in-depth (optional)
+
+Rate-limit the payload to e.g. 10/sec per player. Log any attempt to read a UUID that is not in the player's allow-list (useful for spotting clients running exploit kits).
