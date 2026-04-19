@@ -782,6 +782,180 @@ Shape N's classic red flag — *"custom invulnerable ItemEntity that never despa
 - **H-23 (Shape L backpack tier upgrade) — NONE (solo).** The upgrade recipe preserves the `STORAGE_UUID` component, not the items themselves; result and source share storage transiently, source is consumed, no double-roll.
 - **Running solo-dupe total across Pass 1+2+3**: **zero confirmed, zero probable.** H-01 remains the only confirmed dupe in the surfaces traced, and it is explicitly two-player.
 - **Rule 4 restated**: this audit has now traced shapes A, B, D, G, H, I, J, L, N, plus H-08/H-09 and H-10-adjacent surfaces. Shapes **F, K, M, U, V, W, X, Y, Z** and Phase 2 (external trackers) / Phase 5 (JAR↔source bytecode diff) remain un-executed. A solo dupe could still hide there — this audit has NOT proven the four-mod stack dupe-free, only that the surfaces enumerated above do not contain one.
+
+---
+
+## Pass 4 — H-24 / H-25 (YIAS solo-death surfaces)
+
+**Date**: 2026-04-18
+**Session**: `863e86d89f9a493a872fe1a7a32246b0`
+**Constraint**: solo-reproducible only (same as Pass 2/3).
+
+---
+
+### H-24 — YIAS solo-totem-revive (Shape V: death-cancel interaction)
+
+**Hypothesis**: If YIAS's `ALLOW_DEATH` listener captures the inventory snapshot (line 37) *before* checking for a Totem of Undying, and a totem then cancels the death, the snapshot persists. A subsequent real death would restore the stale snapshot AND drop current inventory = solo dupe.
+
+**Trace**:
+
+1. YIAS registers on `ServerLivingEntityEvents.ALLOW_DEATH` (`ModFabric.java:22-28`). The handler always returns `true` (line 27), so it never blocks death — it only runs side effects.
+2. `DeathEvent.onPlayerDeath` (`DeathEvent.java:33`): captures `itemStacks = Util.getInventoryItems(player)` at line 37.
+3. **Totem checks** at lines 92-101:
+   - Line 92-97: if `inventoryTotemModIsLoaded`, scans `itemStacks` for totem item (`class_1802.field_8288`). If found → `return` (early exit, no task enqueue).
+   - Line 100-101: checks mainhand (`method_6047`) and offhand (`method_6079`) for totem. If found → `return`.
+4. These checks happen at lines 92-101, **before** the task enqueue at line 217. If any totem check passes, the function returns immediately — no equipment clear, no delayed task, no chest placement.
+5. **Vanilla totem behavior**: the Totem of Undying fires in `LivingEntity.checkTotemDeathProtection()` which is called inside `LivingEntity.hurt()`, *before* `die()` is called. If a totem triggers, `die()` is never called, so `ALLOW_DEATH` never fires, so YIAS's handler never runs at all.
+6. Even in the edge case where YIAS runs (e.g., `inventoryTotemModIsLoaded` with an inventory-totem mod), the early returns at lines 94/100 prevent any side effects.
+
+**Kill-shot**: `DeathEvent.java:94` and `DeathEvent.java:100` — early `return` before task enqueue (line 217) whenever a totem is detected. No snapshot persists, no stale state, no dupe.
+
+**Verdict: NONE (solo)**
+
+---
+
+### H-25 — Placed BackpackBlockEntity with Magnet Upgrade vs own death drops (Shape A: reference-leak via block-entity tick)
+
+**Hypothesis**: When a player dies near a placed backpack block that has a Magnet Upgrade installed, the block entity continues ticking while the player is on the respawn screen. If the magnet's tick fires between YIAS's death-event snapshot (tick T) and YIAS's delayed chest-task (tick T+1), it can absorb death-dropped ItemEntities via `InventoryHandler.superInsertItem` into a **partially-filled matching slot** — growing the existing slot's ItemStack (a separate object) while leaving the original ItemStack reference (held by YIAS's `finalItemStacks`) unmodified. YIAS then copies the full-count original to a death chest and zeros it, but the backpack's grown slot is unaffected. Net: items exist in both the backpack and the death chest = solo dupe.
+
+**Trace (end-to-end)**:
+
+**Step 1 — BackpackBlockEntity ticks every server tick.**
+`BackpackBlock.method_31645` (`BackpackBlock.java:302-310`) returns a `BlockEntityTicker` that invokes `BackpackBlockEntity.serverTick` on every server tick (server-side only, gated by `!level.field_9236` at line 303).
+
+**Step 2 — serverTick invokes ITickableUpgrade#tick on all upgrades.**
+`BackpackBlockEntity.serverTick` (`BackpackBlockEntity.java:194-200`):
+```java
+public static void serverTick(Level level, BlockPos blockPos, BackpackBlockEntity be) {
+    if (!level.isClientSide) {
+        be.backpackWrapper.getUpgradeHandler()
+            .getWrappersThatImplement(ITickableUpgrade.class)
+            .forEach(upgrade -> upgrade.tick(null, level, blockPos));  // entity=null for BE
+    }
+}
+```
+`MagnetUpgradeWrapper` implements `ITickableUpgrade` (line 41). When installed in a placed backpack, its `tick(null, level, pos)` is called every server tick.
+
+**Step 3 — Magnet tick scans for ItemEntities WITHOUT checking pickupDelay.**
+`MagnetUpgradeWrapper.tick` (`MagnetUpgradeWrapper.java:79-88`): if `!isInCooldown(level)`, calls `pickupItems(null, level, pos)`.
+`pickupItems` (`MagnetUpgradeWrapper.java:168-189`):
+```java
+List<ItemEntity> itemEntities = level.getEntitiesOfClass(ItemEntity.class, new AABB(pos).inflate(radius), e -> true);
+for (ItemEntity itemEntity : itemEntities) {
+    if (itemEntity.isAlive() && filterLogic.matchesFilter(itemEntity.getItem()) && !canNotPickup(itemEntity, null)) {
+        // ^^^ NO field_7202 (pickupDelay) check — contrast with CommonEventHandler:251
+        tryToInsertItem(null, itemEntity);
+    }
+}
+```
+Vanilla death drops set `pickupDelay = 40` via `setDefaultPickUpDelay()`. The magnet **ignores this** — it has no `field_7202 <= 0` gate. Compare `CommonEventHandler.onItemPickup` (`CommonEventHandler.java:251`) which explicitly checks `itemEntity.field_7202 <= 0`.
+
+`canNotPickup` (`MagnetUpgradeWrapper.java:228-237`): when `entity=null` (block-entity context), returns `data.has("PreventRemoteMovement") && !data.has("AllowMachineRemoteMovement")`. Vanilla death drops carry neither tag → returns `false` → magnet CAN absorb.
+
+**Step 4 — tryToInsertItem inserts into backpack, replaces ItemEntity's item.**
+`tryToInsertItem` (`MagnetUpgradeWrapper.java:239-256`):
+```java
+ItemStack stack = itemEntity.getItem();           // same ref YIAS holds
+ItemStack remaining = inventory.insertItem(stack, false);  // real insert
+itemEntity.setItem(remaining);                    // swap ItemEntity's item
+```
+
+**Step 5 — Partially-filled slot insert grows EXISTING stack, leaves source untouched.**
+`InventoryHandler.superInsertItem` (`InventoryHandler.java:341-378`), when inserting into a partially-filled matching slot (line 349-354 passes, existing is non-empty):
+```java
+// line 365-367:
+existing.grow(reachedLimit ? limit : stack.getCount());  // grows EXISTING ItemStack
+result = existing;  // result is the existing slot's object
+```
+The source `stack` (= the ItemStack ref YIAS holds) is **NOT modified**. The existing slot's ItemStack (a separate Java object) is grown. `remaining` returned = `ItemStack.EMPTY` (if all fits, line 373).
+
+**Contrast — empty slot insert stores SOURCE reference:**
+```java
+// line 363-364:
+if (existing.isEmpty()) {
+    result = reachedLimit ? stack.copyWithCount(limit) : stack;  // stores SOURCE ref
+}
+```
+In the empty-slot case, the source ref is stored in the backpack slot. YIAS's later `setCount(0)` propagates to the backpack slot (same object). **No dupe in empty-slot case.**
+
+**Step 6 — YIAS delayed task copies and zeros the original ref.**
+`DeathEvent.java:229-233` (runs at tick T+1 via `TaskFunctions.enqueueCollectiveTask(..., 1)`):
+```java
+for (ItemStack itemStackx : finalItemStacks) {
+    if (!itemStackx.isEmpty()) {
+        chestEntity.setItem(i, itemStackx.copy());  // copy to chest (new object)
+        itemStackx.setCount(0);                      // zero source
+    }
+}
+```
+In the partially-filled case: source (YIAS's ref) still has full count N (magnet didn't modify it). Copied to chest = N items. Zeroed = count 0. But the backpack's EXISTING slot was grown by N using a **different Java object** — unaffected by the zero-out.
+
+**Step 7 — Timing analysis.**
+- Minecraft server tick order in 1.21.1: chunk ticks (block entities) → entity ticks (players, items) → `END_SERVER_TICK` events.
+- Tick T: BE ticks (magnet fires if not in cooldown — no items yet). Entity phase: player takes lethal damage → YIAS `ALLOW_DEATH` captures refs, enqueues task with delay=1 → `die()` → `dropAllDeathLoot()` → ItemEntities spawn with same refs.
+- Tick T+1: BE ticks (magnet fires IF cooldown expired). Magnet scans, finds death-dropped ItemEntities. Absorbs via partial-match. → Later in tick: `END_SERVER_TICK` → Collective fires YIAS task → copies and zeros refs.
+
+**Cooldown alignment**: `UpgradeWrapperBase.setCooldown` (`UpgradeWrapperBase.java:32-34`): `this.cooldown = level.getGameTime() + time`. `isInCooldown` (`:40-42`): `cooldown > gameTime` (strictly greater). Magnet cooldown = 10 ticks (line 45). The magnet fires every 10 ticks at absolute game times T_m, T_m+10, T_m+20, ... For the dupe to trigger, the magnet's cycle must land on tick T+1 (the first BE tick after death). This occurs when `T+1 ≡ T_m (mod 10)`, which has a **1-in-10 probability** per death attempt assuming random death timing relative to magnet cycle.
+
+**Step 8 — Net result when timing aligns (partially-filled slot case).**
+- Backpack slot: existing ItemStack grew by N (e.g., 1 diamond → 64 diamonds).
+- YIAS death chest: copy of N items (e.g., 63 diamonds).
+- Original ref: zeroed (orphaned, not in any visible container).
+- ItemEntity: set to EMPTY by magnet.
+- **Total items**: (existing + N) in backpack + N in chest. Player started with existing + N total. **Net gain: +N items.**
+
+**Verdict: POSSIBLE (solo)**
+
+**Conditions for reproduction:**
+1. Placed `BackpackBlockEntity` within magnet radius of planned death location.
+2. Backpack has a **Magnet Upgrade** installed and enabled (default: enabled).
+3. Backpack contains a **partially-filled** slot matching the item(s) to dupe (e.g., 1 diamond in a slot with max stack 64).
+4. Player has more of the same item in main inventory.
+5. YIAS mod is active with default config (`createChest` enabled, `createArmorStand` not required).
+6. Magnet cooldown expires on tick T+1 (probabilistic — ~10% per attempt).
+
+**Reproduction steps (solo, survival):**
+1. Craft a backpack. Install a Magnet Upgrade (any tier).
+2. Place the backpack block 1-3 blocks from where you plan to die.
+3. Open the placed backpack. Put **1 of the target item** (e.g., 1 diamond) into a slot. Close.
+4. Put **63 of the same item** (e.g., 63 diamonds) in your hotbar/inventory.
+5. Kill yourself near the backpack (lava, falling, TNT, etc.).
+6. Respawn. Check the YIAS death chest AND the placed backpack.
+   - **If dupe triggered**: backpack has 64 diamonds (1 original + 63 absorbed), death chest has 63 diamonds (YIAS copy). Total: 127 from original 64. **+63 duplicated.**
+   - **If dupe did NOT trigger** (magnet was in cooldown): death chest has your items as normal, backpack has only the 1 diamond. Retrieve items, re-equip, try again.
+7. Repeat. With 10-tick magnet cooldown cycle, expect ~1/10 success rate per death. Dying 10 times gives ~65% cumulative probability.
+
+**Why POSSIBLE and not CONFIRMED:**
+- Collective library (`TaskFunctions.enqueueCollectiveTask`) source is not in the decompiled repo. The timing analysis assumes Collective processes delayed tasks at `END_SERVER_TICK` (standard Fabric pattern), which would place the task AFTER BE ticks. If Collective instead fires tasks at `START_SERVER_TICK` (before BE ticks), the magnet would miss the window and the dupe would not work.
+- No in-game verification was performed.
+- The 1/10 per-attempt probability is based on the 10-tick cooldown cycle; actual timing may vary depending on server TPS fluctuations.
+
+**Key file:line citations:**
+| Evidence | File:Line |
+| --- | --- |
+| BE ticker registration | `BackpackBlock.java:302-310` |
+| serverTick calls ITickableUpgrade#tick | `BackpackBlockEntity.java:194-200` |
+| MagnetUpgradeWrapper implements ITickableUpgrade | `MagnetUpgradeWrapper.java:41` |
+| Magnet tick → pickupItems (no pickupDelay check) | `MagnetUpgradeWrapper.java:168-189`, esp. line 177 |
+| tryToInsertItem → insertItem + setItem | `MagnetUpgradeWrapper.java:239-256` |
+| superInsertItem partial-match: grows existing, source untouched | `InventoryHandler.java:365-367` |
+| superInsertItem empty-slot: stores source ref (no dupe) | `InventoryHandler.java:363-364` |
+| Cooldown = 10 ticks | `MagnetUpgradeWrapper.java:45` |
+| setCooldown / isInCooldown | `UpgradeWrapperBase.java:32-42` |
+| canNotPickup allows vanilla drops in BE context | `MagnetUpgradeWrapper.java:228-237` |
+| YIAS captures refs (shallow copy) | `DeathEvent.java:37`, `Util.java:73-77` |
+| YIAS delayed task copies + zeros | `DeathEvent.java:229-233` |
+| YIAS registers ALLOW_DEATH (fires before die/drops) | `ModFabric.java:22-28` |
+| CommonEventHandler DOES check pickupDelay (contrast) | `CommonEventHandler.java:251` |
+
+---
+
+### Pass 4 closing notes
+
+- **H-24 (YIAS solo-totem-revive) — NONE (solo).** Totem checks at `DeathEvent.java:94/100` return early before any side effects. Vanilla totem fires in `hurt()` before `die()`, so YIAS's `ALLOW_DEATH` handler typically doesn't even run.
+- **H-25 (Placed backpack Magnet Upgrade vs death drops) — POSSIBLE (solo).** First solo dupe surface identified in 4 passes of audit. The mechanism is identical to H-01 (ItemStack reference leak via `insertItem` into partially-filled slot + `setItem` on ItemEntity), but triggered by a block-entity magnet rather than a second player's pickup upgrade. Solo because the placed backpack block ticks autonomously. Probabilistic (1/10 per death attempt) due to magnet cooldown alignment. Pending in-game verification and Collective library timing confirmation.
+- **Running solo-dupe total across Pass 1+2+3+4**: **zero confirmed, one POSSIBLE (H-25).** H-01 remains the only CONFIRMED dupe (two-player). H-25 is the strongest solo candidate found.
+- **Rule 4 restated**: this audit has now traced shapes A, B, D, G, H, I, J, L, N, V, plus H-08/H-09, H-10-adjacent, and H-25 surfaces. Shapes **F, K, M, U, W, X, Y, Z** and Phase 2 (external trackers) / Phase 5 (JAR↔source bytecode diff) remain un-executed.
 - **Auditor**: Devin (session `863e86d89f9a493a872fe1a7a32246b0`).
 
 ---
